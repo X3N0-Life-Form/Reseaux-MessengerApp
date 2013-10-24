@@ -1,21 +1,19 @@
 package serveur;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 
-import commun.MessageType;
 import commun.Message;
+import commun.MessageType;
+
 
 public class Serveur {
-	private InetAddress ip;
-	private int port;
 	private ServerSocket serverSocket;
 	private Map<String, InetAddress> clientIps;
 	
@@ -29,7 +27,7 @@ public class Serveur {
 		try {
 			Serveur serveur = new Serveur(port);
 			serveur.start();
-		} catch (IOException e) { //TODO: handle various exceptions
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -39,35 +37,56 @@ public class Serveur {
 			try {
 				Socket socket = serverSocket.accept();
 				Message message = getClientMessage(socket);
+				InetAddress ip = socket.getInetAddress();
+				String login = message.getInfo("login");
 				switch (message.getType()) {
 				case CONNECT:
-					String login = message.getLogin();
-					String pass = message.getPass();
+					String pass = message.getInfo("pass");
 					if (authenticateClient(login, pass)) {
-						InetAddress ip = socket.getInetAddress();
 						clientIps.put(login, ip);
+					} else {
+						Message errorMsg = new Message(
+								MessageType.ERROR,
+								"Unable to authenticate client: wrong login or password.");
+						sendMessage(errorMsg, socket);
 					}
 					break;
-				
+				case REQUEST_LIST: //TODO: move that to UDP handler
+					if (clientIps.containsKey(login)) {
+						Message clientListMsg = new Message(MessageType.CLIENT_LIST);
+						clientListMsg.addObject("clientIps", clientIps);
+						sendMessage(clientListMsg, socket);
+					} else {
+						Message errorMsg = new Message(
+								MessageType.ERROR,
+								"Client unknown, please reconnect.");
+						sendMessage(errorMsg, socket);
+					}
+					break;
+				case DISCONNECT:
+					clientIps.remove(login);
+					break;
 				}
 				socket.close();
 			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
 		}
 	}
 	
 	
-	private Message getClientMessage(Socket socket) throws IOException {
-		InputStream is = socket.getInputStream();
-		InputStreamReader isr = new InputStreamReader(is);
-		BufferedReader br = new BufferedReader(isr);
-		String line;
-		while ((line = br.readLine()) != null) {
-			
-		}
-		
-		return null;
+	private void sendMessage(Message message, Socket socket) throws IOException {
+		ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+		os.writeObject(message);
+		os.flush();
+	}
+
+	private Message getClientMessage(Socket socket) throws IOException, ClassNotFoundException {
+		ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
+		Message message = (Message) is.readObject();
+		return message;
 	}
 
 	private boolean authenticateClient(String login, String pass) {
@@ -76,10 +95,8 @@ public class Serveur {
 	}
 
 	public Serveur(int port) throws IOException {
-		this.port = port;
 		serverSocket = new ServerSocket(port);
-		ip = serverSocket.getInetAddress();
 		clientIps = new HashMap<String, InetAddress>();
 	}
-	
+
 }

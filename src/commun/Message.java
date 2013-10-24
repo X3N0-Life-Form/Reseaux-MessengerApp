@@ -1,36 +1,57 @@
 package commun;
 
-public class Message {
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+
+public class Message implements Serializable {
 	
-	private String login;
-	private String pass = null;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6074821227848743167L;
+	private Map<String, String> info;
+	private Map<String, Object> objects;
 	private String message;
 	private MessageType type;
 	
-	public Message(String login, String message, MessageType type) {
-		this.login = login;
-		this.message = message;
-		this.type = type;
-	}
-
-	public String getPass() {
-		return pass;
+	public Message(MessageType type) {
+		this(type, "");
 	}
 	
-	public void setPass(String pass) {
-		this.pass = pass;
+	public Message(MessageType type, String message) {
+		this.message = message;
+		this.type = type;
+		info = new HashMap<String, String>();
+		objects = new HashMap<String, Object>();
 	}
-
-	public String getLogin() {
-		return login;
-	}
-
+	
 	public MessageType getType() {
 		return type;
 	}
 	
 	public String getMessage() {
 		return message;
+	}
+	
+	public Map<String, String> getInfo() {
+		return info;
+	}
+	
+	public void addInfo(String key, String info) {
+		this.info.put(key, info);
+	}
+
+	public String getInfo(String key) {
+		return info.get(key);
+	}
+
+	public void addObject(String key, Object object) {
+		objects.put(key, object);
+	}
+	
+	public Object getObject(String key) {
+		return objects.get(key);
 	}
 
 }
