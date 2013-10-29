@@ -7,7 +7,7 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 
-import serveur.handling.DialogHandler;
+import serveur.handling.TCPHandler;
 import serveur.handling.UDPHandler;
 
 
@@ -59,7 +59,7 @@ public class Serveur {
 		while (running) {
 			try {
 				Socket socket = serverSocket.accept();
-				DialogHandler dh = new DialogHandler(socket, this);
+				TCPHandler dh = new TCPHandler(socket, this);
 				dh.start();
 				udpHandler.start();
 			} catch (IOException e) {

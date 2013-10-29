@@ -11,13 +11,13 @@ import serveur.Serveur;
 
 import commun.Message;
 
-public class DialogHandler extends Thread implements Handler {
+public class TCPHandler extends Thread implements Handler {
 	
 	private Socket socket;
 	private Serveur serveur;
 	private ServerMessageManager messageManager;
 	
-	public DialogHandler(Socket clientSocket, Serveur serveur) {
+	public TCPHandler(Socket clientSocket, Serveur serveur) {
 		socket = clientSocket;
 		this.serveur = serveur;
 		messageManager = new ServerMessageManager(serveur, this);
