@@ -7,6 +7,8 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.jdom2.JDOMException;
+
 import serveur.handling.TCPHandler;
 import serveur.handling.UDPHandler;
 
@@ -19,9 +21,11 @@ public class Serveur {
 	private boolean running;
 	private long timeout;
 	private UDPHandler udpHandler;
+	private LoginParser loginParser;
 	
 	public static final int DEFAULT_PORT = 8001;
 	public static final long DEFAULT_TIMEOUT_TIME = 2000;
+	public static final String DEFAULT_LOGIN_FILE_URL = "res/clientsSample.xml";
 	
 	public Serveur() throws IOException {
 		port = DEFAULT_PORT;
@@ -31,6 +35,7 @@ public class Serveur {
 		running = false;
 		timeout = DEFAULT_TIMEOUT_TIME;
 		udpHandler = new UDPHandler(this);
+		loginParser = new LoginParser(DEFAULT_LOGIN_FILE_URL);
 	}
 	
 	public static void main(String args[]) {
@@ -43,6 +48,8 @@ public class Serveur {
 			serveur.start();
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (JDOMException e) {
+			e.printStackTrace();
 		}
 	}
 	
@@ -52,9 +59,9 @@ public class Serveur {
 		System.out.println("\tPort:\t" + serverSocket.getLocalPort());
 	}
 
-	public void start() {
-		Thread timeoutThread = new Thread(timeoutHandler);
-		timeoutThread.start();
+	public void start() throws JDOMException, IOException {
+		timeoutHandler.start();
+		loginParser.parse();
 		running = true;
 		while (running) {
 			try {
@@ -69,8 +76,7 @@ public class Serveur {
 	}
 
 	public boolean authenticateClient(String login, String pass) {
-		// TODO Auto-generated method stub
-		return false;
+		return loginParser.validateLogin(login, pass);
 	}
 
 	public Map<String, InetAddress> getClientIps() {
@@ -92,4 +98,23 @@ public class Serveur {
 	public long getTimeoutTime() {
 		return timeout;
 	}
+	
+	public void setTimeoutTime(long time) {
+		this.timeout = time;
+	}
+
+	public void stop() {
+		running = false;
+		//TODO: stop everything
+	}
+
+	/**
+	 * To be used for testing purposes.
+	 * @param b
+	 */
+	public void setRunning(boolean b) {
+		running = true;
+	}
+
+	
 }

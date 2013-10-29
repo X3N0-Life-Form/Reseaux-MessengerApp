@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<clients>
+	<client login="test01" pass="test" />
+	<client login="test02" pass="test" />
+	<client login="test03" pass="test" />
+	<client login="test04" pass="test" />
+	<client login="test05" pass="test" />
+</clients>

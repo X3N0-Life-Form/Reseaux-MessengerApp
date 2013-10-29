@@ -5,15 +5,28 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ServerTimeoutHandler implements Runnable {
+public class ServerTimeoutHandler extends Thread {
 	
 	private Map<InetAddress, Date> timeoutTable;
 	private Serveur serveur;
 	
 	public ServerTimeoutHandler(Serveur serveur) {
+		this.serveur = serveur;
 		timeoutTable = new HashMap<InetAddress, Date>();
 	}
 	
+	public Map<InetAddress, Date> getTimeoutTable() {
+		return timeoutTable;
+	}
+
+	public void setTimeoutTable(Map<InetAddress, Date> timeoutTable) {
+		this.timeoutTable = timeoutTable;
+	}
+
+	public Serveur getServeur() {
+		return serveur;
+	}
+
 	public synchronized void addClient(InetAddress ip) {
 		timeoutTable.put(ip, new Date());
 	}
