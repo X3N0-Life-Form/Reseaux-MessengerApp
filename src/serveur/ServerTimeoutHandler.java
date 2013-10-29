@@ -36,7 +36,9 @@ public class ServerTimeoutHandler extends Thread {
 	}
 	
 	public synchronized void updateClient(InetAddress ip, Date time) {
-		timeoutTable.put(ip, time);
+		if (timeoutTable.containsKey(ip)) {
+			timeoutTable.put(ip, time);
+		}
 	}
 
 	@Override

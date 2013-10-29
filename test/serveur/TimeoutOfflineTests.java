@@ -53,6 +53,17 @@ public class TimeoutOfflineTests {
 		assertTrue(timeoutHandler.getTimeoutTable().get(localHost).equals(secondDate));
 	}
 	
+	/**
+	 * What happens if we try to update a client that isn't in the table? 
+	 * @throws UnknownHostException
+	 */
+	@Test
+	public void testUpdateClient_unknown() throws UnknownHostException {
+		InetAddress localHost = InetAddress.getLocalHost();
+		timeoutHandler.updateClient(localHost, new Date());
+		assertFalse(timeoutHandler.getTimeoutTable().containsKey(localHost));
+	}
+	
 	@Test
 	public void testClientTimeout() throws UnknownHostException, InterruptedException {
 		InetAddress localHost = InetAddress.getLocalHost();
