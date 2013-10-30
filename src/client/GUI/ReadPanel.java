@@ -1,9 +1,6 @@
 package client.GUI;
 
 import java.awt.Color;
-import java.awt.Dimension;
-
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -25,7 +22,6 @@ public class ReadPanel extends JPanel {
 		this.setVisible(true);
 		
 	}
-
 }
 
 class SeeReadPanel {

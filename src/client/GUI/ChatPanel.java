@@ -14,8 +14,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
 
-public class ChatPanel extends JPanel {
-	
+public class ChatPanel extends JPanel {	
 	
 	public ChatPanel(){
 		 setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
