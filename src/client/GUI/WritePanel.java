@@ -16,7 +16,6 @@ public class WritePanel extends JPanel {
 	JButton send = new JButton("Send");
 	
 	public WritePanel(){
-		setBackground(Color.darkGray);
 		
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		add(text);
