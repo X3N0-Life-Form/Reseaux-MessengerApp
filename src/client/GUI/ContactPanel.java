@@ -22,7 +22,7 @@ public class ContactPanel extends JPanel{
 		scrollPane = new JScrollPane();
 		add(scrollPane);
 		
-		//TODO : put real logins list into loginList
+		//TODO : put real logins into loginList
 		// ======= TEMP =======
 		Vector<String> logins = new Vector<String>();
 		logins.add("meow");
@@ -34,11 +34,6 @@ public class ContactPanel extends JPanel{
 	
 		setVisible(true);
 	}
-
-	//TODO : afficher liste contacts, bouton refresh, tout ça tout ça
-	// map
-
-
 }
 
 class SeeContactPanel{	
