@@ -1,6 +1,7 @@
 package serveur.handling;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -45,7 +46,7 @@ public class UDPHandler extends Thread implements Handler {
 					serveur.getTimeoutHandler().updateClient(address, new Date());
 				}
 				Message message = getMessage(p);
-				messageManager.handleMessage(message, socket);
+				messageManager.handleMessage(message, socket,p);
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (ClassNotFoundException e) {
@@ -64,8 +65,19 @@ public class UDPHandler extends Thread implements Handler {
 	}
 
 	@Override
-	public void sendMessage(Message message, DatagramSocket socket) {
-		//TODO:todo
+	public void sendMessage(Message message, DatagramSocket socket, DatagramPacket c) throws IOException, ClassNotFoundException {
+		try{
+			ByteArrayOutputStream b = new ByteArrayOutputStream();
+		    ObjectOutputStream o = new ObjectOutputStream(b);
+		    o.writeObject(message.getObjects());
+			byte[] buf = b.toByteArray();
+			DatagramPacket p = new DatagramPacket(buf, buf.length, c.getAddress(), c.getPort());
+			socket.send(p);
+		
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	}
 
 	@Override

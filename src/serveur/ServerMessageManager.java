@@ -2,6 +2,7 @@ package serveur;
 
 import java.io.IOException;
 import java.net.DatagramSocket;
+import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Map;
@@ -28,13 +29,17 @@ public class ServerMessageManager {
 		InetAddress ip = socket.getInetAddress();
 		String login = message.getInfo("login");
 		switch (message.getType()) {
+		
+		
 		case CONNECT:
 			String pass = message.getInfo("pass");
 			if (serveur.authenticateClient(login, pass)) {
 				clientIps.put(login, ip);
 				serveur.getTimeoutHandler().addClient(socket.getInetAddress());
-				Message okMessage = new Message(MessageType.OK, "Authentification successful");
-				handler.sendMessage(okMessage, socket);
+				Message okMsg = new Message(
+						MessageType.OK,
+						"Able to authenticate client.");
+				handler.sendMessage(okMsg, socket);
 			} else {
 				Message errorMsg = new Message(
 						MessageType.ERROR,
@@ -52,19 +57,19 @@ public class ServerMessageManager {
 		}
 	}
 
-	public void handleMessage(Message message, DatagramSocket socket) throws HandlingException {
+	public void handleMessage(Message message, DatagramSocket socket, DatagramPacket paquet) throws HandlingException, IOException, ClassNotFoundException {
 		String login = message.getInfo("login");
 		switch (message.getType()) {
 		case REQUEST_LIST:
 		if (clientIps.containsKey(login)) {
 			Message clientListMsg = new Message(MessageType.CLIENT_LIST);
 			clientListMsg.addObject("clientIps", clientIps);
-			handler.sendMessage(clientListMsg, socket);
+			handler.sendMessage(clientListMsg, socket, paquet);
 		} else {
 			Message errorMsg = new Message(
 					MessageType.ERROR,
 					"Client unknown, please reconnect.");
-			handler.sendMessage(errorMsg, socket);
+			handler.sendMessage(errorMsg, socket, paquet);
 		}
 		break;
 		default:

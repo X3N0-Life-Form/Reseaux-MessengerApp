@@ -7,5 +7,6 @@ public enum MessageType {
 	UNKNOWN,
 	OK,
 	ERROR,
-	CLIENT_LIST
+	CLIENT_LIST,
+	LIVE
 }

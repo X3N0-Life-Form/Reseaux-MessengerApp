@@ -3,11 +3,14 @@ package serveur.handling;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.Socket;
 
 import serveur.ServerMessageManager;
 import serveur.Serveur;
+import serveur.logging.EventType;
+import serveur.logging.Log;
 
 import commun.Message;
 
@@ -15,11 +18,13 @@ public class TCPHandler extends Thread implements Handler {
 	
 	private Socket socket;
 	private Serveur serveur;
+	private Log log;
 	private ServerMessageManager messageManager;
 	
 	public TCPHandler(Socket clientSocket, Serveur serveur) {
 		socket = clientSocket;
 		this.serveur = serveur;
+		log = serveur.getLog();
 		messageManager = new ServerMessageManager(serveur, this);
 	}
 	
@@ -32,12 +37,14 @@ public class TCPHandler extends Thread implements Handler {
 	public void sendMessage(Message message, Socket socket) throws IOException {
 		ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
 		os.writeObject(message);
+		log.log(EventType.SEND_TCP, "Sending message: " + message);
 		os.flush();
 	}
 
 	public Message getClientMessage(Socket socket) throws IOException, ClassNotFoundException {
 		ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
 		Message message = (Message) is.readObject();
+		log.log(EventType.RECEIVE_TCP, "Received message: " + message);
 		return message;
 	}
 
@@ -59,7 +66,7 @@ public class TCPHandler extends Thread implements Handler {
 	}
 
 	@Override
-	public void sendMessage(Message message, DatagramSocket socket) throws HandlingException {
+	public void sendMessage(Message message, DatagramSocket socket, DatagramPacket paquet) throws HandlingException {
 		throw new HandlingException("Can't handle a DatagramSocket.");
 	}
 

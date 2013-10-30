@@ -38,8 +38,17 @@ public class Message implements Serializable {
 		return info;
 	}
 	
+	public Map<String, Object> getObjects() {
+		return objects;
+	}
+	
 	public void addInfo(String key, String info) {
 		this.info.put(key, info);
+	}
+	
+	public void setObjects(Map<String, Object> objects)
+	{
+		this.objects=objects;
 	}
 
 	public String getInfo(String key) {

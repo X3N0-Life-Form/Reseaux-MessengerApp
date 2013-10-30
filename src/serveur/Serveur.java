@@ -137,5 +137,7 @@ public class Serveur {
 		return udpHandler;
 	}
 
-	
+	public Log getLog() {
+		return log;
+	}
 }
