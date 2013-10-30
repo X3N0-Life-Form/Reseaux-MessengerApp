@@ -34,11 +34,6 @@ public class ContactPanel extends JPanel{
 	
 		setVisible(true);
 	}
-
-	//TODO : afficher liste contacts, bouton refresh, tout ça tout ça
-	// map
-
-
 }
 
 class SeeContactPanel{	
