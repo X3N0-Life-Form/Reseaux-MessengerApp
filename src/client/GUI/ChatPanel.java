@@ -23,8 +23,9 @@ public class ChatPanel extends JPanel {
 		 ReadPanel rPanel = new ReadPanel();
 		 
 		 add(rPanel, BorderLayout.NORTH);
-		 rPanel.setPreferredSize(new Dimension(100,300));
+		 rPanel.setPreferredSize(new Dimension(100,500));
 		 add(wPanel, BorderLayout.SOUTH);
+		 wPanel.setPreferredSize(new Dimension(100,150));
 		
 		setVisible(true);
 		
