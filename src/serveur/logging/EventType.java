@@ -8,5 +8,6 @@ public enum EventType {
 	RECEIVE_TCP,
 	RECEIVE_UDP,
 	SEND_TCP,
-	SEND_UDP
+	SEND_UDP,
+	TIMEOUT
 }

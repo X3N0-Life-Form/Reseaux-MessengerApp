@@ -5,14 +5,19 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import serveur.logging.EventType;
+import serveur.logging.Log;
+
 public class ServerTimeoutHandler extends Thread {
 	
 	private Map<InetAddress, Date> timeoutTable;
 	private Serveur serveur;
+	private Log log;
 	
 	public ServerTimeoutHandler(Serveur serveur) {
 		this.serveur = serveur;
 		timeoutTable = new HashMap<InetAddress, Date>();
+		log = serveur.getLog();
 	}
 	
 	public Map<InetAddress, Date> getTimeoutTable() {
@@ -47,6 +52,8 @@ public class ServerTimeoutHandler extends Thread {
 			for (InetAddress ip : timeoutTable.keySet()) {
 				Date now = new Date();
 				if ((now.getTime() - timeoutTable.get(ip).getTime()) > serveur.getTimeoutTime()) {
+					log.log(EventType.TIMEOUT, "Client timed out: "
+							+ timeoutTable.get(ip) + "(" + ip + ")");
 					removeClient(ip);
 				}
 			}

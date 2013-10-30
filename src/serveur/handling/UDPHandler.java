@@ -15,6 +15,8 @@ import java.util.Date;
 
 import serveur.ServerMessageManager;
 import serveur.Serveur;
+import serveur.logging.EventType;
+import serveur.logging.Log;
 
 import commun.Message;
 
@@ -23,6 +25,7 @@ public class UDPHandler extends Thread implements Handler {
 	private Serveur serveur;
 	private DatagramSocket socket;
 	private ServerMessageManager messageManager;
+	private Log log;
 	
 	public UDPHandler(Serveur serveur) {
 		this.serveur = serveur;
@@ -32,6 +35,7 @@ public class UDPHandler extends Thread implements Handler {
 		} catch (SocketException e) {
 			e.printStackTrace();
 		}
+		log = serveur.getLog();
 	}
 
 	@Override
@@ -61,6 +65,7 @@ public class UDPHandler extends Thread implements Handler {
 		ByteArrayInputStream bis = new ByteArrayInputStream(p.getData());
 		ObjectInputStream ois = new ObjectInputStream(bis);
 		Message message = (Message) ois.readObject();
+		log.log(EventType.RECEIVE_UDP, "Received message: " + message);
 		return message;
 	}
 
@@ -72,6 +77,7 @@ public class UDPHandler extends Thread implements Handler {
 		    o.writeObject(message.getObjects());
 			byte[] buf = b.toByteArray();
 			DatagramPacket p = new DatagramPacket(buf, buf.length, c.getAddress(), c.getPort());
+			log.log(EventType.SEND_UDP, "Sending message: " + message);
 			socket.send(p);
 		
 			} catch (Exception e) {
