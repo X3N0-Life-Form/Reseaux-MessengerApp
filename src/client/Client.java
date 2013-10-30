@@ -1,19 +1,68 @@
 package client;
 
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
+
+import client.handling.TCPHandlerClient;
+import client.handling.UDPHandlerClient;
+
+import client.ClientTimeoutHandler;
+
 public class Client {
+	private static final long DEFAULT_TIMEOUT_TIME = 0;
 	private String login;
-	private String ip;
+	private String pass;
+	private InetAddress ip;
 	private int port;
+	private static Socket clientSocket;
+	private boolean running;
+	private Map<String, InetAddress> clientIps;
+	private ClientTimeoutHandler timeoutHandler;
+	private long timeout;
+
 	
-	public Client(String login, String ip, int port) {
+	public Client(String login, String pass, InetAddress ip, int port) throws IOException{
 		super();
 		this.login = login;
 		this.ip = ip;
 		this.port = port;
+		this.pass=pass;
+		clientSocket = new Socket("localhost", 8001);
+		clientIps = new HashMap<String, InetAddress>();
+		timeoutHandler = new ClientTimeoutHandler(this);
+		running = false;
+		timeout = DEFAULT_TIMEOUT_TIME;
+
+	}
+	
+	public void printRecap() {
+		System.out.println("Starting the client:");
+		System.out.println("\tIp:\t" + clientSocket.getInetAddress());
+		System.out.println("\tPort:\t" + clientSocket.getLocalPort());
+	}
+	
+	public void start() {
+		TCPHandlerClient tcp = new TCPHandlerClient(clientSocket, this);
+		UDPHandlerClient udp = new UDPHandlerClient(this);
+		tcp.start();
+		udp.start();
 	}
 
 	public static void main(String args[]) {
-		
+		String c_login=args[0];
+		String c_pass=args[1];
+		InetAddress c_ip=clientSocket.getInetAddress();
+		int c_port=clientSocket.getLocalPort();
+		try {
+			Client client = new Client(c_login, c_pass, c_ip, c_port);
+			client.printRecap();
+			client.start();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public String getLogin() {
@@ -23,12 +72,20 @@ public class Client {
 	public void setLogin(String login) {
 		this.login = login;
 	}
+	
+	public String getPass() {
+		return pass;
+	}
 
-	public String getIp() {
+	public void setPass(String pass) {
+		this.pass = pass;
+	}
+
+	public InetAddress getIp() {
 		return ip;
 	}
 
-	public void setIp(String ip) {
+	public void setIp(InetAddress ip) {
 		this.ip = ip;
 	}
 
@@ -40,5 +97,24 @@ public class Client {
 		this.port = port;
 	}
 	
+	public boolean isRunning() {
+		return running;
+	}
+
+	public ClientTimeoutHandler getTimeoutHandler() {
+		return timeoutHandler;
+	}
 	
+	public long getTimeoutTime() {
+		return timeout;
+	}
+	
+	public Map<String, InetAddress> getClientIps() {
+		return clientIps;
+	}
+	
+	public void setClientIps(Map<String, InetAddress> o)
+	{
+		this.clientIps=o;
+	}
 }
