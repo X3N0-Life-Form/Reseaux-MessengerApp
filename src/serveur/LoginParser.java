@@ -27,6 +27,10 @@ public class LoginParser {
 		return doc != null;
 	}
 	
+	public File getFile() {
+		return file;
+	}
+	
 	public boolean validateLogin(String login, String pass) {
 		if (doc == null) { // doc hasn't been parsed
 			return false;

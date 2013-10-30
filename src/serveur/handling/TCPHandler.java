@@ -28,7 +28,6 @@ public class TCPHandler extends Thread implements Handler {
 		messageManager.handleMessage(message, socket);
 		socket.close();
 	}
-
 	
 	public void sendMessage(Message message, Socket socket) throws IOException {
 		ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());

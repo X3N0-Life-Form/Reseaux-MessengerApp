@@ -33,6 +33,8 @@ public class ServerMessageManager {
 			if (serveur.authenticateClient(login, pass)) {
 				clientIps.put(login, ip);
 				serveur.getTimeoutHandler().addClient(socket.getInetAddress());
+				Message okMessage = new Message(MessageType.OK, "Authentification successful");
+				handler.sendMessage(okMessage, socket);
 			} else {
 				Message errorMsg = new Message(
 						MessageType.ERROR,
@@ -41,12 +43,12 @@ public class ServerMessageManager {
 			}
 			break;
 			
-		
-			
 		case DISCONNECT:
 			clientIps.remove(login);
 			serveur.getTimeoutHandler().removeClient(ip);
 			break;
+		default:
+			throw new HandlingException("Message type " + message.getType() + " not handled by " + handler.getClass());
 		}
 	}
 
@@ -65,6 +67,8 @@ public class ServerMessageManager {
 			handler.sendMessage(errorMsg, socket);
 		}
 		break;
+		default:
+			throw new HandlingException("Message type " + message.getType() + " not handled by " + handler.getClass());
 	}
 	}
 }

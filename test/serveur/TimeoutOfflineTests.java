@@ -9,16 +9,23 @@ import java.util.Date;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class TimeoutOfflineTests {
 	
 	private Serveur serveur;
 	private ServerTimeoutHandler timeoutHandler;
+	private static int port;
+	
+	@BeforeClass
+	public static void setupBeforeClass() {
+		 port = Serveur.DEFAULT_PORT;
+	}
 	
 	@Before
 	public void setup() throws IOException {
-		serveur = new Serveur();
+		serveur = new Serveur(port++);
 		timeoutHandler = new ServerTimeoutHandler(serveur);
 	}
 	
