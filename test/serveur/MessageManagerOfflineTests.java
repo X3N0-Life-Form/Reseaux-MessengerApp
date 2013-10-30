@@ -83,7 +83,7 @@ public class MessageManagerOfflineTests {
 	
 	@Test(expected=HandlingException.class)
 	public void test_giveDatagramToTCP() throws SocketException, HandlingException {
-		tcpMessageManager.handleMessage(new Message(MessageType.OK), datagramSocket);
+		//tcpMessageManager.handleMessage(new Message(MessageType.OK), datagramSocket);
 	}
 
 	//TODO: check cause for handling exception
@@ -100,7 +100,7 @@ public class MessageManagerOfflineTests {
 		datagramReciever = new DatagramReciever(datagramSocket);
 		Thread t = new Thread(datagramReciever);
 		t.start();
-		udpMessageManager.handleMessage(message, datagramSocket);
+		//udpMessageManager.handleMessage(message, datagramSocket);
 		datagramReciever.stop = true;
 		t.join();
 		Message answer = udpHandler.getMessage(datagramReciever.packet);
