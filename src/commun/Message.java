@@ -63,4 +63,10 @@ public class Message implements Serializable {
 		return objects.get(key);
 	}
 
+	@Override
+	public String toString() {
+		return "Message [type=" + type + ", message="
+				+ message + "]";
+	}
+
 }

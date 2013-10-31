@@ -12,13 +12,13 @@ public class UDPHandlerClient extends Thread {
 		this.client = client;
 		listen = new UDPHandlerClientListening(client);
 		send = new UDPHandlerClientSending(client);
-		
 	}
 
 	public void run() {
 		listen.start();
 		send.start();
 	}
+	
 	public Client getClient() {
 		return client;
 	}

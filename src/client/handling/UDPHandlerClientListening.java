@@ -34,7 +34,7 @@ public class UDPHandlerClientListening extends Thread implements Handler{
 	
 	public void run(){
 		while(client.isRunning()) {
-			byte[] buf = new byte[500]; //TODO: voir speech en dessous sur les valeurs en dur
+			byte[] buf = new byte[10000]; //TODO: voir speech en dessous sur les valeurs en dur
 			DatagramPacket p = new DatagramPacket(buf, buf.length);
 			try {
 				socket.receive(p);
@@ -64,8 +64,10 @@ public class UDPHandlerClientListening extends Thread implements Handler{
 		    ObjectOutputStream o = new ObjectOutputStream(b);
 		    o.writeObject(message.getObjects());
 			byte[] buf = b.toByteArray();
-			InetAddress ad = InetAddress.getLocalHost();			
-			DatagramPacket p = new DatagramPacket(buf, buf.length, ad, 8001); //TODO:enregistrer port serveur et référencer ça ici (d'une manière générale, penser à changer String et autres valeurs écrites "en dur" en constantes dans la mesure du possible)
+			InetAddress ad = InetAddress.getLocalHost();
+			//TODO:enregistrer port serveur et référencer ça ici (d'une manière générale, penser à changer String et autres valeurs écrites "en dur" en constantes dans la mesure du possible)
+			DatagramPacket p = new DatagramPacket(buf, buf.length, ad, client.getPort());
+			
 			socket.send(p);
 		
 			} catch (Exception e) {

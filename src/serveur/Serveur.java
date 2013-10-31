@@ -26,7 +26,7 @@ public class Serveur {
 	private LoginParser loginParser;
 	private Log log;
 	
-	public static final int DEFAULT_PORT = 8001;
+	public static final int DEFAULT_PORT_TCP = 8001;
 	public static final long DEFAULT_TIMEOUT_TIME = 2000;
 	public static final String DEFAULT_LOGIN_FILE_URL = "res/clientsSample.xml";
 	
@@ -43,7 +43,7 @@ public class Serveur {
 	}
 	
 	public Serveur() throws IOException {
-		this(DEFAULT_PORT);
+		this(DEFAULT_PORT_TCP);
 	}
 	
 	public static void main(String args[]) {
@@ -73,17 +73,22 @@ public class Serveur {
 	public void start() throws JDOMException, IOException {
 		log.log(EventType.START, "Starting timeout handler thread");
 		timeoutHandler.start();
+		
 		log.log(EventType.START, "Starting UDP handler thread");
 		udpHandler.start();
+		
 		log.log(EventType.PARSING, "Parsing client file");
 		loginParser.parse();
+		
 		running = true;
-		log.log(EventType.START, "Server is runnnig");
+		log.log(EventType.START, "Server is runnning");
 		while (running) {
 			try {
 				Socket socket = serverSocket.accept();
+				
 				log.log(EventType.RECEIVE_TCP, "Recieved TCP message" + socket.getInetAddress());
 				TCPHandler tcph = new TCPHandler(socket, this);
+				
 				log.log(EventType.START, "Starting TCP handler thread for " + socket.getInetAddress());
 				tcph.start();
 			} catch (IOException e) {
@@ -102,6 +107,11 @@ public class Serveur {
 
 	public int getPort() {
 		return port;
+	}
+	
+	public void setPort(int port)
+	{
+		this.port = port;
 	}
 
 	public boolean isRunning() {

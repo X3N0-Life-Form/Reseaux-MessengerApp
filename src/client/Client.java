@@ -6,6 +6,8 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 
+import serveur.Serveur;
+
 import client.handling.TCPHandlerClient;
 import client.handling.UDPHandlerClient;
 
@@ -17,20 +19,20 @@ public class Client {
 	private String pass;
 	private InetAddress ip;
 	private int port;
-	private static Socket clientSocket;
+	private Socket clientSocket;
 	private boolean running;
 	private Map<String, InetAddress> clientIps;
 	private ClientTimeoutHandler timeoutHandler;
 	private long timeout;
 
 	
-	public Client(String login, String pass, InetAddress ip, int port) throws IOException{
+	public Client(String login, String pass, int port) throws IOException{
 		super();
 		this.login = login;
-		this.ip = ip;
 		this.port = port;
-		this.pass=pass;
-		clientSocket = new Socket("localhost", 8001);
+		this.pass = pass;
+		clientSocket = new Socket("localhost", port);
+		this.ip=clientSocket.getInetAddress();
 		clientIps = new HashMap<String, InetAddress>();
 		timeoutHandler = new ClientTimeoutHandler(this);
 		running = false;
@@ -47,17 +49,15 @@ public class Client {
 	public void start() {
 		TCPHandlerClient tcp = new TCPHandlerClient(clientSocket, this);
 		UDPHandlerClient udp = new UDPHandlerClient(this);
-		tcp.start();
+		tcp.run();
 		udp.start();
 	}
 
 	public static void main(String args[]) {
 		String c_login=args[0];
 		String c_pass=args[1];
-		InetAddress c_ip=clientSocket.getInetAddress();
-		int c_port=clientSocket.getLocalPort();
 		try {
-			Client client = new Client(c_login, c_pass, c_ip, c_port);
+			Client client = new Client(c_login, c_pass, Serveur.DEFAULT_PORT_TCP);
 			client.printRecap();
 			client.start();
 		} catch (IOException e) {
@@ -117,4 +117,5 @@ public class Client {
 	{
 		this.clientIps=o;
 	}
+
 }

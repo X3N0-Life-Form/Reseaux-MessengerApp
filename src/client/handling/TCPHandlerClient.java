@@ -12,7 +12,7 @@ import client.ClientMessageManager;
 import commun.Message;
 import commun.MessageType;
 
-public class TCPHandlerClient extends Thread implements Handler {
+public class TCPHandlerClient implements Handler {
 	
 	private Socket socket;
 	private Client client;
@@ -50,7 +50,6 @@ public class TCPHandlerClient extends Thread implements Handler {
 		return message;
 	}
 
-	@Override
 	public void run() {
 		try {
 			handleConnect();

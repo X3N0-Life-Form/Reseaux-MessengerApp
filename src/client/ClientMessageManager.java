@@ -39,7 +39,7 @@ public class ClientMessageManager {
 	public void handleMessage(Message message, DatagramSocket socket) throws HandlingException, IOException, ClassNotFoundException {
 		switch (message.getType()) {
 		
-		case LIVE:
+		case REQUEST_LIST:
 			System.out.println("envoi d'un signe de vie");
 			handler.sendMessage(message, socket);
 			break;

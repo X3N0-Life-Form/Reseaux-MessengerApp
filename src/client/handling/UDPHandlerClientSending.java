@@ -26,7 +26,7 @@ public class UDPHandlerClientSending extends Thread implements Handler{
 	public UDPHandlerClientSending(Client client){
 		this.client = client;
 		try {
-			socket = new DatagramSocket(client.getPort());
+			socket = new DatagramSocket();
 			messageManager = new ClientMessageManager(client, this);
 		} catch (SocketException e) {
 			e.printStackTrace();
@@ -62,8 +62,8 @@ public class UDPHandlerClientSending extends Thread implements Handler{
 		    ObjectOutputStream o = new ObjectOutputStream(b);
 		    o.writeObject(message.getObjects());
 			byte[] buf = b.toByteArray();
-			InetAddress ad = InetAddress.getLocalHost();			
-			DatagramPacket p = new DatagramPacket(buf, buf.length, ad, 8001);
+			InetAddress ad = InetAddress.getLocalHost();//TODO: mettre addresse serveur			
+			DatagramPacket p = new DatagramPacket(buf, buf.length, ad, client.getPort());
 			socket.send(p);
 		
 		} catch (Exception e) {

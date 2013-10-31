@@ -18,7 +18,7 @@ public class ServeurTests_TCPMessageHandling {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		port = Serveur.DEFAULT_PORT;
+		port = Serveur.DEFAULT_PORT_TCP;
 		clientSocket = new Socket();
 	}
 
