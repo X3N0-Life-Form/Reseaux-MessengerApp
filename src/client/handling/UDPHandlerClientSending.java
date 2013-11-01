@@ -69,7 +69,7 @@ public class UDPHandlerClientSending extends Thread implements Handler{
 		    ObjectOutputStream o = new ObjectOutputStream(b);
 		    o.writeObject(message);
 			byte[] buf = b.toByteArray();
-			InetAddress ad = InetAddress.getLocalHost();//TODO: mettre addresse serveur			
+			InetAddress ad = InetAddress.getByName(client.getServerIp());	
 			DatagramPacket p = new DatagramPacket(buf, buf.length, ad, client.getServerPort());
 			//DatagramPacket p = new DatagramPacket(buf, buf.length, ad, 8001);
 			

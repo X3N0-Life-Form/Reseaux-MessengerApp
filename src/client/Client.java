@@ -20,7 +20,7 @@ public class Client {
 	private static final long DEFAULT_TIMEOUT_TIME = 0;
 	private String login;
 	private String pass;
-	private InetAddress ip;
+	private String serverIp;
 	private int serverPort;
 	private Socket clientSocket;
 	private boolean running;
@@ -37,7 +37,7 @@ public class Client {
 		this.serverPort = port;
 		this.pass = pass;
 		clientSocket = new Socket(serverIp, port);
-		this.ip=clientSocket.getInetAddress();
+		this.serverIp = serverIp;
 		clientIps = new HashMap<String, InetAddress>();
 		timeoutHandler = new ClientTimeoutHandler(this);
 		running = false;
@@ -92,12 +92,12 @@ public class Client {
 		this.pass = pass;
 	}
 
-	public InetAddress getIp() {
-		return ip;
+	public String getServerIp() {
+		return serverIp;
 	}
 
-	public void setIp(InetAddress ip) {
-		this.ip = ip;
+	public void setServerIp(String ip) {
+		this.serverIp = ip;
 	}
 
 	public int getServerPort() {

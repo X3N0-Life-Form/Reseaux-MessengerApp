@@ -8,6 +8,7 @@ import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
 
@@ -73,7 +74,7 @@ public class UDPHandlerClientListening extends Thread implements Handler{
 		    ObjectOutputStream o = new ObjectOutputStream(b);
 		    o.writeObject(message.getObjects());
 			byte[] buf = b.toByteArray();
-			InetAddress ad = InetAddress.getLocalHost();
+			InetAddress ad = InetAddress.getByName(client.getServerIp());
 			//TODO:enregistrer port serveur et référencer ça ici (d'une manière générale, penser à changer String et autres valeurs écrites "en dur" en constantes dans la mesure du possible)
 			//DatagramPacket p = new DatagramPacket(buf, buf.length, ad, client.getPort());
 			DatagramPacket p = new DatagramPacket(buf, buf.length, ad, 8001);
