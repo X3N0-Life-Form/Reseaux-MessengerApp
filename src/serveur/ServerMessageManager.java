@@ -36,6 +36,7 @@ public class ServerMessageManager {
 			if (serveur.authenticateClient(login, pass)) {
 				clientIps.put(login, ip);
 				serveur.getTimeoutHandler().addClient(socket.getInetAddress());
+				System.out.println(socket.getInetAddress());
 				Message okMsg = new Message(
 						MessageType.OK,
 						"Able to authenticate client.");
@@ -64,6 +65,8 @@ public class ServerMessageManager {
 		if (clientIps.containsKey(login)) {
 			Message clientListMsg = new Message(MessageType.CLIENT_LIST);
 			clientListMsg.addObject("clientIps", clientIps);
+			System.out.println("SENDER PORT :::: " + message.getInfo("port"));
+			clientListMsg.addInfo("senderPort", message.getInfo("port"));
 			handler.sendMessage(clientListMsg, socket, paquet);
 		} else {
 			Message errorMsg = new Message(

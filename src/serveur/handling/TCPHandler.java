@@ -9,10 +9,10 @@ import java.net.Socket;
 
 import serveur.ServerMessageManager;
 import serveur.Serveur;
-import serveur.logging.EventType;
-import serveur.logging.Log;
 
 import commun.Message;
+import commun.logging.EventType;
+import commun.logging.Log;
 
 public class TCPHandler extends Thread implements Handler {
 	

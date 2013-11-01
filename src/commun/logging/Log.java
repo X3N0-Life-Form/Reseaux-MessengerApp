@@ -1,4 +1,4 @@
-package serveur.logging;
+package commun.logging;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -13,7 +13,7 @@ public class Log {
 		events = new LinkedList<Event>();
 	}
 	
-	public void log(EventType type, String comment) {
+	public synchronized void log(EventType type, String comment) {
 		Event e = new Event(type, comment);
 		events.add(e);
 		System.out.println(e.getTime() + "  " + comment);

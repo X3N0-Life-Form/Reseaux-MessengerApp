@@ -9,6 +9,8 @@ import java.util.Map;
 import client.handling.Handler;
 import client.handling.HandlingException;
 import commun.Message;
+import commun.logging.EventType;
+import commun.logging.Log;
 
 public class ClientMessageManager {
 	
@@ -16,9 +18,11 @@ public class ClientMessageManager {
 	private Handler handler;
 	@SuppressWarnings("unused")
 	private Map<String, InetAddress> clientIps;
+	private Log log;
 	
 	public ClientMessageManager(Client client, Handler handler){
 		this.client=client;
+		log = client.getLog();
 		this.handler = handler;
 		this.clientIps = client.getClientIps();
 	}
@@ -27,11 +31,11 @@ public class ClientMessageManager {
 		switch (message.getType()) {
 		
 		case OK:
-			System.out.println(message.getMessage());
+			log.log(EventType.RECEIVE_TCP, "Received OK message: " + message);
 			break;
 		
 		case ERROR:
-			System.out.println(message.getMessage());
+			log.log(EventType.RECEIVE_TCP, "Warning: Received Error message: " + message);
 			break;
 		}
 	}
@@ -51,6 +55,14 @@ public class ClientMessageManager {
 			client.setClientIps(temp);
 			clientIps=temp;
 			break;
+			
+		case ERROR:
+			System.out.println("ERROR:" + message);
+			break;
+			
+			default:
+				log.log(EventType.INFO, "Warning: could not handle message: " + message);
+				break;
 		}
 	}
 }

@@ -11,25 +11,30 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
 
+
 import client.ClientMessageManager;
 import client.Client;
 
 import commun.Message;
+import commun.logging.EventType;
+import commun.logging.Log;
 
 public class UDPHandlerClientListening extends Thread implements Handler{
 	
 	private Client client;
 	private DatagramSocket socket;
 	private ClientMessageManager messageManager;
+	private Log log;
 	
-	public UDPHandlerClientListening(Client client){
+	public UDPHandlerClientListening(Client client/*, DatagramSocket socket*/) throws SocketException{
 		this.client = client;
-		try {
-			socket = new DatagramSocket(client.getPort());
-			messageManager = new ClientMessageManager(client, this);
-		} catch (SocketException e) {
-			e.printStackTrace();
-		}
+		this.log = client.getLog();
+		//this.socket = socket;
+		this.socket = new DatagramSocket();
+		//this.socket = new DatagramSocket(60001);
+		client.setUDPMainListeningPort(socket.getLocalPort());
+		log.log(EventType.INFO, "UDP port set to " + client.getUDPMainListeningPort());
+		messageManager = new ClientMessageManager(client, this);
 	}
 	
 	public void run(){
@@ -38,6 +43,8 @@ public class UDPHandlerClientListening extends Thread implements Handler{
 			DatagramPacket p = new DatagramPacket(buf, buf.length);
 			try {
 				socket.receive(p);
+				//log.log(EventType.RECEIVE_UDP, "Received an UDP packet.");
+				System.out.println("Received an UDP packet.");
 				Message message = getMessage(p);
 				messageManager.handleMessage(message, socket);
 			} catch (IOException e) {
@@ -51,9 +58,11 @@ public class UDPHandlerClientListening extends Thread implements Handler{
 	}
 
 	public Message getMessage(DatagramPacket p) throws IOException, ClassNotFoundException {
+		System.out.println(p);
 		ByteArrayInputStream bis = new ByteArrayInputStream(p.getData());
 		ObjectInputStream ois = new ObjectInputStream(bis);
 		Message message = (Message) ois.readObject();
+		System.out.println(message);
 		return message;
 	}
 
@@ -66,7 +75,8 @@ public class UDPHandlerClientListening extends Thread implements Handler{
 			byte[] buf = b.toByteArray();
 			InetAddress ad = InetAddress.getLocalHost();
 			//TODO:enregistrer port serveur et référencer ça ici (d'une manière générale, penser à changer String et autres valeurs écrites "en dur" en constantes dans la mesure du possible)
-			DatagramPacket p = new DatagramPacket(buf, buf.length, ad, client.getPort());
+			//DatagramPacket p = new DatagramPacket(buf, buf.length, ad, client.getPort());
+			DatagramPacket p = new DatagramPacket(buf, buf.length, ad, 8001);
 			
 			socket.send(p);
 		

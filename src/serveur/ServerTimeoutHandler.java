@@ -5,8 +5,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import serveur.logging.EventType;
-import serveur.logging.Log;
+import commun.logging.EventType;
+import commun.logging.Log;
+
 
 public class ServerTimeoutHandler extends Thread {
 	
@@ -52,8 +53,7 @@ public class ServerTimeoutHandler extends Thread {
 			for (InetAddress ip : timeoutTable.keySet()) {
 				Date now = new Date();
 				if ((now.getTime() - timeoutTable.get(ip).getTime()) > serveur.getTimeoutTime()) {
-					log.log(EventType.TIMEOUT, "Client timed out: "
-							+ timeoutTable.get(ip) + "(" + ip + ")");
+					//log.log(EventType.TIMEOUT, "Client timed out: "	+ timeoutTable.get(ip) + "(" + ip + ")");
 					removeClient(ip);
 				}
 			}

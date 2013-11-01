@@ -9,10 +9,11 @@ import java.util.Map;
 
 import org.jdom2.JDOMException;
 
+import commun.logging.EventType;
+import commun.logging.Log;
+
 import serveur.handling.TCPHandler;
 import serveur.handling.UDPHandler;
-import serveur.logging.EventType;
-import serveur.logging.Log;
 
 
 public class Serveur {
@@ -27,7 +28,7 @@ public class Serveur {
 	private Log log;
 	
 	public static final int DEFAULT_PORT_TCP = 8001;
-	public static final long DEFAULT_TIMEOUT_TIME = 2000;
+	public static final long DEFAULT_TIMEOUT_TIME = 5000;
 	public static final String DEFAULT_LOGIN_FILE_URL = "res/clientsSample.xml";
 	
 	public Serveur(int port) throws IOException {
@@ -71,6 +72,9 @@ public class Serveur {
 	}
 
 	public void start() throws JDOMException, IOException {
+		running = true;
+		log.log(EventType.START, "Server is runnning");
+		
 		log.log(EventType.START, "Starting timeout handler thread");
 		timeoutHandler.start();
 		
@@ -80,8 +84,6 @@ public class Serveur {
 		log.log(EventType.PARSING, "Parsing client file");
 		loginParser.parse();
 		
-		running = true;
-		log.log(EventType.START, "Server is runnning");
 		while (running) {
 			try {
 				Socket socket = serverSocket.accept();

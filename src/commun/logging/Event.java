@@ -1,4 +1,4 @@
-package serveur.logging;
+package commun.logging;
 
 import java.util.Date;
 

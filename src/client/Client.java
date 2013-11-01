@@ -6,6 +6,9 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 
+import commun.logging.EventType;
+import commun.logging.Log;
+
 import serveur.Serveur;
 
 import client.handling.TCPHandlerClient;
@@ -18,18 +21,20 @@ public class Client {
 	private String login;
 	private String pass;
 	private InetAddress ip;
-	private int port;
+	private int serverPort;
 	private Socket clientSocket;
 	private boolean running;
 	private Map<String, InetAddress> clientIps;
 	private ClientTimeoutHandler timeoutHandler;
 	private long timeout;
+	private int mainUDPListeningPort;
+	private Log log;
 
 	
 	public Client(String login, String pass, int port) throws IOException{
 		super();
 		this.login = login;
-		this.port = port;
+		this.serverPort = port;
 		this.pass = pass;
 		clientSocket = new Socket("localhost", port);
 		this.ip=clientSocket.getInetAddress();
@@ -37,7 +42,7 @@ public class Client {
 		timeoutHandler = new ClientTimeoutHandler(this);
 		running = false;
 		timeout = DEFAULT_TIMEOUT_TIME;
-
+		log = new Log();
 	}
 	
 	public void printRecap() {
@@ -47,9 +52,14 @@ public class Client {
 	}
 	
 	public void start() {
+		running = true;
+		
 		TCPHandlerClient tcp = new TCPHandlerClient(clientSocket, this);
 		UDPHandlerClient udp = new UDPHandlerClient(this);
+		
 		tcp.run();
+		
+		log.log(EventType.START, "Starting UDP handler");
 		udp.start();
 	}
 
@@ -89,12 +99,12 @@ public class Client {
 		this.ip = ip;
 	}
 
-	public int getPort() {
-		return port;
+	public int getServerPort() {
+		return serverPort;
 	}
 
-	public void setPort(int port) {
-		this.port = port;
+	public void setServerPort(int port) {
+		this.serverPort = port;
 	}
 	
 	public boolean isRunning() {
@@ -116,6 +126,22 @@ public class Client {
 	public void setClientIps(Map<String, InetAddress> o)
 	{
 		this.clientIps=o;
+	}
+	
+	public int getUDPMainListeningPort() {
+		return mainUDPListeningPort;
+	}
+
+	public void setUDPMainListeningPort(int listeningPort) {
+		this.mainUDPListeningPort = listeningPort;
+	}
+
+	public Log getLog() {
+		return log;
+	}
+
+	public void setLog(Log log) {
+		this.log = log;
 	}
 
 }

@@ -11,13 +11,12 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.Date;
-
 import serveur.ServerMessageManager;
 import serveur.Serveur;
-import serveur.logging.EventType;
-import serveur.logging.Log;
 
 import commun.Message;
+import commun.logging.EventType;
+import commun.logging.Log;
 
 public class UDPHandler extends Thread implements Handler {
 	
@@ -28,28 +27,30 @@ public class UDPHandler extends Thread implements Handler {
 	
 	public UDPHandler(Serveur serveur) {
 		this.serveur = serveur;
+		log = serveur.getLog();
 		try {
 			socket = new DatagramSocket(serveur.getPort());
 			messageManager = new ServerMessageManager(serveur, this);
 		} catch (SocketException e) {
 			e.printStackTrace();
 		}
-		log = serveur.getLog();
 	}
 
 	@Override
 	public void run() {
 		while(serveur.isRunning()) {
-			byte[] buf = new byte[500];
-			DatagramPacket p = new DatagramPacket(buf, buf.length);
+			byte[] buf = new byte[10000];
+			DatagramPacket packet = new DatagramPacket(buf, buf.length);
 			try {
-				socket.receive(p);
-				InetAddress address = p.getAddress();
+				socket.receive(packet);
+				InetAddress address = packet.getAddress();
+				//log.log(EventType.RECEIVE_UDP, "Received an UDP packet from " + packet.getAddress() + ":" + packet.getPort());
 				if (serveur.getClientIps().containsValue(address)) {
 					serveur.getTimeoutHandler().updateClient(address, new Date());
+					//log.log(EventType.RECEIVE_UDP, "Client known, updating timeout table");
 				}
-				Message message = getMessage(p);
-				messageManager.handleMessage(message, socket,p);
+				Message message = getMessage(packet);
+				messageManager.handleMessage(message, socket,packet);
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (ClassNotFoundException e) {
@@ -64,19 +65,23 @@ public class UDPHandler extends Thread implements Handler {
 		ByteArrayInputStream bis = new ByteArrayInputStream(p.getData());
 		ObjectInputStream ois = new ObjectInputStream(bis);
 		Message message = (Message) ois.readObject();
-		log.log(EventType.RECEIVE_UDP, "Received message: " + message);
+		//log.log(EventType.RECEIVE_UDP, "Received message: " + message);
+		System.out.println("Received message from " + p.getAddress() + ":" + p.getPort() + "; message=" + message);
 		return message;
 	}
 
 	@Override
-	public void sendMessage(Message message, DatagramSocket socket, DatagramPacket c) throws IOException, ClassNotFoundException {
+	public void sendMessage(Message message, DatagramSocket socket, DatagramPacket packet) throws IOException, ClassNotFoundException {
 		try{
 			ByteArrayOutputStream b = new ByteArrayOutputStream();
 		    ObjectOutputStream o = new ObjectOutputStream(b);
-		    o.writeObject(message.getObjects());
+		    o.writeObject(message);
 			byte[] buf = b.toByteArray();
-			DatagramPacket p = new DatagramPacket(buf, buf.length, c.getAddress(), c.getPort());
-			log.log(EventType.SEND_UDP, "Sending message: " + message);
+			int senderPort = Integer.parseInt(message.getInfo("senderPort"));
+			DatagramPacket p = new DatagramPacket(buf, buf.length, packet.getAddress(), senderPort);
+			//DatagramPacket p = new DatagramPacket(buf, buf.length, packet.getAddress(), 60001);
+			//log.log(EventType.SEND_UDP, "Sending message to: " + p.getAddress() + ":" + p.getPort() + "; message="+ message);
+			System.out.println("Sending message to: " + p.getAddress() + ":" + p.getPort() + "; message="+ message);
 			socket.send(p);
 		
 			} catch (Exception e) {
