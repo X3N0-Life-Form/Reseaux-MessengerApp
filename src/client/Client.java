@@ -31,12 +31,12 @@ public class Client {
 	private Log log;
 
 	
-	public Client(String login, String pass, int port) throws IOException{
+	public Client(String login, String pass, String serverIp, int port) throws IOException{
 		super();
 		this.login = login;
 		this.serverPort = port;
 		this.pass = pass;
-		clientSocket = new Socket("localhost", port);
+		clientSocket = new Socket(serverIp, port);
 		this.ip=clientSocket.getInetAddress();
 		clientIps = new HashMap<String, InetAddress>();
 		timeoutHandler = new ClientTimeoutHandler(this);
@@ -66,8 +66,9 @@ public class Client {
 	public static void main(String args[]) {
 		String c_login=args[0];
 		String c_pass=args[1];
+		String ip = args[2];
 		try {
-			Client client = new Client(c_login, c_pass, Serveur.DEFAULT_PORT_TCP);
+			Client client = new Client(c_login, c_pass, ip, Serveur.DEFAULT_PORT_TCP);
 			client.printRecap();
 			client.start();
 		} catch (IOException e) {
