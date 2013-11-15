@@ -25,10 +25,13 @@ public class Client {
 	private Socket clientSocket;
 	private boolean running;
 	private Map<String, InetAddress> clientIps;
+	private Map<String, String> clientPorts;
 	private ClientTimeoutHandler timeoutHandler;
 	private long timeout;
 	private int mainUDPListeningPort;
 	private Log log;
+	private InetAddress ipotherclient;
+	private int portotherclient;
 
 	
 	public Client(String login, String pass, String serverIp, int port) throws IOException{
@@ -39,10 +42,18 @@ public class Client {
 		clientSocket = new Socket(serverIp, port);
 		this.serverIp = serverIp;
 		clientIps = new HashMap<String, InetAddress>();
+		clientPorts = new HashMap<String, String>();
 		timeoutHandler = new ClientTimeoutHandler(this);
 		running = false;
 		timeout = DEFAULT_TIMEOUT_TIME;
 		log = new Log();
+	}
+
+	public Client(String login, String serverIp, int port)
+	{
+		super();
+		this.login=login;
+		//this
 	}
 	
 	public void printRecap() {
@@ -58,9 +69,9 @@ public class Client {
 		UDPHandlerClient udp = new UDPHandlerClient(this);
 		
 		tcp.run();
-		
 		log.log(EventType.START, "Starting UDP handler");
 		udp.start();
+		
 	}
 
 	public static void main(String args[]) {
@@ -129,6 +140,14 @@ public class Client {
 		this.clientIps=o;
 	}
 	
+	public Map<String, String> getClientPorts() {
+		return clientPorts;
+	}
+
+	public void setClientPorts(Map<String, String> clientPorts) {
+		this.clientPorts = clientPorts;
+	}
+	
 	public int getUDPMainListeningPort() {
 		return mainUDPListeningPort;
 	}
@@ -143,6 +162,31 @@ public class Client {
 
 	public void setLog(Log log) {
 		this.log = log;
+	}
+
+	public InetAddress getIpotherclient() {
+		return ipotherclient;
+	}
+
+	public void setIpotherclient(InetAddress ipotherclient) {
+		this.ipotherclient = ipotherclient;
+	}
+
+	public int getPortotherclient() {
+		return portotherclient;
+	}
+
+	public void setPortotherclient(int portotherclient) {
+		this.portotherclient = portotherclient;
+	}
+	
+	private String loginotherclient;
+	public String getLoginotherclient() {
+		return loginotherclient;
+	}
+
+	public void setLoginotherclient(String loginotherclient) {
+		this.loginotherclient = loginotherclient;
 	}
 
 }

@@ -18,6 +18,8 @@ public class ClientMessageManager {
 	private Handler handler;
 	@SuppressWarnings("unused")
 	private Map<String, InetAddress> clientIps;
+	@SuppressWarnings("unused")
+	private Map<String, String> clientPorts;
 	private Log log;
 	
 	public ClientMessageManager(Client client, Handler handler){
@@ -25,6 +27,7 @@ public class ClientMessageManager {
 		log = client.getLog();
 		this.handler = handler;
 		this.clientIps = client.getClientIps();
+		this.clientPorts = client.getClientPorts();
 	}
 
 	public void handleMessage(Message message, Socket socket) throws IOException, HandlingException {
@@ -49,11 +52,26 @@ public class ClientMessageManager {
 			break;
 			
 		case CLIENT_LIST:
-			System.out.println("Reception de la liste des amis connecté");
+			System.out.println("Reception de la liste des amis connecté avec leur adresses Ip");
 			@SuppressWarnings("unchecked")
-			Map<String, InetAddress> temp = new HashMap<String, InetAddress>((Map<String, InetAddress>) message.getObject("clientIps"));
-			client.setClientIps(temp);
-			clientIps=temp;
+			Map<String, InetAddress> temp1 = new HashMap<String, InetAddress>((Map<String, InetAddress>) message.getObject("clientIps"));
+			client.setClientIps(temp1);
+			System.out.println("liste de amis connectés avec leur Ip: "+temp1);
+			clientIps=temp1;
+			break;
+			
+		case CLIENT_PORT_LIST:
+			System.out.println("Reception de la liste des amis connecté avec leur ports d'écoute");
+			@SuppressWarnings("unchecked")
+			Map<String, String> temp2 = new HashMap<String, String>((Map<String, String>) message.getObject("clientPorts"));
+			client.setClientPorts(temp2);
+			clientPorts=temp2;
+			System.out.println("liste de amis connectés avec leur ports: "+temp2);
+			break;
+			
+		case MSG_DISCUSS_CLIENT:
+			System.out.println("envoi du message au client");
+			handler.sendMessage(message, socket);
 			break;
 			
 		case ERROR:

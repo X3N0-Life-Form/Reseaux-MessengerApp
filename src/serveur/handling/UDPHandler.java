@@ -65,7 +65,6 @@ public class UDPHandler extends Thread implements Handler {
 		ByteArrayInputStream bis = new ByteArrayInputStream(p.getData());
 		ObjectInputStream ois = new ObjectInputStream(bis);
 		Message message = (Message) ois.readObject();
-		//log.log(EventType.RECEIVE_UDP, "Received message: " + message);
 		System.out.println("Received message from " + p.getAddress() + ":" + p.getPort() + "; message=" + message);
 		return message;
 	}
@@ -79,9 +78,7 @@ public class UDPHandler extends Thread implements Handler {
 			byte[] buf = b.toByteArray();
 			int senderPort = Integer.parseInt(message.getInfo("senderPort"));
 			DatagramPacket p = new DatagramPacket(buf, buf.length, packet.getAddress(), senderPort);
-			//DatagramPacket p = new DatagramPacket(buf, buf.length, packet.getAddress(), 60001);
-			//log.log(EventType.SEND_UDP, "Sending message to: " + p.getAddress() + ":" + p.getPort() + "; message="+ message);
-			System.out.println("Sending message to: " + p.getAddress() + ":" + p.getPort() + "; message="+ message);
+			System.out.println("Sending  udp message to: " + p.getAddress() + ":" + p.getPort() + "; message="+ message);
 			socket.send(p);
 		
 			} catch (Exception e) {

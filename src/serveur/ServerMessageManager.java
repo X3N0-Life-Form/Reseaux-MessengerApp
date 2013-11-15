@@ -18,11 +18,13 @@ public class ServerMessageManager {
 	private Serveur serveur;
 	private Handler handler;
 	private Map<String, InetAddress> clientIps;
+	private Map<String, String> clientPorts;
 	
 	public ServerMessageManager(Serveur serveur, Handler handler) {
 		this.serveur = serveur;
 		this.handler = handler;
 		clientIps = serveur.getClientIps();
+		clientPorts = serveur.getClientPorts();
 	}
 	
 	public void handleMessage(Message message, Socket socket) throws IOException, HandlingException {
@@ -63,11 +65,24 @@ public class ServerMessageManager {
 		switch (message.getType()) {
 		case REQUEST_LIST:
 		if (clientIps.containsKey(login)) {
+			
 			Message clientListMsg = new Message(MessageType.CLIENT_LIST);
 			clientListMsg.addObject("clientIps", clientIps);
 			System.out.println("SENDER PORT :::: " + message.getInfo("port"));
 			clientListMsg.addInfo("senderPort", message.getInfo("port"));
+			
+			clientPorts.put(login, message.getInfo("port"));
+			System.out.println("liste des ports avec leur login : "+clientPorts);
+			
+			
+			Message clientPortListMsg = new Message(MessageType.CLIENT_PORT_LIST);
+			clientPortListMsg.addObject("clientPorts", clientPorts);
+			System.out.println("SENDER PORT :::: " + message.getInfo("port"));
+			clientPortListMsg.addInfo("senderPort", message.getInfo("port"));
+			
 			handler.sendMessage(clientListMsg, socket, paquet);
+			handler.sendMessage(clientPortListMsg, socket, paquet);
+			
 		} else {
 			Message errorMsg = new Message(
 					MessageType.ERROR,

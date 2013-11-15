@@ -19,7 +19,10 @@ import serveur.handling.UDPHandler;
 public class Serveur {
 	private ServerSocket serverSocket;
 	private Map<String, InetAddress> clientIps;
+	private Map<String, String> clientPorts;
+
 	private int port;
+	private int portClient;
 	private ServerTimeoutHandler timeoutHandler;
 	private boolean running;
 	private long timeout;
@@ -35,6 +38,7 @@ public class Serveur {
 		this.port = port;
 		serverSocket = new ServerSocket(port);
 		clientIps = new HashMap<String, InetAddress>();
+		clientPorts = new HashMap<String, String>();
 		timeoutHandler = new ServerTimeoutHandler(this);
 		running = false;
 		timeout = DEFAULT_TIMEOUT_TIME;
@@ -105,6 +109,10 @@ public class Serveur {
 
 	public Map<String, InetAddress> getClientIps() {
 		return clientIps;
+	}
+	
+	public Map<String, String> getClientPorts() {
+		return clientPorts;
 	}
 
 	public int getPort() {

@@ -8,7 +8,6 @@ import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
 
@@ -27,12 +26,10 @@ public class UDPHandlerClientListening extends Thread implements Handler{
 	private ClientMessageManager messageManager;
 	private Log log;
 	
-	public UDPHandlerClientListening(Client client/*, DatagramSocket socket*/) throws SocketException{
+	public UDPHandlerClientListening(Client client) throws SocketException{
 		this.client = client;
 		this.log = client.getLog();
-		//this.socket = socket;
 		this.socket = new DatagramSocket();
-		//this.socket = new DatagramSocket(60001);
 		client.setUDPMainListeningPort(socket.getLocalPort());
 		log.log(EventType.INFO, "UDP port set to " + client.getUDPMainListeningPort());
 		messageManager = new ClientMessageManager(client, this);
@@ -44,26 +41,30 @@ public class UDPHandlerClientListening extends Thread implements Handler{
 			DatagramPacket p = new DatagramPacket(buf, buf.length);
 			try {
 				socket.receive(p);
-				//log.log(EventType.RECEIVE_UDP, "Received an UDP packet.");
-				System.out.println("Received an UDP packet.");
 				Message message = getMessage(p);
-				messageManager.handleMessage(message, socket);
+				switch (message.getType()) {
+				case MSG_DISCUSS_CLIENT:
+					System.out.println("******** msg : " + message.getInfo("msg") + "************");
+					break;
+				default:
+					messageManager.handleMessage(message, socket);
+					break;
+			}
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			} catch (HandlingException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 	}
 
 	public Message getMessage(DatagramPacket p) throws IOException, ClassNotFoundException {
-		System.out.println(p);
 		ByteArrayInputStream bis = new ByteArrayInputStream(p.getData());
 		ObjectInputStream ois = new ObjectInputStream(bis);
 		Message message = (Message) ois.readObject();
-		System.out.println(message);
 		return message;
 	}
 

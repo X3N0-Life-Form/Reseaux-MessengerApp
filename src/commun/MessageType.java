@@ -8,5 +8,7 @@ public enum MessageType {
 	OK,
 	ERROR,
 	CLIENT_LIST,
-	LIVE
+	CLIENT_PORT_LIST,
+	LIVE,
+	MSG_DISCUSS_CLIENT
 }
