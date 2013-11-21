@@ -3,6 +3,8 @@ package vue;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.HashMap;
@@ -16,7 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
-public class ContactListWindow extends JPanel implements ActionListener {
+public class ContactListWindow extends JPanel implements ActionListener, MouseListener {
 	
 	private JButton disconnectButton = new JButton("disconnect");
 	private JScrollPane scrollPane = new JScrollPane();
@@ -26,8 +28,9 @@ public class ContactListWindow extends JPanel implements ActionListener {
 	private JFrame cadre = new javax.swing.JFrame("Liste des amis connectés : ");
 	
 	public ContactListWindow(){
-		logins.add("test");
-		logins.add("testBis");
+		for (int i = 0; i != 40; i++) {
+			logins.add("test" + i);
+		}
 	}
 	
 	public void refresh(Map<String, InetAddress> listeClient) throws IOException {
@@ -41,6 +44,7 @@ public class ContactListWindow extends JPanel implements ActionListener {
 	{
 		disconnectButton.addActionListener(this);
 		loginList.setListData(logins);
+		loginList.addMouseListener(this);
 		
 		JPanel panneauListeContact = new JPanel();
 		panneauListeContact.setLayout(new BorderLayout());
@@ -78,6 +82,35 @@ public class ContactListWindow extends JPanel implements ActionListener {
 				e1.printStackTrace();
 			}
 		}
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		System.out.println(loginList.getSelectedValue());
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
