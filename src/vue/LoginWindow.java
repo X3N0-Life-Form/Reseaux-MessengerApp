@@ -16,42 +16,41 @@ import javax.swing.border.EmptyBorder;
 
 public class LoginWindow extends JPanel implements ActionListener {
 	
-	public JLabel loglabel = new JLabel("Log   : "); 
-	public JLabel passlabel = new JLabel("Pass : "); 
-	public JLabel ipserverlabel = new JLabel("Ip Server : "); 
-	public JButton connectbutton = new JButton("CONNECT");
-	public JTextField logfield = new JTextField(15);
-	public JTextField passfield = new JTextField(15);
-	public JTextField ipserverfield = new JTextField(15);
+	public JLabel logLabel = new JLabel("Log   : "); 
+	public JLabel passLabel = new JLabel("Pass : "); 
+	public JLabel ipServerLabel = new JLabel("Ip Server : "); 
+	public JButton connectButton = new JButton("CONNECT");
+	public JTextField logField = new JTextField(15);
+	public JTextField passField = new JTextField(15);
+	public JTextField ipServerField = new JTextField(15);
+	public JFrame cadre = new javax.swing.JFrame("Chat-Expert");
 	
 	public LoginWindow(){}
 	
 	public void lancerAffichage() throws IOException
 	{
-		JFrame cadre = new javax.swing.JFrame("Chat-Expert");
+		connectButton.addActionListener(this);
 		
-		connectbutton.addActionListener(this);
-		
-		logfield.setSize(30, 5);
-		passfield.setSize(30, 5);
+		logField.setSize(30, 5);
+		passField.setSize(30, 5);
 		
 		JPanel panneauLog = new JPanel();
 		panneauLog.setLayout(new BorderLayout());
-		panneauLog.add(loglabel, BorderLayout.WEST);
-		panneauLog.add(logfield, BorderLayout.CENTER);
+		panneauLog.add(logLabel, BorderLayout.WEST);
+		panneauLog.add(logField, BorderLayout.CENTER);
 		panneauLog.setBorder(new EmptyBorder(0,0,10,0));
 		
 		
 		JPanel panneauPass = new JPanel();
 		panneauPass.setLayout(new BorderLayout());
-		panneauPass.add(passlabel, BorderLayout.WEST);
-		panneauPass.add(passfield, BorderLayout.CENTER);
+		panneauPass.add(passLabel, BorderLayout.WEST);
+		panneauPass.add(passField, BorderLayout.CENTER);
 		panneauPass.setBorder(new EmptyBorder(0,0,10,0));
 		
 		JPanel panneauIpServer = new JPanel();
 		panneauIpServer.setLayout(new BorderLayout());
-		panneauIpServer.add(ipserverlabel, BorderLayout.WEST);
-		panneauIpServer.add(ipserverfield, BorderLayout.CENTER);
+		panneauIpServer.add(ipServerLabel, BorderLayout.WEST);
+		panneauIpServer.add(ipServerField, BorderLayout.CENTER);
 		panneauIpServer.setBorder(new EmptyBorder(0,0,10,0));
 		
 		JPanel panneauLogPassIpServer = new JPanel();
@@ -64,11 +63,11 @@ public class LoginWindow extends JPanel implements ActionListener {
 		JPanel panneauConnect = new JPanel();
 		panneauConnect.setLayout(new BorderLayout());
 		panneauConnect.add(panneauLogPassIpServer, BorderLayout.NORTH);
-		panneauConnect.add(connectbutton, BorderLayout.CENTER);
+		panneauConnect.add(connectButton, BorderLayout.CENTER);
 		panneauConnect.setBorder(new EmptyBorder(5,5,5,5));
 		
 		cadre.setContentPane(panneauConnect);
-		cadre.setLocation(500, 500);
+		cadre.setLocation(600, 250);
 		cadre.pack();
 		cadre.setResizable(false);
 		cadre.setVisible(true);
@@ -77,9 +76,15 @@ public class LoginWindow extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == connectbutton)
+		if (e.getSource() == connectButton)
 		{
-			System.out.println("je me connecte !!!!!");
+			cadre.setVisible(false);
+			ContactListWindow clw = new ContactListWindow();
+			try {
+				clw.lancerAffichage();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
 }
