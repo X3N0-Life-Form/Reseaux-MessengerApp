@@ -9,7 +9,7 @@ import serveur.Serveur;
 
 import commun.Message;
 
-public interface Handler {
+public interface HandlerServeur {
 
 	public void sendMessage(Message message, Socket socket) throws IOException, HandlingException;
 	public void sendMessage(Message message, DatagramSocket socket, DatagramPacket paquet) throws HandlingException, IOException, ClassNotFoundException;

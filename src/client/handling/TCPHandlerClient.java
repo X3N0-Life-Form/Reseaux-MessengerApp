@@ -13,7 +13,7 @@ import client.ClientMessageManager;
 import commun.Message;
 import commun.MessageType;
 
-public class TCPHandlerClient implements Handler {
+public class TCPHandlerClient implements HandlerClient {
 	
 	private Socket socket;
 	private Client client;

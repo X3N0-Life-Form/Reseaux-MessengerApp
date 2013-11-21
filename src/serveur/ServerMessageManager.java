@@ -7,7 +7,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Map;
 
-import serveur.handling.Handler;
+import serveur.handling.HandlerServeur;
 import serveur.handling.HandlingException;
 
 import commun.Message;
@@ -16,11 +16,11 @@ import commun.MessageType;
 public class ServerMessageManager {
 	
 	private Serveur serveur;
-	private Handler handler;
+	private HandlerServeur handler;
 	private Map<String, InetAddress> clientIps;
 	private Map<String, String> clientPorts;
 	
-	public ServerMessageManager(Serveur serveur, Handler handler) {
+	public ServerMessageManager(Serveur serveur, HandlerServeur handler) {
 		this.serveur = serveur;
 		this.handler = handler;
 		clientIps = serveur.getClientIps();

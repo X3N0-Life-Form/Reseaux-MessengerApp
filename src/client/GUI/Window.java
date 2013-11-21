@@ -13,7 +13,8 @@ public class Window {
 		SimpleGrid panel = new SimpleGrid();
 		
 		//size
-		panel.setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
+		//panel.setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
+		panel.setPreferredSize(new Dimension(300, 200));
 	
 		frame.setContentPane(panel);
 		//placement

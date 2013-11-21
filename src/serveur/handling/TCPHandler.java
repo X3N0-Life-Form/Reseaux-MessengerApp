@@ -14,7 +14,7 @@ import commun.Message;
 import commun.logging.EventType;
 import commun.logging.Log;
 
-public class TCPHandler extends Thread implements Handler {
+public class TCPHandler extends Thread implements HandlerServeur {
 	
 	private Socket socket;
 	private Serveur serveur;

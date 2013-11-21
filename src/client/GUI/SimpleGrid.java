@@ -24,9 +24,10 @@ public class SimpleGrid extends JPanel {
       ContactPanel contacts = new ContactPanel();
       ChatPanel chatComponent = new ChatPanel();
 
-      add(chatComponent, BorderLayout.WEST);
-      chatComponent.setPreferredSize(new Dimension(400, 650));
-      add(contacts, BorderLayout.EAST);
+      //add(chatComponent, BorderLayout.WEST);
+      //chatComponent.setPreferredSize(new Dimension(400, 650));
+      //add(contacts, BorderLayout.EAST);
+      add(contacts);
       contacts.setPreferredSize(new Dimension(200,650));
       
    

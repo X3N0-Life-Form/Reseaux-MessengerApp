@@ -6,7 +6,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
-import client.handling.Handler;
+import client.handling.HandlerClient;
 import client.handling.HandlingException;
 import commun.Message;
 import commun.logging.EventType;
@@ -15,14 +15,14 @@ import commun.logging.Log;
 public class ClientMessageManager {
 	
 	private Client client;
-	private Handler handler;
+	private HandlerClient handler;
 	@SuppressWarnings("unused")
 	private Map<String, InetAddress> clientIps;
 	@SuppressWarnings("unused")
 	private Map<String, String> clientPorts;
 	private Log log;
 	
-	public ClientMessageManager(Client client, Handler handler){
+	public ClientMessageManager(Client client, HandlerClient handler){
 		this.client=client;
 		log = client.getLog();
 		this.handler = handler;

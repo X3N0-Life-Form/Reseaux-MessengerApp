@@ -19,14 +19,14 @@ import commun.MessageType;
 import commun.logging.EventType;
 import commun.logging.Log;
 
-public class UDPHandlerDiscussClientSending extends Thread implements Handler{
+public class UDPHandlerClientDiscuss extends Thread implements HandlerClient{
 
 	private Client client;
 	private DatagramSocket socket;
 	private ClientMessageManager messageManager;
 	private Log log;
 	
-	public UDPHandlerDiscussClientSending(Client client) throws SocketException{
+	public UDPHandlerClientDiscuss(Client client) throws SocketException{
 		this.client = client;
 		log = client.getLog();
 		this.socket = new DatagramSocket();

@@ -8,7 +8,7 @@ import client.Client;
 
 import commun.Message;
 
-public interface Handler {
+public interface HandlerClient {
 	
 	public void sendMessage(Message message, Socket socket) throws IOException, HandlingException;
 	public void sendMessage(Message message, DatagramSocket socket) throws HandlingException, IOException, ClassNotFoundException;

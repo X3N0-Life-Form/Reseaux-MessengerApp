@@ -19,7 +19,7 @@ import commun.MessageType;
 import commun.logging.EventType;
 import commun.logging.Log;
 
-public class UDPHandlerClientSending extends Thread implements Handler{
+public class UDPHandlerClientSending extends Thread implements HandlerClient{
 	
 	private Client client;
 	private DatagramSocket socket;

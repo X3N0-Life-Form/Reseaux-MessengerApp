@@ -12,7 +12,7 @@ import commun.logging.Log;
 import serveur.Serveur;
 
 import client.handling.TCPHandlerClient;
-import client.handling.UDPHandlerClient;
+import client.handling.UDPClient;
 
 import client.ClientTimeoutHandler;
 
@@ -66,7 +66,7 @@ public class Client {
 		running = true;
 		
 		TCPHandlerClient tcp = new TCPHandlerClient(clientSocket, this);
-		UDPHandlerClient udp = new UDPHandlerClient(this);
+		UDPClient udp = new UDPClient(this);
 		
 		tcp.run();
 		log.log(EventType.START, "Starting UDP handler");

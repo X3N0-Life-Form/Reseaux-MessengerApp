@@ -8,21 +8,21 @@ import commun.logging.Log;
 
 import client.Client;
 
-public class UDPHandlerClient extends Thread {
+public class UDPClient extends Thread {
 	
 	private Client client;
 	private UDPHandlerClientListening listen;
 	private UDPHandlerClientSending send;
-	private UDPHandlerDiscussClientSending sending_client;
+	private UDPHandlerClientDiscuss sending_client;
 	private Log log;
 	
-	public UDPHandlerClient(Client client) {
+	public UDPClient(Client client) {
 		this.client = client;
 		log = client.getLog();
 		try {
 			listen = new UDPHandlerClientListening(this.client);
 			send = new UDPHandlerClientSending(this.client);
-			sending_client = new UDPHandlerDiscussClientSending(this.client);
+			sending_client = new UDPHandlerClientDiscuss(this.client);
 		} catch (SocketException e) {
 			e.printStackTrace();
 		}

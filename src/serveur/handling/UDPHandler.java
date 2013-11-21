@@ -18,7 +18,7 @@ import commun.Message;
 import commun.logging.EventType;
 import commun.logging.Log;
 
-public class UDPHandler extends Thread implements Handler {
+public class UDPHandler extends Thread implements HandlerServeur {
 	
 	private Serveur serveur;
 	private DatagramSocket socket;
