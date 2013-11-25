@@ -3,6 +3,8 @@ package vue;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
@@ -27,6 +29,8 @@ public class ContactListWindow extends JPanel implements ActionListener, MouseLi
 	private Vector<String> logins = new Vector<String>();
 	private JFrame cadre = new javax.swing.JFrame("Liste des amis connectés : ");
 	
+	private Map<String, ChatPanel> discMap = new HashMap<String, ChatPanel>();
+	
 	public ContactListWindow(){
 		for (int i = 0; i != 40; i++) {
 			logins.add("test" + i);
@@ -39,6 +43,7 @@ public class ContactListWindow extends JPanel implements ActionListener, MouseLi
 		}
 		lancerAffichage();
 	}
+	
 	
 	public void lancerAffichage() throws IOException
 	{
@@ -86,7 +91,19 @@ public class ContactListWindow extends JPanel implements ActionListener, MouseLi
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		System.out.println(loginList.getSelectedValue());
+		String login = (String) loginList.getSelectedValue();
+		if (!discMap.containsKey(login)) {
+			ChatPanel p1 = new ChatPanel(login, discMap);
+			discMap.put(login, p1);
+			try {
+				p1.lancerAffichage();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		} else {
+			ChatPanel p = discMap.get(login);
+			p.getFrame().toFront();
+		}
 	}
 
 	@Override
