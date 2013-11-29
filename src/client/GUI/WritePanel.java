@@ -9,6 +9,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+@SuppressWarnings({ "unused", "serial" })
+@Deprecated
 public class WritePanel extends JPanel implements ActionListener {
 	
 	JTextField text = new JTextField();

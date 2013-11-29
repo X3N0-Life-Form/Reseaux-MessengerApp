@@ -14,6 +14,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
 
+@Deprecated
+@SuppressWarnings({ "serial", "unused" })
 public class ChatPanel extends JPanel {	
 	
 	public ChatPanel(){

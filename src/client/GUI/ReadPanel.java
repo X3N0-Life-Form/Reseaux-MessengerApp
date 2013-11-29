@@ -6,6 +6,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+@Deprecated
+@SuppressWarnings("serial")
 public class ReadPanel extends JPanel {
 	
 	JScrollPane scrollPane = new JScrollPane();

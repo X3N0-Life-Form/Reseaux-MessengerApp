@@ -9,8 +9,11 @@ import javax.swing.JScrollPane;
 import java.awt.Color;
 import java.util.Vector;
 
+@Deprecated
+@SuppressWarnings("serial")
 public class ContactPanel extends JPanel{
 	
+	@SuppressWarnings("unused")
 	private JButton refresh = new JButton("refresh");
 	private JScrollPane scrollPane;
 	private JList loginList = new JList();

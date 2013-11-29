@@ -3,6 +3,7 @@ package client.GUI;
 import javax.swing.JFrame;
 import java.awt.Dimension;
 
+@Deprecated
 public class Window {
 	
     static final int DEFAULT_WIDTH = 600;
