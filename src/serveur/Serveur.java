@@ -27,7 +27,6 @@ public class Serveur {
 	private Map<String, String> clientPorts;
 
 	private int port;
-	private int portClient;
 	private ServerTimeoutHandler timeoutHandler;
 	private boolean running;
 	private long timeout;
