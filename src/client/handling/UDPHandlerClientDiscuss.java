@@ -1,9 +1,7 @@
 package client.handling;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -11,12 +9,11 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
 
-import client.ClientMessageManager;
 import client.Client;
+import client.ClientMessageManager;
 
 import commun.Message;
 import commun.MessageType;
-import commun.logging.EventType;
 import commun.logging.Log;
 
 public class UDPHandlerClientDiscuss extends Thread implements HandlerClient{
@@ -24,6 +21,7 @@ public class UDPHandlerClientDiscuss extends Thread implements HandlerClient{
 	private Client client;
 	private DatagramSocket socket;
 	private ClientMessageManager messageManager;
+	@SuppressWarnings("unused")
 	private Log log;
 	
 	public UDPHandlerClientDiscuss(Client client) throws SocketException{
@@ -33,6 +31,7 @@ public class UDPHandlerClientDiscuss extends Thread implements HandlerClient{
 		messageManager = new ClientMessageManager(client, this);
 	}
 	
+	@Override
 	public void run(){
 		int count=0;
 		while(client.isRunning()) {
@@ -77,13 +76,11 @@ public class UDPHandlerClientDiscuss extends Thread implements HandlerClient{
 	@Override
 	public void sendMessage(Message message, Socket socket) throws IOException,
 			HandlingException {
-		// TODO Auto-generated method stub
-		
+		throw new HandlingException("Can't handle a Socket.");
 	}
 
 	@Override
 	public Client getClient() {
-		// TODO Auto-generated method stub
 		return client;
 	}
 }

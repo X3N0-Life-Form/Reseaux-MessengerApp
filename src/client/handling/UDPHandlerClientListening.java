@@ -36,6 +36,7 @@ public class UDPHandlerClientListening extends Thread implements HandlerClient{
 		messageManager = new ClientMessageManager(client, this);
 	}
 	
+	@Override
 	public void run(){
 		while(client.isRunning()) {
 			byte[] buf = new byte[CommonConstants.UDP_PACKET_SIZE];

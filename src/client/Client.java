@@ -16,7 +16,13 @@ import client.handling.UDPClient;
 
 import client.ClientTimeoutHandler;
 
-public class Client {
+/**
+ * Client master class, contains handler threads, IP and port maps.
+ * @author etudiant
+ *
+ */
+public class Client { //TODO: 
+	
 	private static final long DEFAULT_TIMEOUT_TIME = 0;
 	private String login;
 	private String pass;
@@ -30,10 +36,17 @@ public class Client {
 	private long timeout;
 	private int mainUDPListeningPort;
 	private Log log;
-	private InetAddress ipotherclient;
-	private int portotherclient;
+	private InetAddress ipOtherClient;
+	private int portOtherClient;
 
-	
+	/**
+	 * Constructs a Client object.
+	 * @param login - Client login.
+	 * @param pass - Client password.
+	 * @param serverIp - IP address of the Server. 
+	 * @param port - port used by the Server (Note: by default, should be 8001).
+	 * @throws IOException
+	 */
 	public Client(String login, String pass, String serverIp, int port) throws IOException{
 		super();
 		this.login = login;
@@ -53,15 +66,20 @@ public class Client {
 	{
 		super();
 		this.login=login;
-		//this
 	}
 	
+	/**
+	 * Prints a summary of the Client's settings.
+	 */
 	public void printRecap() {
 		System.out.println("Starting the client:");
 		System.out.println("\tIp:\t" + clientSocket.getInetAddress());
 		System.out.println("\tPort:\t" + clientSocket.getLocalPort());
 	}
 	
+	/**
+	 * Starts the client: launch the TCP thread and the UDP master class.
+	 */
 	public void start() {
 		running = true;
 		
@@ -71,7 +89,6 @@ public class Client {
 		tcp.run();
 		log.log(EventType.START, "Starting UDP handler");
 		udp.start();
-		
 	}
 
 	public static void main(String args[]) {
@@ -165,19 +182,19 @@ public class Client {
 	}
 
 	public InetAddress getIpotherclient() {
-		return ipotherclient;
+		return ipOtherClient;
 	}
 
 	public void setIpotherclient(InetAddress ipotherclient) {
-		this.ipotherclient = ipotherclient;
+		this.ipOtherClient = ipotherclient;
 	}
 
 	public int getPortotherclient() {
-		return portotherclient;
+		return portOtherClient;
 	}
 
 	public void setPortotherclient(int portotherclient) {
-		this.portotherclient = portotherclient;
+		this.portOtherClient = portotherclient;
 	}
 	
 	private String loginotherclient;
