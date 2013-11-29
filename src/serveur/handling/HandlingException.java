@@ -1,7 +1,7 @@
 package serveur.handling;
 
 /**
- * 
+ * Handling-related exception.
  * @author etudiant
  * @see HandlerServeur
  */

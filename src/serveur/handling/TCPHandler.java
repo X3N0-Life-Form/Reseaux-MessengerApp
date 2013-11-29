@@ -14,6 +14,12 @@ import commun.Message;
 import commun.logging.EventType;
 import commun.logging.Log;
 
+/**
+ * 
+ * @author etudiant
+ * @see HandlerServeur
+ * @see ServerMessageManager
+ */
 public class TCPHandler extends Thread implements HandlerServeur {
 	
 	private Socket socket;
@@ -21,6 +27,12 @@ public class TCPHandler extends Thread implements HandlerServeur {
 	private Log log;
 	private ServerMessageManager messageManager;
 	
+	/**
+	 * Constructs a TCP handler linked to the specified Server and Socket.
+	 * <br />Note that the thread must be started by the Server.
+	 * @param clientSocket
+	 * @param serveur
+	 */
 	public TCPHandler(Socket clientSocket, Serveur serveur) {
 		socket = clientSocket;
 		this.serveur = serveur;
@@ -28,12 +40,19 @@ public class TCPHandler extends Thread implements HandlerServeur {
 		messageManager = new ServerMessageManager(serveur, this);
 	}
 	
+	/**
+	 * Retrieves a Message, sends it to the MessageManager and closes the Socket.
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 * @throws HandlingException
+	 */
 	public void handleDialog() throws IOException, ClassNotFoundException, HandlingException {
 		Message message = getClientMessage(socket);
 		messageManager.handleMessage(message, socket);
 		socket.close();
 	}
 	
+	@Override
 	public void sendMessage(Message message, Socket socket) throws IOException {
 		ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
 		os.writeObject(message);
@@ -41,6 +60,13 @@ public class TCPHandler extends Thread implements HandlerServeur {
 		os.flush();
 	}
 
+	/**
+	 * Retrieves a Message received by the specified Socket.
+	 * @param socket - Socket receiving the Message.
+	 * @return Message object read off the input stream.
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	public Message getClientMessage(Socket socket) throws IOException, ClassNotFoundException {
 		ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
 		Message message = (Message) is.readObject();
@@ -61,6 +87,7 @@ public class TCPHandler extends Thread implements HandlerServeur {
 		}
 	}
 
+	@Override
 	public Serveur getServeur() {
 		return serveur;
 	}
