@@ -4,6 +4,13 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This object is used to exchange information between Client and Server
+ * or Client and Client, as well as carrying simple String messages for
+ * Client to Client discussions.
+ * @author etudiant
+ * @see MessageType
+ */
 public class Message implements Serializable {
 	
 	/**
@@ -15,10 +22,20 @@ public class Message implements Serializable {
 	private String message;
 	private MessageType type;
 	
+	/**
+	 * Constructs a Message of the specified type with an empty message String.
+	 * @param type - Determines how the Message will be handled by the recipient.
+	 */
 	public Message(MessageType type) {
 		this(type, "");
 	}
 	
+	/**
+	 * Constructs a Message of the specified type and message string.
+	 * <br />Note that any additional information or objects must be added later, depending on the MessageType.
+	 * @param type - Determines how the Message will be handled by the recipient.
+	 * @param message
+	 */
 	public Message(MessageType type, String message) {
 		this.message = message;
 		this.type = type;

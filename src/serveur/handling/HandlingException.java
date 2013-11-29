@@ -1,5 +1,10 @@
 package serveur.handling;
 
+/**
+ * 
+ * @author etudiant
+ * @see HandlerServeur
+ */
 public class HandlingException extends Exception {
 
 	/**

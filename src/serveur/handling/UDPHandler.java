@@ -18,6 +18,13 @@ import commun.Message;
 import commun.logging.EventType;
 import commun.logging.Log;
 
+/**
+ * Thread handling the reception and sending of UDP Messages.
+ * @author etudiant
+ * @see Serveur
+ * @see Message
+ * @see HandlerServeur
+ */
 public class UDPHandler extends Thread implements HandlerServeur {
 	
 	private Serveur serveur;
@@ -25,6 +32,11 @@ public class UDPHandler extends Thread implements HandlerServeur {
 	private ServerMessageManager messageManager;
 	private Log log;
 	
+	/**
+	 * Constructs an UDPHandler Object for the specified Server.
+	 * <br />Note that the handler's thread needs to be launched by the Server.
+	 * @param serveur
+	 */
 	public UDPHandler(Serveur serveur) {
 		this.serveur = serveur;
 		log = serveur.getLog();
@@ -61,6 +73,13 @@ public class UDPHandler extends Thread implements HandlerServeur {
 		}
 	}
 
+	/**
+	 * Extracts the message contained in a DatagramPacket.
+	 * @param p The DatagramPacket supposedly containing a Message Object.
+	 * @return Message object read off the packet.
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	public Message getMessage(DatagramPacket p) throws IOException, ClassNotFoundException {
 		ByteArrayInputStream bis = new ByteArrayInputStream(p.getData());
 		ObjectInputStream ois = new ObjectInputStream(bis);

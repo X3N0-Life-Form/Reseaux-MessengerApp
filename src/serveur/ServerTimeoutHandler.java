@@ -8,13 +8,24 @@ import java.util.Map;
 import commun.logging.EventType;
 import commun.logging.Log;
 
-
+/**
+ * This class handles client timeouts, keeping track of the date at which each client's
+ * message was received. Clients will be removed from the timeout table according to the
+ * Server's timeout time.
+ * @author etudiant
+ * @see Serveur
+ */
 public class ServerTimeoutHandler extends Thread {
 	
 	private Map<InetAddress, Date> timeoutTable;
 	private Serveur serveur;
 	private Log log;
 	
+	/**
+	 * Constructs a TimeoutHandler for the specified Server with an empty timeout table.
+	 * <br />Note: the thread must be started by the Server.
+	 * @param serveur
+	 */
 	public ServerTimeoutHandler(Serveur serveur) {
 		this.serveur = serveur;
 		timeoutTable = new HashMap<InetAddress, Date>();
@@ -33,14 +44,29 @@ public class ServerTimeoutHandler extends Thread {
 		return serveur;
 	}
 
+	/**
+	 * Synchronized method adding a client to the timeout table,
+	 * with its time stamp set to the current time.
+	 * @param ip - Client's IP address.
+	 */
 	public synchronized void addClient(InetAddress ip) {
 		timeoutTable.put(ip, new Date());
 	}
 	
+	/**
+	 * Synchronized method removing the specified client from the
+	 * timeout table.
+	 * @param ip - Client's IP address.
+	 */
 	public synchronized void removeClient(InetAddress ip) {
 		timeoutTable.remove(ip);
 	}
 	
+	/**
+	 * Updates a client's time stamp.
+	 * @param ip - Client's IP address.
+	 * @param time - When the last message from this client was received.
+	 */
 	public synchronized void updateClient(InetAddress ip, Date time) {
 		if (timeoutTable.containsKey(ip)) {
 			timeoutTable.put(ip, time);

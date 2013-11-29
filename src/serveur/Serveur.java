@@ -15,7 +15,12 @@ import commun.logging.Log;
 import serveur.handling.TCPHandler;
 import serveur.handling.UDPHandler;
 
-
+/**
+ * Server-side master class. Contains the server's settings, data and handles the creation of every required
+ * thread.
+ * @author etudiant
+ * 
+ */
 public class Serveur {
 	private ServerSocket serverSocket;
 	private Map<String, InetAddress> clientIps;
@@ -34,6 +39,11 @@ public class Serveur {
 	public static final long DEFAULT_TIMEOUT_TIME = 5000;
 	public static final String DEFAULT_LOGIN_FILE_URL = "res/clientsSample.xml";
 	
+	/**
+	 * Constructs a Server using the specified port.
+	 * @param port - Port used by the server; must not be already in use.
+	 * @throws IOException
+	 */
 	public Serveur(int port) throws IOException {
 		this.port = port;
 		serverSocket = new ServerSocket(port);
@@ -47,10 +57,18 @@ public class Serveur {
 		log = new Log();
 	}
 	
+	/**
+	 * Constructs a Server using the default port.
+	 * @throws IOException
+	 */
 	public Serveur() throws IOException {
 		this(DEFAULT_PORT_TCP);
 	}
 	
+	/**
+	 * 
+	 * @param args
+	 */
 	public static void main(String args[]) {
 		for (int i = 0; i < args.length; i++) {
 			//TODO: handle args
@@ -67,6 +85,9 @@ public class Serveur {
 		}
 	}
 	
+	/**
+	 * Prints the Server's setting.
+	 */
 	public void printRecap() {
 		log.log(EventType.INFO, "Starting the server:");
 		log.log(EventType.INFO, "\tIp:\t\t" + serverSocket.getInetAddress());
@@ -75,6 +96,13 @@ public class Serveur {
 		log.log(EventType.INFO, "\tClient file:\t" + loginParser.getFile().getName());
 	}
 
+	/**
+	 * Starts the server, launching the timeout and UDP handler threads, parsing
+	 * the client login file and starts TCP handler threads upon receiving TCP
+	 * requests.
+	 * @throws JDOMException If the client login file could not be parsed.
+	 * @throws IOException
+	 */
 	public void start() throws JDOMException, IOException {
 		running = true;
 		log.log(EventType.START, "Server is runnning");
@@ -103,6 +131,13 @@ public class Serveur {
 		}
 	}
 
+	/**
+	 * Authenticate the specified client. Note that the client's login file must
+	 * have been parsed prior to calling this method.
+	 * @param login - Client login.
+	 * @param pass - Client password.
+	 * @return True if the login and pass are valid.
+	 */
 	public boolean authenticateClient(String login, String pass) {
 		return loginParser.validateLogin(login, pass);
 	}
