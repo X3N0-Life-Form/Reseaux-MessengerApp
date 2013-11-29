@@ -15,6 +15,7 @@ import java.net.SocketException;
 import client.ClientMessageManager;
 import client.Client;
 
+import commun.CommonConstants;
 import commun.Message;
 import commun.logging.EventType;
 import commun.logging.Log;
@@ -37,7 +38,7 @@ public class UDPHandlerClientListening extends Thread implements HandlerClient{
 	
 	public void run(){
 		while(client.isRunning()) {
-			byte[] buf = new byte[10000]; //TODO: voir speech en dessous sur les valeurs en dur
+			byte[] buf = new byte[CommonConstants.UDP_PACKET_SIZE];
 			DatagramPacket p = new DatagramPacket(buf, buf.length);
 			try {
 				socket.receive(p);
@@ -55,7 +56,6 @@ public class UDPHandlerClientListening extends Thread implements HandlerClient{
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			} catch (HandlingException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -76,7 +76,6 @@ public class UDPHandlerClientListening extends Thread implements HandlerClient{
 		    o.writeObject(message.getObjects());
 			byte[] buf = b.toByteArray();
 			InetAddress ad = InetAddress.getByName(client.getServerIp());
-			//TODO:enregistrer port serveur et référencer ça ici (d'une manière générale, penser à changer String et autres valeurs écrites "en dur" en constantes dans la mesure du possible)
 			//DatagramPacket p = new DatagramPacket(buf, buf.length, ad, client.getPort());
 			DatagramPacket p = new DatagramPacket(buf, buf.length, ad, 8001);
 			

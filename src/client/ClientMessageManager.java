@@ -43,12 +43,24 @@ public class ClientMessageManager {
 		}
 	}
 	
+	/**
+	 * Handles UDP Message reception.
+	 * @param message - Message to handle.
+	 * @param socket - Receiving DatagramSocket.
+	 * @throws HandlingException
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	public void handleMessage(Message message, DatagramSocket socket) throws HandlingException, IOException, ClassNotFoundException {
 		switch (message.getType()) {
 		
 		case REQUEST_LIST:
 			System.out.println("envoi d'un signe de vie");
 			handler.sendMessage(message, socket);
+			break;
+			
+		case REQUEST_IP:
+			
 			break;
 			
 		case CLIENT_LIST:
@@ -72,6 +84,10 @@ public class ClientMessageManager {
 		case MSG_DISCUSS_CLIENT:
 			System.out.println("envoi du message au client");
 			handler.sendMessage(message, socket);
+			break;
+			
+		case CLIENT_IP:
+			
 			break;
 			
 		case ERROR:

@@ -14,6 +14,7 @@ import java.util.Date;
 import serveur.ServerMessageManager;
 import serveur.Serveur;
 
+import commun.CommonConstants;
 import commun.Message;
 import commun.logging.EventType;
 import commun.logging.Log;
@@ -51,7 +52,7 @@ public class UDPHandler extends Thread implements HandlerServeur {
 	@Override
 	public void run() {
 		while(serveur.isRunning()) {
-			byte[] buf = new byte[10000];
+			byte[] buf = new byte[CommonConstants.UDP_PACKET_SIZE];
 			DatagramPacket packet = new DatagramPacket(buf, buf.length);
 			try {
 				socket.receive(packet);

@@ -1,9 +1,7 @@
 package client.handling;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -11,8 +9,8 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
 
-import client.ClientMessageManager;
 import client.Client;
+import client.ClientMessageManager;
 
 import commun.Message;
 import commun.MessageType;
@@ -33,6 +31,7 @@ public class UDPHandlerClientSending extends Thread implements HandlerClient{
 		messageManager = new ClientMessageManager(client, this);
 	}
 	
+	@Override
 	public void run(){
 		while(client.isRunning()) {
 			try{

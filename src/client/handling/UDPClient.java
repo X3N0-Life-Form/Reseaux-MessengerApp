@@ -1,6 +1,5 @@
 package client.handling;
 
-import java.net.DatagramSocket;
 import java.net.SocketException;
 
 import commun.logging.EventType;
@@ -8,6 +7,15 @@ import commun.logging.Log;
 
 import client.Client;
 
+/**
+ * Client side UDP handling master class. Launches threads dedicated to client
+ * to server operations and client to client operations.
+ * @author etudiant
+ * @see Client
+ * @see UDPHandlerClientListening
+ * @see UDPHandlerClientSending
+ * @see UDPHandlerClientDiscuss
+ */
 public class UDPClient extends Thread {
 	
 	private Client client;
@@ -16,6 +24,11 @@ public class UDPClient extends Thread {
 	private UDPHandlerClientDiscuss sending_client;
 	private Log log;
 	
+	/**
+	 * Create an UDPClient object for the specified Client. Note that the thread needs
+	 * to be started by the Client.
+	 * @param client
+	 */
 	public UDPClient(Client client) {
 		this.client = client;
 		log = client.getLog();
@@ -28,6 +41,7 @@ public class UDPClient extends Thread {
 		}
 	}
 
+	@Override
 	public void run() {
 		
 		log.log(EventType.START, "Starting UDP listening handler");
@@ -36,7 +50,9 @@ public class UDPClient extends Thread {
 		log.log(EventType.START, "Starting UDP sending handler");
 		send.start();
 		
-		
+		///////////////////
+		// TESTING STUFF //
+		///////////////////
 		if(client.getLogin().equals("test01"))
 		{
 			while(client.getClientIps().get("test02") == null)
@@ -44,7 +60,6 @@ public class UDPClient extends Thread {
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -56,7 +71,6 @@ public class UDPClient extends Thread {
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -67,7 +81,6 @@ public class UDPClient extends Thread {
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -79,12 +92,14 @@ public class UDPClient extends Thread {
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
 			client.setPortotherclient(Integer.valueOf(client.getClientPorts().get("test01")));
 		}
+		///////////////////////
+		// END TESTING STUFF //
+		///////////////////////
 		
 		log.log(EventType.START, "Starting UDP sending discuss client handler");
 		sending_client.start();
