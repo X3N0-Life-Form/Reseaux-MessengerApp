@@ -37,7 +37,6 @@ public class ContactListWindow extends JPanel implements ActionListener, MouseLi
 	private JFrame cadre = new javax.swing.JFrame("Liste des amis connectés : ");
 	private Map<String, ChatPanel> discMap = new HashMap<String, ChatPanel>();
 	
-	private boolean readyToDisplay = false;
 	private ContactListController controller;
 	
 	/*public ContactListWindow(){
@@ -59,48 +58,42 @@ public class ContactListWindow extends JPanel implements ActionListener, MouseLi
 	
 	public void lancerAffichage() throws IOException
 	{
-		if (!readyToDisplay) {
-			disconnectButton.addActionListener(this);
-			multiChatButton.addActionListener(this);
-			loginList.setListData(logins.toArray());
-			
-			loginList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-			
-			loginList.addMouseListener(this);
-			
-			JPanel panneauListeContact = new JPanel();
-			panneauListeContact.setLayout(new BorderLayout());
-			panneauListeContact.add(loginList, BorderLayout.NORTH);
-			
-			scrollPane.getViewport().setView(loginList);
-			
-			panneauListeContact.add(scrollPane, BorderLayout.CENTER);
-			panneauListeContact.setBorder(new EmptyBorder(5,5,10,15));
-			
-			JPanel panneauAction = new JPanel();
-			panneauAction.setLayout(new BorderLayout());
-			panneauAction.add(disconnectButton, BorderLayout.WEST);
-			panneauAction.add(multiChatButton, BorderLayout.EAST);
-			panneauAction.setBorder(new EmptyBorder(0,30,10,30));
-			
-			JPanel panneauPrincipal = new JPanel();
-			panneauPrincipal.setLayout(new BorderLayout());
-			panneauPrincipal.add(panneauListeContact, BorderLayout.CENTER);
-			panneauPrincipal.add(panneauAction, BorderLayout.SOUTH);
-			panneauListeContact.setBorder(new EmptyBorder(10,10,10,10));
-			
-			cadre.setContentPane(panneauPrincipal);
-			cadre.setLocation(600, 200);
-			cadre.pack();
-			cadre.setResizable(false);
-			cadre.setSize(300, 400);
-			cadre.setVisible(true);
-			cadre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			
-			readyToDisplay = true;
-		} else {
-			cadre.setVisible(true);
-		}
+		disconnectButton.addActionListener(this);
+		multiChatButton.addActionListener(this);
+		loginList.setListData(logins.toArray());
+		
+		loginList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		
+		loginList.addMouseListener(this);
+		
+		JPanel panneauListeContact = new JPanel();
+		panneauListeContact.setLayout(new BorderLayout());
+		panneauListeContact.add(loginList, BorderLayout.NORTH);
+		
+		scrollPane.getViewport().setView(loginList);
+		
+		panneauListeContact.add(scrollPane, BorderLayout.CENTER);
+		panneauListeContact.setBorder(new EmptyBorder(5,5,10,15));
+		
+		JPanel panneauAction = new JPanel();
+		panneauAction.setLayout(new BorderLayout());
+		panneauAction.add(disconnectButton, BorderLayout.WEST);
+		panneauAction.add(multiChatButton, BorderLayout.EAST);
+		panneauAction.setBorder(new EmptyBorder(0,30,10,30));
+		
+		JPanel panneauPrincipal = new JPanel();
+		panneauPrincipal.setLayout(new BorderLayout());
+		panneauPrincipal.add(panneauListeContact, BorderLayout.CENTER);
+		panneauPrincipal.add(panneauAction, BorderLayout.SOUTH);
+		panneauListeContact.setBorder(new EmptyBorder(10,10,10,10));
+		
+		cadre.setContentPane(panneauPrincipal);
+		cadre.setLocation(600, 200);
+		cadre.pack();
+		cadre.setResizable(false);
+		cadre.setSize(300, 400);
+		cadre.setVisible(true);
+		cadre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
 	@Override
