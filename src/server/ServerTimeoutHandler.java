@@ -17,7 +17,7 @@ import common.logging.Log;
  */
 public class ServerTimeoutHandler extends Thread {
 	
-	private Map<InetAddress, Date> timeoutTable;
+	private Map<String, Date> timeoutTable;
 	private Server serveur;
 	private Log log;
 	
@@ -28,15 +28,15 @@ public class ServerTimeoutHandler extends Thread {
 	 */
 	public ServerTimeoutHandler(Server serveur) {
 		this.serveur = serveur;
-		timeoutTable = new HashMap<InetAddress, Date>();
+		timeoutTable = new HashMap<String, Date>();
 		log = serveur.getLog();
 	}
 	
-	public Map<InetAddress, Date> getTimeoutTable() {
+	public Map<String, Date> getTimeoutTable() {
 		return timeoutTable;
 	}
 
-	public void setTimeoutTable(Map<InetAddress, Date> timeoutTable) {
+	public void setTimeoutTable(Map<String, Date> timeoutTable) {
 		this.timeoutTable = timeoutTable;
 	}
 
@@ -49,38 +49,38 @@ public class ServerTimeoutHandler extends Thread {
 	 * with its time stamp set to the current time.
 	 * @param ip - Client's IP address.
 	 */
-	public synchronized void addClient(InetAddress ip) {
-		timeoutTable.put(ip, new Date());
+	public synchronized void addClient(String login) {
+		timeoutTable.put(login, new Date());
 	}
 	
 	/**
 	 * Synchronized method removing the specified client from the
 	 * timeout table.
-	 * @param ip - Client's IP address.
+	 * @param login - Client's IP address.
 	 */
-	public synchronized void removeClient(InetAddress ip) {
-		timeoutTable.remove(ip);
+	public synchronized void removeClient(String login) {
+		timeoutTable.remove(login);
 	}
 	
 	/**
 	 * Updates a client's time stamp.
-	 * @param ip - Client's IP address.
+	 * @param login - Client's IP address.
 	 * @param time - When the last message from this client was received.
 	 */
-	public synchronized void updateClient(InetAddress ip, Date time) {
-		if (timeoutTable.containsKey(ip)) {
-			timeoutTable.put(ip, time);
+	public synchronized void updateClient(String login, Date time) {
+		if (timeoutTable.containsKey(login)) {
+			timeoutTable.put(login, time);
 		}
 	}
 
 	@Override
 	public void run() {
 		while (serveur.isRunning()) {
-			for (InetAddress ip : timeoutTable.keySet()) {
+			for (String login : timeoutTable.keySet()) {
 				Date now = new Date();
-				if ((now.getTime() - timeoutTable.get(ip).getTime()) > serveur.getTimeoutTime()) {
+				if ((now.getTime() - timeoutTable.get(login).getTime()) > serveur.getTimeoutTime()) {
 					//log.log(EventType.TIMEOUT, "Client timed out: "	+ timeoutTable.get(ip) + "(" + ip + ")");
-					removeClient(ip);
+					removeClient(login);
 				}
 			}
 		}

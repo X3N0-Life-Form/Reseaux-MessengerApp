@@ -6,6 +6,7 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -62,7 +63,7 @@ public class ServerMessageManager {
 			if (serveur.authenticateClient(login, pass)) {
 				clientIps.put(login, ip);
 				clientPorts.put(login, socket.getPort() + "");
-				serveur.getTimeoutHandler().addClient(socket.getInetAddress());
+				serveur.getTimeoutHandler().addClient(login);
 				Message okMsg = new Message(
 						MessageType.OK,
 						"Able to authenticate client.");
@@ -77,7 +78,7 @@ public class ServerMessageManager {
 			
 		case DISCONNECT:
 			clientIps.remove(login);
-			serveur.getTimeoutHandler().removeClient(ip);
+			serveur.getTimeoutHandler().removeClient(login);
 			break;
 		default:
 			throw new HandlingException("Message type " + message.getType() + " not handled by " + handler.getClass());
@@ -95,6 +96,7 @@ public class ServerMessageManager {
 	 */
 	public void handleMessage(Message message, DatagramSocket socket, DatagramPacket paquet) throws HandlingException, IOException, ClassNotFoundException {
 		String login = message.getInfo(MessageInfoStrings.GENERIC_LOGIN);
+		serveur.getTimeoutHandler().updateClient(login, new Date());
 		switch (message.getType()) {
 		case REQUEST_LIST:
 			if (clientIps.containsKey(login)) {

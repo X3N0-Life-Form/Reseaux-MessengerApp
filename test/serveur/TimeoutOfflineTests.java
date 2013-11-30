@@ -36,7 +36,7 @@ public class TimeoutOfflineTests {
 	public void teardown() {
 		serveur.stop();
 	}
-
+/*
 	@Test
 	public void testAddClient() throws UnknownHostException {
 		InetAddress localHost = InetAddress.getLocalHost();
@@ -66,7 +66,7 @@ public class TimeoutOfflineTests {
 	/**
 	 * What happens if we try to update a client that isn't in the table? 
 	 * @throws UnknownHostException
-	 */
+	 *//*
 	@Test
 	public void testUpdateClient_unknown() throws UnknownHostException {
 		InetAddress localHost = InetAddress.getLocalHost();
@@ -84,5 +84,5 @@ public class TimeoutOfflineTests {
 		Thread.sleep(50);
 		assertFalse(timeoutHandler.getTimeoutTable().containsKey(localHost));
 	}
-
+*/
 }
