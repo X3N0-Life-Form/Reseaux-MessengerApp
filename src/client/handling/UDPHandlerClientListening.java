@@ -8,21 +8,18 @@ import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.Socket;
 import java.net.SocketException;
 
-
-import client.ClientMessageManager;
 import client.Client;
+import client.ClientMessageManager;
 
 import commun.CommonConstants;
 import commun.HandlingException;
-import commun.MasterClass;
 import commun.Message;
 import commun.logging.EventType;
 import commun.logging.Log;
 
-public class UDPHandlerClientListening extends Thread implements HandlerClient{
+public class UDPHandlerClientListening extends UDPHandlerClient {
 	
 	private Client client;
 	private DatagramSocket socket;
@@ -30,12 +27,9 @@ public class UDPHandlerClientListening extends Thread implements HandlerClient{
 	private Log log;
 	
 	public UDPHandlerClientListening(Client client) throws SocketException{
-		this.client = client;
-		this.log = client.getLog();
-		this.socket = new DatagramSocket();
+		super(client);
 		client.setUDPMainListeningPort(socket.getLocalPort());
 		log.log(EventType.INFO, "UDP port set to " + client.getUDPMainListeningPort());
-		messageManager = new ClientMessageManager(client, this);
 	}
 	
 	@Override
@@ -87,24 +81,6 @@ public class UDPHandlerClientListening extends Thread implements HandlerClient{
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-	}
-
-	@Override
-	public MasterClass getMasterClass() {
-		return client;
-	}
-
-	@Override
-	public void sendMessage(Message message, Socket socket)
-			throws HandlingException {
-		throw new HandlingException("Can't handle a Socket.");
-	}
-
-	@Override
-	public void sendMessage(Message message, DatagramSocket socket,
-			DatagramPacket paquet) throws HandlingException, IOException,
-			ClassNotFoundException {
-		sendMessage(message, socket);
 	}
 
 }

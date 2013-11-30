@@ -6,33 +6,22 @@ import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.Socket;
 import java.net.SocketException;
 
 import client.Client;
-import client.ClientMessageManager;
 
 import commun.HandlingException;
-import commun.MasterClass;
 import commun.Message;
 import commun.MessageType;
 import commun.logging.EventType;
-import commun.logging.Log;
 
-public class UDPHandlerClientSending extends Thread implements HandlerClient{
+public class UDPHandlerClientSending extends UDPHandlerClient {
 	
-	private Client client;
-	private DatagramSocket socket;
-	private ClientMessageManager messageManager;
-	private Log log;
 	
-	public UDPHandlerClientSending(Client client) throws SocketException{
-		this.client = client;
-		log = client.getLog();
-		this.socket = new DatagramSocket();
-		messageManager = new ClientMessageManager(client, this);
+	public UDPHandlerClientSending(Client client) throws SocketException {
+		super(client);
 	}
-	
+
 	@Override
 	public void run(){
 		while(client.isRunning()) {
@@ -69,24 +58,6 @@ public class UDPHandlerClientSending extends Thread implements HandlerClient{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	@Override
-	public MasterClass getMasterClass() {
-		return client;
-	}
-
-	@Override
-	public void sendMessage(Message message, Socket socket)
-			throws HandlingException {
-		throw new HandlingException("Can't handle a Socket.");
-	}
-
-	@Override
-	public void sendMessage(Message message, DatagramSocket socket,
-			DatagramPacket paquet) throws HandlingException, IOException,
-			ClassNotFoundException {
-		sendMessage(message, socket);
 	}
 
 }
