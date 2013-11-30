@@ -60,6 +60,8 @@ public class ServerTimeoutHandler extends Thread {
 	 */
 	public synchronized void removeClient(String login) {
 		timeoutTable.remove(login);
+		serveur.getClientIps().remove(login);
+		serveur.getClientPorts().remove(login);
 	}
 	
 	/**
@@ -81,6 +83,7 @@ public class ServerTimeoutHandler extends Thread {
 				if ((now.getTime() - timeoutTable.get(login).getTime()) > serveur.getTimeoutTime()) {
 					//log.log(EventType.TIMEOUT, "Client timed out: "	+ timeoutTable.get(ip) + "(" + ip + ")");
 					removeClient(login);
+					break;
 				}
 			}
 		}
