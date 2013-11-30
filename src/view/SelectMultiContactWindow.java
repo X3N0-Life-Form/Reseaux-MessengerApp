@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
@@ -20,7 +21,7 @@ public class SelectMultiContactWindow extends JPanel implements ActionListener {
 	private Vector<JRadioButton> listRadioLog = new Vector<JRadioButton>();
 	private Vector<JRadioButton> listRadioLogWithContact = new Vector<JRadioButton>();
 	private JButton startButton = new JButton("START");
-	private Vector<String> listLogWithContact = new Vector<String>();
+	private List<String> listLogWithContact = new Vector<String>();
 	private JFrame cadre = new javax.swing.JFrame("Sélectionner le groupe d'amis : ");
 	private Map<String, ChatPanel>  mapListChat;
 	

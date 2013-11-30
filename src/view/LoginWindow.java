@@ -5,14 +5,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+
+import controller.ContactListController;
+import controller.LoginController;
+import controller.ProcessResult;
 
 public class LoginWindow extends JPanel implements ActionListener {
 	
@@ -25,7 +31,11 @@ public class LoginWindow extends JPanel implements ActionListener {
 	public JTextField ipServerField = new JTextField(15);
 	public JFrame cadre = new javax.swing.JFrame("Chat-Expert");
 	
-	public LoginWindow(){}
+	private LoginController controller;
+	
+	public void setController(LoginController controller) {
+		this.controller = controller;
+	}
 	
 	public void lancerAffichage() throws IOException
 	{
@@ -78,13 +88,43 @@ public class LoginWindow extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == connectButton)
 		{
-			cadre.setVisible(false);
-			ContactListWindow clw = new ContactListWindow();
-			try {
-				clw.lancerAffichage();
-			} catch (IOException e1) {
-				e1.printStackTrace();
+			String login = logField.getText();
+			String pass = passField.getText();
+			String ipServer = ipServerField.getText();
+			controller.processLogin(login, pass, ipServer);
+			/*
+			if (pr.isOk()) {
+				cadre.setVisible(false);
+				try {
+					ChatMain.clw.lancerAffichage();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				
+			} else {
+				JOptionPane.showMessageDialog(null, pr.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
 			}
+			*/
+		}
+	}
+
+	public void createContactList(List<String> clientLogins) {
+		cadre.setVisible(false);
+		try {
+			ChatMain.clw.setLogins(clientLogins);
+			ContactListController clc = new ContactListController(ChatMain.clw, controller.getClient());
+			ChatMain.clw.setController(clc);
+			ChatMain.clw.lancerAffichage();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+	}
+	
+	public void refreshContactList() {
+		try {
+			ChatMain.clw.refresh(controller.getClient().getClientLogins());
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 }

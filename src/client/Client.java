@@ -3,12 +3,16 @@ package client;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import common.MasterClass;
 import common.logging.EventType;
 import common.logging.Log;
+import controller.ContactListController;
+import controller.LoginController;
 
 import server.Server;
 
@@ -33,12 +37,16 @@ public class Client implements MasterClass {
 	private boolean running;
 	private Map<String, InetAddress> clientIps;
 	private Map<String, String> clientPorts;
+	private List<String> clientLogins;
 	private ClientTimeoutHandler timeoutHandler;
 	private long timeout;
 	private int mainUDPListeningPort;
 	private Log log;
 	private InetAddress ipOtherClient;
 	private int portOtherClient;
+	
+	private LoginController loginController;
+	private ContactListController contactListController;
 
 	/**
 	 * Constructs a Client object.
@@ -57,6 +65,7 @@ public class Client implements MasterClass {
 		this.serverIp = serverIp;
 		clientIps = new HashMap<String, InetAddress>();
 		clientPorts = new HashMap<String, String>();
+		setClientLogins(new ArrayList<String>());
 		timeoutHandler = new ClientTimeoutHandler(this);
 		running = false;
 		timeout = DEFAULT_TIMEOUT_TIME;
@@ -199,6 +208,7 @@ public class Client implements MasterClass {
 	}
 	
 	private String loginotherclient;
+	
 	public String getLoginotherclient() {
 		return loginotherclient;
 	}
@@ -207,4 +217,27 @@ public class Client implements MasterClass {
 		this.loginotherclient = loginotherclient;
 	}
 
+	public void setLoginController(LoginController loginController) {
+		this.loginController = loginController;
+	}
+
+	public LoginController getLoginController() {
+		return loginController;
+	}
+
+	public List<String> getClientLogins() {
+		return clientLogins;
+	}
+
+	public void setClientLogins(List<String> clientLogins) {
+		this.clientLogins = clientLogins;
+	}
+
+	public ContactListController getContactListController() {
+		return contactListController;
+	}
+	
+	public void setContactListController(ContactListController clc) {
+		this.contactListController = clc;
+	}
 }

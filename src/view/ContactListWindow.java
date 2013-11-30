@@ -11,6 +11,7 @@ import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
@@ -22,6 +23,9 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 
+import controller.ContactListController;
+import controller.LoginController;
+
 public class ContactListWindow extends JPanel implements ActionListener, MouseListener {
 	
 	private JButton disconnectButton = new JButton("Disconnect");
@@ -29,62 +33,74 @@ public class ContactListWindow extends JPanel implements ActionListener, MouseLi
 	private JScrollPane scrollPane = new JScrollPane();
 	private JList loginList = new JList();
 	private Map<String, InetAddress> clientIps = new HashMap<String, InetAddress>();
-	private Vector<String> logins = new Vector<String>();
+	private List<String> logins = new Vector<String>();
 	private JFrame cadre = new javax.swing.JFrame("Liste des amis connectés : ");
 	private Map<String, ChatPanel> discMap = new HashMap<String, ChatPanel>();
 	
-	public ContactListWindow(){
+	private boolean readyToDisplay = false;
+	private ContactListController controller;
+	
+	/*public ContactListWindow(){
 		for (int i = 0; i != 40; i++) {
 			logins.add("test" + i);
 		}
+	}*/
+	
+	public void setLogins(List<String> logins) {
+		this.logins = logins;
 	}
 	
-	public void refresh(Map<String, InetAddress> listeClient) throws IOException {
-		for (String login : listeClient.keySet()) {
-			logins.add(login);
-		}
-		lancerAffichage();
+	public void refresh(List<String> listeClient) throws IOException {
+		loginList.removeAll();
+		loginList.setListData(listeClient.toArray());
+		cadre.validate();
 	}
 	
 	
 	public void lancerAffichage() throws IOException
 	{
-		disconnectButton.addActionListener(this);
-		multiChatButton.addActionListener(this);
-		loginList.setListData(logins);
-		
-		loginList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		
-		loginList.addMouseListener(this);
-		
-		JPanel panneauListeContact = new JPanel();
-		panneauListeContact.setLayout(new BorderLayout());
-		panneauListeContact.add(loginList, BorderLayout.NORTH);
-		
-		scrollPane.getViewport().setView(loginList);
-		
-		panneauListeContact.add(scrollPane, BorderLayout.CENTER);
-		panneauListeContact.setBorder(new EmptyBorder(5,5,10,15));
-		
-		JPanel panneauAction = new JPanel();
-		panneauAction.setLayout(new BorderLayout());
-		panneauAction.add(disconnectButton, BorderLayout.WEST);
-		panneauAction.add(multiChatButton, BorderLayout.EAST);
-		panneauAction.setBorder(new EmptyBorder(0,30,10,30));
-		
-		JPanel panneauPrincipal = new JPanel();
-		panneauPrincipal.setLayout(new BorderLayout());
-		panneauPrincipal.add(panneauListeContact, BorderLayout.CENTER);
-		panneauPrincipal.add(panneauAction, BorderLayout.SOUTH);
-		panneauListeContact.setBorder(new EmptyBorder(10,10,10,10));
-		
-		cadre.setContentPane(panneauPrincipal);
-		cadre.setLocation(600, 200);
-		cadre.pack();
-		cadre.setResizable(false);
-		cadre.setSize(300, 400);
-		cadre.setVisible(true);
-		cadre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		if (!readyToDisplay) {
+			disconnectButton.addActionListener(this);
+			multiChatButton.addActionListener(this);
+			loginList.setListData(logins.toArray());
+			
+			loginList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			
+			loginList.addMouseListener(this);
+			
+			JPanel panneauListeContact = new JPanel();
+			panneauListeContact.setLayout(new BorderLayout());
+			panneauListeContact.add(loginList, BorderLayout.NORTH);
+			
+			scrollPane.getViewport().setView(loginList);
+			
+			panneauListeContact.add(scrollPane, BorderLayout.CENTER);
+			panneauListeContact.setBorder(new EmptyBorder(5,5,10,15));
+			
+			JPanel panneauAction = new JPanel();
+			panneauAction.setLayout(new BorderLayout());
+			panneauAction.add(disconnectButton, BorderLayout.WEST);
+			panneauAction.add(multiChatButton, BorderLayout.EAST);
+			panneauAction.setBorder(new EmptyBorder(0,30,10,30));
+			
+			JPanel panneauPrincipal = new JPanel();
+			panneauPrincipal.setLayout(new BorderLayout());
+			panneauPrincipal.add(panneauListeContact, BorderLayout.CENTER);
+			panneauPrincipal.add(panneauAction, BorderLayout.SOUTH);
+			panneauListeContact.setBorder(new EmptyBorder(10,10,10,10));
+			
+			cadre.setContentPane(panneauPrincipal);
+			cadre.setLocation(600, 200);
+			cadre.pack();
+			cadre.setResizable(false);
+			cadre.setSize(300, 400);
+			cadre.setVisible(true);
+			cadre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			
+			readyToDisplay = true;
+		} else {
+			cadre.setVisible(true);
+		}
 	}
 
 	@Override
@@ -104,13 +120,13 @@ public class ContactListWindow extends JPanel implements ActionListener, MouseLi
 				e1.printStackTrace();
 			}
 		} else if (e.getSource() == multiChatButton) {
-			SelectMultiContactWindow smlw = new SelectMultiContactWindow(logins, discMap);
+			/*SelectMultiContactWindow smlw = new SelectMultiContactWindow(logins, discMap);
 			try {
 				smlw.lancerAffichage();
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+			*/
 		}
 	}
 
@@ -153,6 +169,10 @@ public class ContactListWindow extends JPanel implements ActionListener, MouseLi
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public void setController(ContactListController clc) {
+		this.controller = clc;
 	}
 
 }

@@ -5,6 +5,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import client.handling.HandlerClient;
 import common.Message;
@@ -20,6 +21,8 @@ public class ClientMessageManager {
 	private Map<String, InetAddress> clientIps;
 	private Map<String, String> clientPorts;
 	private Log log;
+	
+	private int counter = 0;
 	
 	public ClientMessageManager(Client client, HandlerClient handler){
 		this.client=client;
@@ -38,6 +41,7 @@ public class ClientMessageManager {
 		
 		case ERROR:
 			log.log(EventType.RECEIVE_TCP, "Warning: Received Error message: " + message);
+			client.getLoginController().fireErrorMessage(message);
 			break;
 		}
 	}
@@ -63,16 +67,29 @@ public class ClientMessageManager {
 			break;
 			
 		case CLIENT_LIST:
+			@SuppressWarnings("unchecked")
+			List<String> logins = (List<String>) message.getObject(MessageInfoStrings.REQUEST_LIST_CLIENT_LOGINS);
+			if (counter == 0) {
+				client.setClientLogins(logins);
+				client.getLoginController().validated();
+				counter++;
+			} else {
+				client.setClientLogins(logins);
+				client.getContactListController().refresh();
+			}
+			/*
 			System.out.println("Reception de la liste des amis connecté avec leur adresses Ip");
 			@SuppressWarnings("unchecked")
 			Map<String, InetAddress> temp1 = new HashMap<String, InetAddress>((Map<String, InetAddress>) message.getObject("clientIps"));
 			client.setClientIps(temp1);
 			System.out.println("liste de amis connectés avec leur Ip: "+temp1);
 			clientIps=temp1;
+			*/
 			break;
 			
 		case CLIENT_PORT_LIST:
-			System.out.println("Reception de la liste des amis connecté avec leur ports d'écoute");
+			//System.out.println("Reception de la liste des amis connecté avec leur ports d'écoute");
+			
 			@SuppressWarnings("unchecked")
 			Map<String, String> temp2 = new HashMap<String, String>((Map<String, String>) message.getObject("clientPorts"));
 			client.setClientPorts(temp2);
