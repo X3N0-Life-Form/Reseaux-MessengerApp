@@ -112,8 +112,7 @@ public class LoginWindow extends JPanel implements ActionListener {
 		cadre.setVisible(false);
 		try {
 			ChatMain.clw.setLogins(clientLogins);
-			ContactListController clc = new ContactListController(ChatMain.clw, controller.getClient());
-			ChatMain.clw.setController(clc);
+			
 			ChatMain.clw.lancerAffichage();
 		} catch (IOException e1) {
 			e1.printStackTrace();

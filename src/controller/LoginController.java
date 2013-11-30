@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import common.Message;
 
+import view.ChatMain;
 import view.LoginWindow;
 import client.Client;
 
@@ -28,6 +29,10 @@ public class LoginController {
 			try {
 				client = new Client(login, pass, ipServer, 8001);
 				client.setLoginController(this);
+				
+				ContactListController clc = new ContactListController(ChatMain.clw, client);
+				ChatMain.clw.setController(clc);
+				
 				client.start();
 				while (!stopWaiting) {
 					
