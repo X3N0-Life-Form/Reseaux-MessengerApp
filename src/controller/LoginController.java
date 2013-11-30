@@ -2,6 +2,8 @@ package controller;
 
 import java.io.IOException;
 
+import javax.swing.JOptionPane;
+
 import common.Message;
 
 import view.ChatMain;
@@ -19,12 +21,9 @@ public class LoginController {
 		loginWindow.setController(this);
 	}
 	
-	public ProcessResult processLogin(String login, String pass, String ipServer) {
-		ProcessResult res = new ProcessResult();
+	public void processLogin(String login, String pass, String ipServer) {
 		if (login.isEmpty() || pass.isEmpty() || ipServer.isEmpty()) {
-			res.setOk(false);
-			res.setMessage("Veuillez remplir tous les champs.");
-			return res;
+			JOptionPane.showMessageDialog(null, "Veuillez remplir tous les champs.", "Error", JOptionPane.INFORMATION_MESSAGE);
 		} else {
 			try {
 				client = new Client(login, pass, ipServer, 8001);
@@ -34,17 +33,12 @@ public class LoginController {
 				ChatMain.clw.setController(clc);
 				
 				client.start();
-				/*while (!stopWaiting) {
-					
-				}*/
+
 				loginWindow.createContactList(client.getClientLogins());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			res.setOk(true);
 		}
-		
-		return res;
 	}
 
 	public void fireErrorMessage(Message message) {

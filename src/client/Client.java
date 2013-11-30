@@ -56,7 +56,7 @@ public class Client implements MasterClass {
 	 * @param serverPort - port used by the Server (Note: by default, should be 8001).
 	 * @throws IOException
 	 */
-	public Client(String login, String pass, String serverIp, int serverPort) throws IOException{
+	public Client(String login, String pass, String serverIp, int serverPort) throws IOException {
 		super();
 		this.login = login;
 		this.serverPort = serverPort;
