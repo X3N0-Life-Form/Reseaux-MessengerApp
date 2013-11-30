@@ -5,15 +5,13 @@ import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.event.ListSelectionListener;
 
 import java.awt.Color;
 import java.util.Vector;
 
-@Deprecated
-@SuppressWarnings("serial")
-public class ContactPanel extends JPanel{
+public class ContactPanel extends JPanel implements ListSelectionListener{
 	
-	@SuppressWarnings("unused")
 	private JButton refresh = new JButton("refresh");
 	private JScrollPane scrollPane;
 	private JList loginList = new JList();
@@ -36,8 +34,13 @@ public class ContactPanel extends JPanel{
 		scrollPane.getViewport().setView(loginList);
 	
 		setVisible(true);
+		
+		loginList.addListSelectionListener(this);
 	}
+	
+	public void 
 }
+	
 
 class SeeContactPanel{	
 	public static void main (String[] args){

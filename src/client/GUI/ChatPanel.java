@@ -29,8 +29,7 @@ public class ChatPanel extends JPanel {
 		 add(wPanel, BorderLayout.SOUTH);
 		 wPanel.setPreferredSize(new Dimension(100,150));
 		
-		setVisible(true);
-		
+		setVisible(true);		
 		
 	}
 }

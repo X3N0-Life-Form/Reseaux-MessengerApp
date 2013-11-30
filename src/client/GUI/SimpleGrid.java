@@ -23,14 +23,9 @@ public class SimpleGrid extends JPanel {
 	  setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
   
       // idée : contact panel à droite, bloc chat à gauche (bloc chat à définir dans une autre classe)
-      ContactPanel contacts = new ContactPanel();
       ChatPanel chatComponent = new ChatPanel();
 
-      //add(chatComponent, BorderLayout.WEST);
-      //chatComponent.setPreferredSize(new Dimension(400, 650));
-      //add(contacts, BorderLayout.EAST);
-      add(contacts);
-      contacts.setPreferredSize(new Dimension(200,650));
+   
       
    
     }
