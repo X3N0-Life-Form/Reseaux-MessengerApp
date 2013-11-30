@@ -13,6 +13,7 @@ public class ContactListController {
 	public ContactListController(ContactListWindow clw, Client client) {
 		this.clw = clw;
 		this.client = client;
+		this.client.setContactListController(this);
 	}
 
 	public void refresh() {
