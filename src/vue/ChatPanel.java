@@ -19,10 +19,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 
 public class ChatPanel extends JPanel implements ActionListener, KeyListener {	
-	
-	 /**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	
 	private static final int FRAME_WIDTH = 520;
