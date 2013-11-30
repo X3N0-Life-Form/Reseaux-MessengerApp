@@ -14,7 +14,7 @@
 	<target name="serveur">
         <jar destfile="jar/serveur.jar" filesetmanifest="mergewithoutmain">
             <manifest>
-                <attribute name="Main-Class" value="serveur.Serveur"/>
+                <attribute name="Main-Class" value="server.Server"/>
                 <attribute name="Class-Path" value="."/>
             </manifest>
             <fileset dir="bin"/>
