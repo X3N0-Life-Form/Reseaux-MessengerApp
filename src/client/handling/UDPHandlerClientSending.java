@@ -10,10 +10,10 @@ import java.net.SocketException;
 
 import client.Client;
 
-import commun.Message;
-import commun.MessageType;
-import commun.handling.HandlingException;
-import commun.logging.EventType;
+import common.Message;
+import common.MessageType;
+import common.handling.HandlingException;
+import common.logging.EventType;
 
 public class UDPHandlerClientSending extends UDPHandlerClient {
 	

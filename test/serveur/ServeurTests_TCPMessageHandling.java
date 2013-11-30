@@ -9,23 +9,25 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import server.Server;
+
 @SuppressWarnings("unused")
 public class ServeurTests_TCPMessageHandling {
 	
-	private Serveur serveur;
+	private Server serveur;
 	
 	private static Socket clientSocket;
 	private static int port;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		port = Serveur.DEFAULT_PORT_TCP;
+		port = Server.DEFAULT_PORT_TCP;
 		clientSocket = new Socket();
 	}
 
 	@Before
 	public void setUp() throws Exception {
-		serveur = new Serveur(port++);
+		serveur = new Server(port++);
 		serveur.start();
 	}
 

@@ -1,4 +1,4 @@
-package commun;
+package common;
 
 /**
  * Contains various String constants used to convey info through Message objects.

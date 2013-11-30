@@ -1,11 +1,11 @@
-package commun.handling;
+package common.handling;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.DatagramPacket;
 
-import commun.Message;
+import common.Message;
 
 public abstract class UDPHandler extends Thread implements Handler {
 

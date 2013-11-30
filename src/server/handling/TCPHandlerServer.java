@@ -1,4 +1,4 @@
-package serveur.handling;
+package server.handling;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -7,15 +7,15 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.Socket;
 
-import serveur.ServerMessageManager;
-import serveur.Serveur;
+import server.ServerMessageManager;
+import server.Server;
 
-import commun.MasterClass;
-import commun.Message;
-import commun.handling.Handler;
-import commun.handling.HandlingException;
-import commun.logging.EventType;
-import commun.logging.Log;
+import common.MasterClass;
+import common.Message;
+import common.handling.Handler;
+import common.handling.HandlingException;
+import common.logging.EventType;
+import common.logging.Log;
 
 /**
  * 
@@ -26,7 +26,7 @@ import commun.logging.Log;
 public class TCPHandlerServer extends Thread implements Handler {
 	
 	private Socket socket;
-	private Serveur serveur;
+	private Server serveur;
 	private Log log;
 	private ServerMessageManager messageManager;
 	
@@ -36,7 +36,7 @@ public class TCPHandlerServer extends Thread implements Handler {
 	 * @param clientSocket
 	 * @param serveur
 	 */
-	public TCPHandlerServer(Socket clientSocket, Serveur serveur) {
+	public TCPHandlerServer(Socket clientSocket, Server serveur) {
 		socket = clientSocket;
 		this.serveur = serveur;
 		log = serveur.getLog();

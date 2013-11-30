@@ -1,4 +1,4 @@
-package serveur;
+package server;
 
 import java.io.IOException;
 import java.net.DatagramSocket;
@@ -10,11 +10,11 @@ import java.util.List;
 import java.util.Map;
 
 
-import commun.Message;
-import commun.MessageInfoStrings;
-import commun.MessageType;
-import commun.handling.Handler;
-import commun.handling.HandlingException;
+import common.Message;
+import common.MessageInfoStrings;
+import common.MessageType;
+import common.handling.Handler;
+import common.handling.HandlingException;
 
 /**
  * This class determines the server's behavior upon receiving a Message from a client 
@@ -27,7 +27,7 @@ import commun.handling.HandlingException;
  */
 public class ServerMessageManager {
 	
-	private Serveur serveur;
+	private Server serveur;
 	private Handler handler;
 	private Map<String, InetAddress> clientIps;
 	private Map<String, String> clientPorts;
@@ -37,7 +37,7 @@ public class ServerMessageManager {
 	 * @param serveur
 	 * @param handler
 	 */
-	public ServerMessageManager(Serveur serveur, Handler handler) {
+	public ServerMessageManager(Server serveur, Handler handler) {
 		this.serveur = serveur;
 		this.handler = handler;
 		clientIps = serveur.getClientIps();

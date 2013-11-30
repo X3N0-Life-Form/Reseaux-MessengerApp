@@ -5,4 +5,4 @@
  * @author etudiant
  *
  */
-package serveur.handling;
+package server.handling;

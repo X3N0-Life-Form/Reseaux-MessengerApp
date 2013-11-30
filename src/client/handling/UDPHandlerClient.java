@@ -9,11 +9,11 @@ import java.net.SocketException;
 import client.Client;
 import client.ClientMessageManager;
 
-import commun.MasterClass;
-import commun.Message;
-import commun.handling.HandlingException;
-import commun.handling.UDPHandler;
-import commun.logging.Log;
+import common.MasterClass;
+import common.Message;
+import common.handling.HandlingException;
+import common.handling.UDPHandler;
+import common.logging.Log;
 
 /**
  * Abstract class containing methods common to Listening, Discuss and Sending subclasses.

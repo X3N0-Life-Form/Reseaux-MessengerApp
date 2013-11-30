@@ -2,8 +2,8 @@ package client.handling;
 
 import java.net.SocketException;
 
-import commun.logging.EventType;
-import commun.logging.Log;
+import common.logging.EventType;
+import common.logging.Log;
 
 import client.Client;
 

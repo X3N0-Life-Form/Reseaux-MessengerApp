@@ -12,20 +12,23 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import server.ServerTimeoutHandler;
+import server.Server;
+
 public class TimeoutOfflineTests {
 	
-	private Serveur serveur;
+	private Server serveur;
 	private ServerTimeoutHandler timeoutHandler;
 	private static int port;
 	
 	@BeforeClass
 	public static void setupBeforeClass() {
-		 port = Serveur.DEFAULT_PORT_TCP;
+		 port = Server.DEFAULT_PORT_TCP;
 	}
 	
 	@Before
 	public void setup() throws IOException {
-		serveur = new Serveur(port++);
+		serveur = new Server(port++);
 		timeoutHandler = new ServerTimeoutHandler(serveur);
 	}
 	

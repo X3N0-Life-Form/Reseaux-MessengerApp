@@ -1,4 +1,4 @@
-package serveur.handling;
+package server.handling;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -10,27 +10,27 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.Date;
 
-import serveur.ServerMessageManager;
-import serveur.Serveur;
+import server.ServerMessageManager;
+import server.Server;
 
-import commun.CommonConstants;
-import commun.MasterClass;
-import commun.Message;
-import commun.handling.Handler;
-import commun.handling.HandlingException;
-import commun.handling.UDPHandler;
-import commun.logging.Log;
+import common.CommonConstants;
+import common.MasterClass;
+import common.Message;
+import common.handling.Handler;
+import common.handling.HandlingException;
+import common.handling.UDPHandler;
+import common.logging.Log;
 
 /**
  * Thread handling the reception and sending of UDP Messages.
  * @author etudiant
- * @see Serveur
+ * @see Server
  * @see Message
  * @see Handler
  */
 public class UDPHandlerServer extends UDPHandler {
 	
-	private Serveur serveur;
+	private Server serveur;
 	private DatagramSocket socket;
 	private ServerMessageManager messageManager;
 	private Log log;
@@ -40,7 +40,7 @@ public class UDPHandlerServer extends UDPHandler {
 	 * <br />Note that the handler's thread needs to be launched by the Server.
 	 * @param serveur
 	 */
-	public UDPHandlerServer(Serveur serveur) {
+	public UDPHandlerServer(Server serveur) {
 		this.serveur = serveur;
 		log = serveur.getLog();
 		try {

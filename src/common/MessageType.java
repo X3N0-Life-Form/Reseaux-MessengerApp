@@ -1,4 +1,4 @@
-package commun;
+package common;
 
 /**
  * Message type enumeration.

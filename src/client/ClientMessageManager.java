@@ -7,11 +7,11 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 import client.handling.HandlerClient;
-import commun.Message;
-import commun.MessageInfoStrings;
-import commun.handling.HandlingException;
-import commun.logging.EventType;
-import commun.logging.Log;
+import common.Message;
+import common.MessageInfoStrings;
+import common.handling.HandlingException;
+import common.logging.EventType;
+import common.logging.Log;
 
 public class ClientMessageManager {
 	

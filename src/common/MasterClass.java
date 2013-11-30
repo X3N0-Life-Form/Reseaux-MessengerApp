@@ -1,6 +1,6 @@
-package commun;
+package common;
 
-import commun.handling.Handler;
+import common.handling.Handler;
 
 /**
  * Interface defining a Master class, such as Server or Client.

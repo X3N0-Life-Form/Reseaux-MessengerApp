@@ -14,12 +14,14 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import serveur.handling.TCPHandlerServer;
-import serveur.handling.UDPHandlerServer;
+import server.ServerMessageManager;
+import server.Server;
+import server.handling.TCPHandlerServer;
+import server.handling.UDPHandlerServer;
 
-import commun.Message;
-import commun.MessageType;
-import commun.handling.HandlingException;
+import common.Message;
+import common.MessageType;
+import common.handling.HandlingException;
 
 public class MessageManagerOfflineTests {
 	
@@ -48,7 +50,7 @@ public class MessageManagerOfflineTests {
 		
 	}
 	
-	private Serveur serveur;
+	private Server serveur;
 	private UDPHandlerServer udpHandler;
 	private ServerMessageManager udpMessageManager;
 	private TCPHandlerServer tcpHandler;
@@ -62,12 +64,12 @@ public class MessageManagerOfflineTests {
 	
 	@BeforeClass
 	public static void setupBeforeClass() {
-		 port = Serveur.DEFAULT_PORT_TCP;
+		 port = Server.DEFAULT_PORT_TCP;
 	}
 	
 	@Before
 	public void setup() throws IOException {
-		serveur = new Serveur(port++);
+		serveur = new Server(port++);
 		clientSocket = new Socket();
 		datagramSocket = new DatagramSocket();
 		udpHandler = serveur.getUDPHandler();

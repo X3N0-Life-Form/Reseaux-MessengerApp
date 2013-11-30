@@ -1,4 +1,4 @@
-package commun;
+package common;
 
 /**
  * Contains constants used by both Servers and Clients.

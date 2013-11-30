@@ -1,4 +1,4 @@
-package serveur;
+package server;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -9,12 +9,12 @@ import java.util.Map;
 
 import org.jdom2.JDOMException;
 
-import commun.MasterClass;
-import commun.logging.EventType;
-import commun.logging.Log;
+import common.MasterClass;
+import common.logging.EventType;
+import common.logging.Log;
 
-import serveur.handling.TCPHandlerServer;
-import serveur.handling.UDPHandlerServer;
+import server.handling.TCPHandlerServer;
+import server.handling.UDPHandlerServer;
 
 /**
  * Server-side master class. Contains the server's settings, data and handles the creation of every required
@@ -22,7 +22,7 @@ import serveur.handling.UDPHandlerServer;
  * @author etudiant
  * 
  */
-public class Serveur implements MasterClass {
+public class Server implements MasterClass {
 	private ServerSocket serverSocket;
 	private Map<String, InetAddress> clientIps;
 	private Map<String, String> clientPorts;
@@ -44,7 +44,7 @@ public class Serveur implements MasterClass {
 	 * @param port - Port used by the server; must not be already in use.
 	 * @throws IOException
 	 */
-	public Serveur(int port) throws IOException {
+	public Server(int port) throws IOException {
 		this.port = port;
 		serverSocket = new ServerSocket(port);
 		clientIps = new HashMap<String, InetAddress>();
@@ -61,7 +61,7 @@ public class Serveur implements MasterClass {
 	 * Constructs a Server using the default port.
 	 * @throws IOException
 	 */
-	public Serveur() throws IOException {
+	public Server() throws IOException {
 		this(DEFAULT_PORT_TCP);
 	}
 	
@@ -74,7 +74,7 @@ public class Serveur implements MasterClass {
 			//TODO: handle args
 		}
 		try {
-			Serveur serveur = new Serveur();
+			Server serveur = new Server();
 			serveur.loginParser.parse();
 			serveur.printRecap();
 			serveur.start();

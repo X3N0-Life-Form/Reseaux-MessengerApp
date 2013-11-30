@@ -8,20 +8,23 @@ import org.jdom2.JDOMException;
 import org.junit.Before;
 import org.junit.Test;
 
+import server.LoginParser;
+import server.Server;
+
 public class LoginParserTests {
 	
 	private LoginParser loginParser;
 
 	@Before
 	public void setUp() throws JDOMException, IOException {
-		loginParser = new LoginParser(Serveur.DEFAULT_LOGIN_FILE_URL);
+		loginParser = new LoginParser(Server.DEFAULT_LOGIN_FILE_URL);
 		loginParser.parse();
 	}
 
 	@Test
 	public void testHasBeenParsed() {
 		assertTrue(loginParser.hasParsed());
-		assertFalse(new LoginParser(Serveur.DEFAULT_LOGIN_FILE_URL).hasParsed());
+		assertFalse(new LoginParser(Server.DEFAULT_LOGIN_FILE_URL).hasParsed());
 	}
 
 	@Test

@@ -6,4 +6,4 @@
  * @author etudiant
  *
  */
-package serveur;
+package server;

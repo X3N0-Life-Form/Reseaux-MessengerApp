@@ -1,4 +1,4 @@
-package commun.logging;
+package common.logging;
 
 public enum EventType {
 	PARSING,

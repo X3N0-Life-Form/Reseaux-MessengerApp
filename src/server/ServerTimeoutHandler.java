@@ -1,24 +1,24 @@
-package serveur;
+package server;
 
 import java.net.InetAddress;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import commun.logging.EventType;
-import commun.logging.Log;
+import common.logging.EventType;
+import common.logging.Log;
 
 /**
  * This class handles client timeouts, keeping track of the date at which each client's
  * message was received. Clients will be removed from the timeout table according to the
  * Server's timeout time.
  * @author etudiant
- * @see Serveur
+ * @see Server
  */
 public class ServerTimeoutHandler extends Thread {
 	
 	private Map<InetAddress, Date> timeoutTable;
-	private Serveur serveur;
+	private Server serveur;
 	private Log log;
 	
 	/**
@@ -26,7 +26,7 @@ public class ServerTimeoutHandler extends Thread {
 	 * <br />Note: the thread must be started by the Server.
 	 * @param serveur
 	 */
-	public ServerTimeoutHandler(Serveur serveur) {
+	public ServerTimeoutHandler(Server serveur) {
 		this.serveur = serveur;
 		timeoutTable = new HashMap<InetAddress, Date>();
 		log = serveur.getLog();
@@ -40,7 +40,7 @@ public class ServerTimeoutHandler extends Thread {
 		this.timeoutTable = timeoutTable;
 	}
 
-	public Serveur getServeur() {
+	public Server getServeur() {
 		return serveur;
 	}
 

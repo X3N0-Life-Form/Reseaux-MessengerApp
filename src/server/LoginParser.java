@@ -1,4 +1,4 @@
-package serveur;
+package server;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,7 +11,7 @@ import org.jdom2.input.SAXBuilder;
 /**
  * This class parses and stores the login file in memory. It can then be used to authenticate a client.
  * @author etudiant
- * @see Serveur
+ * @see Server
  */
 public class LoginParser {
 	

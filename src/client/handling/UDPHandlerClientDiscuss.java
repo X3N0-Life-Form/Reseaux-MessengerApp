@@ -10,9 +10,9 @@ import java.net.SocketException;
 
 import client.Client;
 
-import commun.Message;
-import commun.MessageType;
-import commun.handling.HandlingException;
+import common.Message;
+import common.MessageType;
+import common.handling.HandlingException;
 
 public class UDPHandlerClientDiscuss extends UDPHandlerClient {
 	

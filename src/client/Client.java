@@ -6,11 +6,11 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 
-import commun.MasterClass;
-import commun.logging.EventType;
-import commun.logging.Log;
+import common.MasterClass;
+import common.logging.EventType;
+import common.logging.Log;
 
-import serveur.Serveur;
+import server.Server;
 
 import client.handling.TCPHandlerClient;
 import client.handling.UDPClient;
@@ -97,7 +97,7 @@ public class Client implements MasterClass {
 		String c_pass=args[1];
 		String ip = args[2];
 		try {
-			Client client = new Client(c_login, c_pass, ip, Serveur.DEFAULT_PORT_TCP);
+			Client client = new Client(c_login, c_pass, ip, Server.DEFAULT_PORT_TCP);
 			client.printRecap();
 			client.start();
 		} catch (IOException e) {
