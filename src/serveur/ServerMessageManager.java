@@ -10,11 +10,11 @@ import java.util.List;
 import java.util.Map;
 
 
-import commun.Handler;
-import commun.HandlingException;
 import commun.Message;
 import commun.MessageInfoStrings;
 import commun.MessageType;
+import commun.handling.Handler;
+import commun.handling.HandlingException;
 
 /**
  * This class determines the server's behavior upon receiving a Message from a client 
@@ -22,8 +22,8 @@ import commun.MessageType;
  * <br />Note that the actual reception and response are delegated to the Handler objects.
  * @author etudiant
  * @see Handler
- * @see UDPHandler
- * @see TCPHandler
+ * @see UDPHandlerServer
+ * @see TCPHandlerServer
  */
 public class ServerMessageManager {
 	

@@ -1,9 +1,12 @@
-package commun;
+package commun.handling;
 
 import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.Socket;
 import java.net.DatagramPacket;
+
+import commun.MasterClass;
+import commun.Message;
 
 /**
  * Generic handler interface.

@@ -1,9 +1,7 @@
 package serveur.handling;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -11,15 +9,16 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.Date;
+
 import serveur.ServerMessageManager;
 import serveur.Serveur;
 
 import commun.CommonConstants;
-import commun.Handler;
-import commun.HandlingException;
 import commun.MasterClass;
 import commun.Message;
-import commun.logging.EventType;
+import commun.handling.Handler;
+import commun.handling.HandlingException;
+import commun.handling.UDPHandler;
 import commun.logging.Log;
 
 /**
@@ -29,7 +28,7 @@ import commun.logging.Log;
  * @see Message
  * @see Handler
  */
-public class UDPHandler extends Thread implements Handler {
+public class UDPHandlerServer extends UDPHandler {
 	
 	private Serveur serveur;
 	private DatagramSocket socket;
@@ -41,7 +40,7 @@ public class UDPHandler extends Thread implements Handler {
 	 * <br />Note that the handler's thread needs to be launched by the Server.
 	 * @param serveur
 	 */
-	public UDPHandler(Serveur serveur) {
+	public UDPHandlerServer(Serveur serveur) {
 		this.serveur = serveur;
 		log = serveur.getLog();
 		try {
@@ -77,20 +76,7 @@ public class UDPHandler extends Thread implements Handler {
 		}
 	}
 
-	/**
-	 * Extracts the message contained in a DatagramPacket.
-	 * @param p The DatagramPacket supposedly containing a Message Object.
-	 * @return Message object read off the packet.
-	 * @throws IOException
-	 * @throws ClassNotFoundException
-	 */
-	public Message getMessage(DatagramPacket p) throws IOException, ClassNotFoundException {
-		ByteArrayInputStream bis = new ByteArrayInputStream(p.getData());
-		ObjectInputStream ois = new ObjectInputStream(bis);
-		Message message = (Message) ois.readObject();
-		System.out.println("Received message from " + p.getAddress() + ":" + p.getPort() + "; message=" + message);
-		return message;
-	}
+	
 
 	@Override
 	public void sendMessage(Message message, DatagramSocket socket, DatagramPacket packet) throws IOException, ClassNotFoundException {

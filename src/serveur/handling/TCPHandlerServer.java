@@ -10,10 +10,10 @@ import java.net.Socket;
 import serveur.ServerMessageManager;
 import serveur.Serveur;
 
-import commun.Handler;
-import commun.HandlingException;
 import commun.MasterClass;
 import commun.Message;
+import commun.handling.Handler;
+import commun.handling.HandlingException;
 import commun.logging.EventType;
 import commun.logging.Log;
 
@@ -23,7 +23,7 @@ import commun.logging.Log;
  * @see Handler
  * @see ServerMessageManager
  */
-public class TCPHandler extends Thread implements Handler {
+public class TCPHandlerServer extends Thread implements Handler {
 	
 	private Socket socket;
 	private Serveur serveur;
@@ -36,7 +36,7 @@ public class TCPHandler extends Thread implements Handler {
 	 * @param clientSocket
 	 * @param serveur
 	 */
-	public TCPHandler(Socket clientSocket, Serveur serveur) {
+	public TCPHandlerServer(Socket clientSocket, Serveur serveur) {
 		socket = clientSocket;
 		this.serveur = serveur;
 		log = serveur.getLog();

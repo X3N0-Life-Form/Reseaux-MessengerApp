@@ -3,9 +3,9 @@ package client.handling;
 import java.io.IOException;
 import java.net.DatagramSocket;
 
-import commun.Handler;
-import commun.HandlingException;
 import commun.Message;
+import commun.handling.Handler;
+import commun.handling.HandlingException;
 
 /**
  * Client side specific handler interface.

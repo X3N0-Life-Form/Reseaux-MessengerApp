@@ -10,10 +10,10 @@ import java.net.Socket;
 import client.Client;
 import client.ClientMessageManager;
 
-import commun.HandlingException;
 import commun.MasterClass;
 import commun.Message;
 import commun.MessageType;
+import commun.handling.HandlingException;
 
 /**
  * Client side TCP handler class. Sends the Client's login and password to the Server for

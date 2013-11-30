@@ -9,9 +9,10 @@ import java.net.SocketException;
 import client.Client;
 import client.ClientMessageManager;
 
-import commun.HandlingException;
 import commun.MasterClass;
 import commun.Message;
+import commun.handling.HandlingException;
+import commun.handling.UDPHandler;
 import commun.logging.Log;
 
 /**
@@ -21,7 +22,7 @@ import commun.logging.Log;
  * @see UDPHandlerClientListening
  * @see UDPHandlerClientSending
  */
-public abstract class UDPHandlerClient extends Thread implements HandlerClient {
+public abstract class UDPHandlerClient extends UDPHandler implements HandlerClient {
 	
 	protected Client client;
 	protected DatagramSocket socket;

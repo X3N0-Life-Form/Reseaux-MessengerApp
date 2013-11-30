@@ -13,8 +13,8 @@ import commun.MasterClass;
 import commun.logging.EventType;
 import commun.logging.Log;
 
-import serveur.handling.TCPHandler;
-import serveur.handling.UDPHandler;
+import serveur.handling.TCPHandlerServer;
+import serveur.handling.UDPHandlerServer;
 
 /**
  * Server-side master class. Contains the server's settings, data and handles the creation of every required
@@ -31,7 +31,7 @@ public class Serveur implements MasterClass {
 	private ServerTimeoutHandler timeoutHandler;
 	private boolean running;
 	private long timeout;
-	private UDPHandler udpHandler;
+	private UDPHandlerServer udpHandler;
 	private LoginParser loginParser;
 	private Log log;
 	
@@ -52,7 +52,7 @@ public class Serveur implements MasterClass {
 		timeoutHandler = new ServerTimeoutHandler(this);
 		running = false;
 		timeout = DEFAULT_TIMEOUT_TIME;
-		udpHandler = new UDPHandler(this);
+		udpHandler = new UDPHandlerServer(this);
 		loginParser = new LoginParser(DEFAULT_LOGIN_FILE_URL);
 		log = new Log();
 	}
@@ -121,7 +121,7 @@ public class Serveur implements MasterClass {
 				Socket socket = serverSocket.accept();
 				
 				log.log(EventType.RECEIVE_TCP, "Recieved TCP message" + socket.getInetAddress());
-				TCPHandler tcph = new TCPHandler(socket, this);
+				TCPHandlerServer tcph = new TCPHandlerServer(socket, this);
 				
 				log.log(EventType.START, "Starting TCP handler thread for " + socket.getInetAddress());
 				tcph.start();
@@ -188,7 +188,7 @@ public class Serveur implements MasterClass {
 		running = true;
 	}
 
-	public UDPHandler getUDPHandler() {
+	public UDPHandlerServer getUDPHandler() {
 		return udpHandler;
 	}
 

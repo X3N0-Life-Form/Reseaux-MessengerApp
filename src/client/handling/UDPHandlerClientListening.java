@@ -1,9 +1,7 @@
 package client.handling;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -11,20 +9,13 @@ import java.net.InetAddress;
 import java.net.SocketException;
 
 import client.Client;
-import client.ClientMessageManager;
 
 import commun.CommonConstants;
-import commun.HandlingException;
 import commun.Message;
+import commun.handling.HandlingException;
 import commun.logging.EventType;
-import commun.logging.Log;
 
 public class UDPHandlerClientListening extends UDPHandlerClient {
-	
-	private Client client;
-	private DatagramSocket socket;
-	private ClientMessageManager messageManager;
-	private Log log;
 	
 	public UDPHandlerClientListening(Client client) throws SocketException{
 		super(client);
@@ -56,13 +47,6 @@ public class UDPHandlerClientListening extends UDPHandlerClient {
 				e.printStackTrace();
 			}
 		}
-	}
-
-	public Message getMessage(DatagramPacket p) throws IOException, ClassNotFoundException {
-		ByteArrayInputStream bis = new ByteArrayInputStream(p.getData());
-		ObjectInputStream ois = new ObjectInputStream(bis);
-		Message message = (Message) ois.readObject();
-		return message;
 	}
 
 	@Override
