@@ -2,3 +2,4 @@ bin/
 jar/client.jar
 jar/serveur.jar
 doc/*
+javadoc.xml
