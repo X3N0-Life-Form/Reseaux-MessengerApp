@@ -7,7 +7,7 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 import client.handling.HandlerClient;
-import client.handling.HandlingException;
+import commun.HandlingException;
 import commun.Message;
 import commun.logging.EventType;
 import commun.logging.Log;

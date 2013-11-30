@@ -1,9 +1,10 @@
-package serveur.handling;
+package commun;
+
 
 /**
  * Handling-related exception.
  * @author etudiant
- * @see HandlerServeur
+ * @see Handler
  */
 public class HandlingException extends Exception {
 

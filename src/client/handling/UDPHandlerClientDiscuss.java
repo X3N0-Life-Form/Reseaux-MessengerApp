@@ -12,6 +12,8 @@ import java.net.SocketException;
 import client.Client;
 import client.ClientMessageManager;
 
+import commun.HandlingException;
+import commun.MasterClass;
 import commun.Message;
 import commun.MessageType;
 import commun.logging.Log;
@@ -80,7 +82,15 @@ public class UDPHandlerClientDiscuss extends Thread implements HandlerClient{
 	}
 
 	@Override
-	public Client getClient() {
+	public MasterClass getMasterClass() {
 		return client;
 	}
+
+	@Override
+	public void sendMessage(Message message, DatagramSocket socket,
+			DatagramPacket paquet) throws HandlingException, IOException,
+			ClassNotFoundException {
+		sendMessage(message, socket);
+	}
+
 }

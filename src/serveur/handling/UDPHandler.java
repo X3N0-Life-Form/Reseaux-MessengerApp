@@ -15,6 +15,9 @@ import serveur.ServerMessageManager;
 import serveur.Serveur;
 
 import commun.CommonConstants;
+import commun.Handler;
+import commun.HandlingException;
+import commun.MasterClass;
 import commun.Message;
 import commun.logging.EventType;
 import commun.logging.Log;
@@ -24,9 +27,9 @@ import commun.logging.Log;
  * @author etudiant
  * @see Serveur
  * @see Message
- * @see HandlerServeur
+ * @see Handler
  */
-public class UDPHandler extends Thread implements HandlerServeur {
+public class UDPHandler extends Thread implements Handler {
 	
 	private Serveur serveur;
 	private DatagramSocket socket;
@@ -107,7 +110,7 @@ public class UDPHandler extends Thread implements HandlerServeur {
 	}
 
 	@Override
-	public Serveur getServeur() {
+	public MasterClass getMasterClass() {
 		return serveur;
 	}
 

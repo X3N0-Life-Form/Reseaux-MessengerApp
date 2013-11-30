@@ -16,6 +16,8 @@ import client.ClientMessageManager;
 import client.Client;
 
 import commun.CommonConstants;
+import commun.HandlingException;
+import commun.MasterClass;
 import commun.Message;
 import commun.logging.EventType;
 import commun.logging.Log;
@@ -88,7 +90,7 @@ public class UDPHandlerClientListening extends Thread implements HandlerClient{
 	}
 
 	@Override
-	public Client getClient() {
+	public MasterClass getMasterClass() {
 		return client;
 	}
 
@@ -96,6 +98,13 @@ public class UDPHandlerClientListening extends Thread implements HandlerClient{
 	public void sendMessage(Message message, Socket socket)
 			throws HandlingException {
 		throw new HandlingException("Can't handle a Socket.");
+	}
+
+	@Override
+	public void sendMessage(Message message, DatagramSocket socket,
+			DatagramPacket paquet) throws HandlingException, IOException,
+			ClassNotFoundException {
+		sendMessage(message, socket);
 	}
 
 }

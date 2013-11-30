@@ -2,15 +2,25 @@ package client.handling;
 
 import java.io.IOException;
 import java.net.DatagramSocket;
-import java.net.Socket;
 
-import client.Client;
-
+import commun.Handler;
+import commun.HandlingException;
 import commun.Message;
 
-public interface HandlerClient {
+/**
+ * Client side specific handler interface.
+ * @author etudiant
+ *
+ */
+public interface HandlerClient extends Handler {
 	
-	public void sendMessage(Message message, Socket socket) throws IOException, HandlingException;
+	/**
+	 * Doesn't require a DatagramPacket.
+	 * @param message
+	 * @param socket
+	 * @throws HandlingException
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	public void sendMessage(Message message, DatagramSocket socket) throws HandlingException, IOException, ClassNotFoundException;
-	public Client getClient();
 }

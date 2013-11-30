@@ -1,21 +1,15 @@
-package serveur.handling;
+package commun;
 
 import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.Socket;
 import java.net.DatagramPacket;
 
-import serveur.Serveur;
-
-import commun.Message;
-
 /**
- * Server-side handler interface.
+ * Generic handler interface.
  * @author etudiant
- * @see TCPHandler
- * @see UDPHandler
  */
-public interface HandlerServeur { //TODO: make this a common interface
+public interface Handler {
 
 	/**
 	 * 
@@ -38,9 +32,9 @@ public interface HandlerServeur { //TODO: make this a common interface
 	public void sendMessage(Message message, DatagramSocket socket, DatagramPacket paquet) throws HandlingException, IOException, ClassNotFoundException;
 	
 	/**
-	 * Gets the Server.
-	 * @return Server associated with this Handler.
+	 * Gets the Master class.
+	 * @return MasterClass associated with this Handler.
 	 */
-	public Serveur getServeur();
+	public MasterClass getMasterClass();
 
 }

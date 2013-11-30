@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.jdom2.JDOMException;
 
+import commun.MasterClass;
 import commun.logging.EventType;
 import commun.logging.Log;
 
@@ -21,7 +22,7 @@ import serveur.handling.UDPHandler;
  * @author etudiant
  * 
  */
-public class Serveur {
+public class Serveur implements MasterClass {
 	private ServerSocket serverSocket;
 	private Map<String, InetAddress> clientIps;
 	private Map<String, String> clientPorts;

@@ -14,10 +14,10 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import serveur.handling.HandlingException;
 import serveur.handling.TCPHandler;
 import serveur.handling.UDPHandler;
 
+import commun.HandlingException;
 import commun.Message;
 import commun.MessageType;
 

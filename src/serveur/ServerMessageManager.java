@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import serveur.handling.HandlerServeur;
-import serveur.handling.HandlingException;
 
+import commun.Handler;
+import commun.HandlingException;
 import commun.Message;
 import commun.MessageInfoStrings;
 import commun.MessageType;
@@ -21,14 +21,14 @@ import commun.MessageType;
  * and prepares an appropriate answer.
  * <br />Note that the actual reception and response are delegated to the Handler objects.
  * @author etudiant
- * @see HandlerServeur
+ * @see Handler
  * @see UDPHandler
  * @see TCPHandler
  */
 public class ServerMessageManager {
 	
 	private Serveur serveur;
-	private HandlerServeur handler;
+	private Handler handler;
 	private Map<String, InetAddress> clientIps;
 	private Map<String, String> clientPorts;
 	
@@ -37,7 +37,7 @@ public class ServerMessageManager {
 	 * @param serveur
 	 * @param handler
 	 */
-	public ServerMessageManager(Serveur serveur, HandlerServeur handler) {
+	public ServerMessageManager(Serveur serveur, Handler handler) {
 		this.serveur = serveur;
 		this.handler = handler;
 		clientIps = serveur.getClientIps();

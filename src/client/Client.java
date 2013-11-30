@@ -6,6 +6,7 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 
+import commun.MasterClass;
 import commun.logging.EventType;
 import commun.logging.Log;
 
@@ -21,7 +22,7 @@ import client.ClientTimeoutHandler;
  * @author etudiant
  *
  */
-public class Client { //TODO: 
+public class Client implements MasterClass { 
 	
 	private static final long DEFAULT_TIMEOUT_TIME = 0;
 	private String login;

@@ -3,12 +3,15 @@ package client.handling;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.Socket;
 
 import client.Client;
 import client.ClientMessageManager;
 
+import commun.HandlingException;
+import commun.MasterClass;
 import commun.Message;
 import commun.MessageType;
 
@@ -99,13 +102,20 @@ public class TCPHandlerClient implements HandlerClient {
 	}
 
 	@Override
-	public Client getClient() {
+	public MasterClass getMasterClass() {
 		return client;
 	}
 
 	@Override
 	public void sendMessage(Message message, DatagramSocket socket) throws HandlingException{
 		throw new HandlingException("Can't handle a DatagramSocket.");
+	}
+
+	@Override
+	public void sendMessage(Message message, DatagramSocket socket,
+			DatagramPacket paquet) throws HandlingException, IOException,
+			ClassNotFoundException {
+		sendMessage(message, socket);
 	}
 
 }
