@@ -112,7 +112,6 @@ public class LoginWindow extends JPanel implements ActionListener {
 		cadre.setVisible(false);
 		try {
 			ChatMain.clw.setLogins(clientLogins);
-			
 			ChatMain.clw.lancerAffichage();
 		} catch (IOException e1) {
 			e1.printStackTrace();

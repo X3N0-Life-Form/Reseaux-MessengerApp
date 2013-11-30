@@ -34,9 +34,9 @@ public class LoginController {
 				ChatMain.clw.setController(clc);
 				
 				client.start();
-				while (!stopWaiting) {
+				/*while (!stopWaiting) {
 					
-				}
+				}*/
 				loginWindow.createContactList(client.getClientLogins());
 			} catch (IOException e) {
 				e.printStackTrace();
