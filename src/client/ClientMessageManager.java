@@ -9,6 +9,7 @@ import java.util.Map;
 import client.handling.HandlerClient;
 import commun.HandlingException;
 import commun.Message;
+import commun.MessageInfoStrings;
 import commun.logging.EventType;
 import commun.logging.Log;
 
@@ -16,9 +17,7 @@ public class ClientMessageManager {
 	
 	private Client client;
 	private HandlerClient handler;
-	@SuppressWarnings("unused")
 	private Map<String, InetAddress> clientIps;
-	@SuppressWarnings("unused")
 	private Map<String, String> clientPorts;
 	private Log log;
 	
@@ -60,7 +59,7 @@ public class ClientMessageManager {
 			break;
 			
 		case REQUEST_IP:
-			
+			handler.sendMessage(message, socket);
 			break;
 			
 		case CLIENT_LIST:
@@ -87,7 +86,11 @@ public class ClientMessageManager {
 			break;
 			
 		case CLIENT_IP:
-			
+			InetAddress targetIP = (InetAddress) message.getObject(MessageInfoStrings.REQUEST_IP_TARGET_IP);
+			String targetPort = message.getInfo(MessageInfoStrings.REQUEST_IP_TARGET_PORT);
+			String targetLogin = message.getInfo(MessageInfoStrings.GENERIC_LOGIN);
+			clientIps.put(targetLogin, targetIP);
+			clientPorts.put(targetLogin, targetPort);
 			break;
 			
 		case ERROR:

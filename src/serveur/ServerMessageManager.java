@@ -131,6 +131,7 @@ public class ServerMessageManager {
 				Message clientIPMsg = new Message(MessageType.CLIENT_IP);
 				clientIPMsg.addObject(MessageInfoStrings.REQUEST_IP_TARGET_IP, clientIps.get(login));
 				clientIPMsg.addInfo(MessageInfoStrings.REQUEST_IP_TARGET_PORT, clientPorts.get(login));
+				clientIPMsg.addInfo(MessageInfoStrings.GENERIC_LOGIN, login);
 				handler.sendMessage(clientIPMsg, socket, paquet);
 				
 			} else {
