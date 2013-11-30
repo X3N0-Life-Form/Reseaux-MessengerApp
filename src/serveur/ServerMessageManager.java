@@ -61,8 +61,8 @@ public class ServerMessageManager {
 			String pass = message.getInfo(MessageInfoStrings.GENERIC_PASSWORD);
 			if (serveur.authenticateClient(login, pass)) {
 				clientIps.put(login, ip);
+				clientPorts.put(login, socket.getPort() + "");
 				serveur.getTimeoutHandler().addClient(socket.getInetAddress());
-				System.out.println(socket.getInetAddress());
 				Message okMsg = new Message(
 						MessageType.OK,
 						"Able to authenticate client.");
