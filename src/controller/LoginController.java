@@ -4,8 +4,6 @@ import java.io.IOException;
 
 import javax.swing.JOptionPane;
 
-import common.Message;
-
 import view.ChatMain;
 import view.LoginWindow;
 import client.Client;
@@ -14,7 +12,6 @@ public class LoginController {
 	
 	private LoginWindow loginWindow;
 	private Client client;
-	private boolean stopWaiting = false;
 	
 	public LoginController(LoginWindow window) {
 		this.loginWindow = window;
@@ -23,7 +20,7 @@ public class LoginController {
 	
 	public void processLogin(String login, String pass, String ipServer) {
 		if (login.isEmpty() || pass.isEmpty() || ipServer.isEmpty()) {
-			JOptionPane.showMessageDialog(null, "Veuillez remplir tous les champs.", "Error", JOptionPane.INFORMATION_MESSAGE);
+			fireErrorMessage("Veuillez remplir tous les champs.");
 		} else {
 			try {
 				client = new Client(login, pass, ipServer, 8001);
@@ -41,13 +38,8 @@ public class LoginController {
 		}
 	}
 
-	public void fireErrorMessage(Message message) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public synchronized void validated() {
-		stopWaiting  = true;
+	public void fireErrorMessage(String message) {
+		JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	public Client getClient() {

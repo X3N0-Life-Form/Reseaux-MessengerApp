@@ -5,7 +5,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketAddress;
 import java.net.SocketException;
 
 import client.Client;
@@ -51,6 +54,7 @@ public class TCPHandlerClient implements HandlerClient {
 		message.addInfo("login",client.getLogin());
 		message.addInfo("pass",client.getPass());
 		this.sendMessage(message,socket);
+		
 	}
 
 	/**
@@ -91,8 +95,15 @@ public class TCPHandlerClient implements HandlerClient {
 	 */
 	public void run() {
 		try {
-			handleConnect();
-			handleDialog();
+			InetAddress inet = InetAddress.getByName(client.getServerIp());
+			boolean up = inet.isReachable(10000);
+			if (up) {
+				socket.connect(new InetSocketAddress(client.getServerIp(), 8001), 10000);
+				handleConnect();
+				handleDialog();
+			} else {
+				client.getLoginController().fireErrorMessage("Unable to connect to Server");
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
