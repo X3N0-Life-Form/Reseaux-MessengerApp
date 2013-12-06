@@ -1,5 +1,6 @@
 bin/
 jar/client.jar
-jar/serveur.jar
+jar/server.jar
 doc/*
 javadoc.xml
+nubuild.xml
