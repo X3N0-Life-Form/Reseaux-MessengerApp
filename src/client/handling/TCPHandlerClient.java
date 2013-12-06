@@ -8,12 +8,9 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.net.SocketAddress;
-import java.net.SocketException;
 
 import client.Client;
 import client.ClientMessageManager;
-
 import common.MasterClass;
 import common.Message;
 import common.MessageType;
@@ -21,11 +18,11 @@ import common.handling.HandlingException;
 
 /**
  * Client side TCP handler class. Sends the Client's login and password to the Server for
- * authentication. Note that despite possessing a run() method, this is <b>not</b> a Thread.
+ * authentication.
  * @author etudiant
  * @see ClientMessageManager
  */
-public class TCPHandlerClient implements HandlerClient {
+public class TCPHandlerClient extends Thread implements HandlerClient {
 	
 	private Socket socket;
 	private Client client;
@@ -59,7 +56,8 @@ public class TCPHandlerClient implements HandlerClient {
 
 	/**
 	 * Receives messages from the Server and passes them to the MessageManager. In effect,
-	 * this should only be receiving answers to a connection request. 
+	 * this should only be receiving answers to a connection request.
+	 * <br />Note: This closes the Socket. 
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 * @throws HandlingException
@@ -90,25 +88,31 @@ public class TCPHandlerClient implements HandlerClient {
 		return message;
 	}
 
-	/**
-	 * Connects the Client to the Server.
-	 */
+	@Override
 	public void run() {
 		try {
-			InetAddress inet = InetAddress.getByName(client.getServerIp());
-			boolean up = inet.isReachable(10000);
-			if (up) {
-				socket.connect(new InetSocketAddress(client.getServerIp(), 8001), 10000);
-				handleConnect();
-				handleDialog();
-			} else {
-				client.getLoginController().fireErrorMessage("Unable to connect to Server");
+			while (client.isRunning()) {
+				if (!client.isConnected() && client.tryToConnect()) {
+					InetAddress inet = InetAddress.getByName(client.getServerIp());
+					boolean up = inet.isReachable(10000);
+					if (up) {
+						socket.connect(new InetSocketAddress(client.getServerIp(), client.getServerPort()), 10000);
+						handleConnect();
+						handleDialog();
+					} else {
+						client.getLoginController().fireErrorMessage("Unable to connect to Server");
+					}
+				} else {
+					Thread.sleep(5000);
+				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (HandlingException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 	}

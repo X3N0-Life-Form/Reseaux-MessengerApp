@@ -104,7 +104,7 @@ public class Client implements MasterClass {
 		tcpHandlerClient = new TCPHandlerClient(clientSocket, this);
 		udpClient = new UDPClient(this);
 		
-		tcpHandlerClient.run();
+		tcpHandlerClient.start();
 		log.log(EventType.START, "Starting UDP handler");
 		udpClient.start();
 	}
