@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import client.handling.HandlerClient;
 import common.Message;
 import common.MessageInfoStrings;
@@ -32,16 +33,22 @@ public class ClientMessageManager {
 		this.clientPorts = client.getClientPorts();
 	}
 
+	//TODO: extract MessageManager interface
+	
 	public void handleMessage(Message message, Socket socket) throws IOException, HandlingException {
 		switch (message.getType()) {
-		
+
 		case OK:
 			log.log(EventType.RECEIVE_TCP, "Received OK message: " + message);
+			client.setConnectionStatus(true);
 			break;
-		
+
 		case ERROR:
 			log.log(EventType.RECEIVE_TCP, "Warning: Received Error message: " + message);
 			client.getLoginController().fireErrorMessage(message.getMessage());
+			break;
+		default:
+			log.log(EventType.WARNING, "Warning: could not handle message: " + message);
 			break;
 		}
 	}
@@ -76,13 +83,13 @@ public class ClientMessageManager {
 				client.setClientLogins(logins);
 				client.getContactListController().refresh();
 			}
-			/*
-			System.out.println("Reception de la liste des amis connecté avec leur adresses Ip");
-			@SuppressWarnings("unchecked")
-			Map<String, InetAddress> temp1 = new HashMap<String, InetAddress>((Map<String, InetAddress>) message.getObject("clientIps"));
-			client.setClientIps(temp1);
-			System.out.println("liste de amis connectés avec leur Ip: "+temp1);
-			clientIps=temp1;
+			/* Old system
+				System.out.println("Reception de la liste des amis connecté avec leur adresses Ip");
+				@SuppressWarnings("unchecked")
+				Map<String, InetAddress> temp1 = new HashMap<String, InetAddress>((Map<String, InetAddress>) message.getObject("clientIps"));
+				client.setClientIps(temp1);
+				System.out.println("liste de amis connectés avec leur Ip: "+temp1);
+				clientIps=temp1;
 			*/
 			break;
 			
@@ -113,9 +120,9 @@ public class ClientMessageManager {
 			System.out.println("ERROR:" + message);
 			break;
 			
-			default:
-				log.log(EventType.INFO, "Warning: could not handle message: " + message);
-				break;
+		default:
+			log.log(EventType.WARNING, "Warning: could not handle message: " + message);
+			break;
 		}
 	}
 }
