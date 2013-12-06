@@ -28,14 +28,23 @@ public class Client implements MasterClass {
 	private static final long DEFAULT_TIMEOUT_TIME = 0;
 	private String login;
 	private String pass;
+	
 	private String serverIp;
 	private int serverPort;
 	private Socket clientSocket;
-	private boolean running;
+	
+	private boolean running = false;
+	private boolean connected = false;
+	private boolean tryToConnect = true;
+	
 	private Map<String, InetAddress> clientIps;
 	private Map<String, String> clientPorts;
 	private List<String> clientLogins;
+	
 	private ClientTimeoutHandler timeoutHandler;
+	private TCPHandlerClient tcpHandlerClient;
+	private UDPClient udpClient;
+	
 	private long timeout;
 	private int mainUDPListeningPort;
 	private Log log;
@@ -72,8 +81,7 @@ public class Client implements MasterClass {
 		log = new Log();
 	}
 
-	public Client(String login, String serverIp, int port)
-	{
+	public Client(String login, String serverIp, int port)	{
 		super();
 		this.login=login;
 	}
@@ -93,12 +101,12 @@ public class Client implements MasterClass {
 	public void start() {
 		running = true;
 		
-		TCPHandlerClient tcp = new TCPHandlerClient(clientSocket, this);
-		UDPClient udp = new UDPClient(this);
+		tcpHandlerClient = new TCPHandlerClient(clientSocket, this);
+		udpClient = new UDPClient(this);
 		
-		tcp.run();
+		tcpHandlerClient.run();
 		log.log(EventType.START, "Starting UDP handler");
-		udp.start();
+		udpClient.start();
 	}
 
 	public static void main(String args[]) {
@@ -239,5 +247,56 @@ public class Client implements MasterClass {
 	
 	public void setContactListController(ContactListController clc) {
 		this.contactListController = clc;
+	}
+
+	public TCPHandlerClient getTcpHandlerClient() {
+		return tcpHandlerClient;
+	}
+
+	public UDPClient getUdpClient() {
+		return udpClient;
+	}
+
+	public Socket getClientSocket() {
+		return clientSocket;
+	}
+
+	@Override
+	public void run() {
+		log.log(EventType.START, "Starting Client as Thread");
+		start();
+	}
+
+	/**
+	 * Server connection behavior.
+	 * @return True if the Client attempts to connect to the Server when disconnected.
+	 */
+	public boolean tryToConnect() {
+		return tryToConnect;
+	}
+	
+	/**
+	 * Sets the Server connection behavior. 
+	 * @param tryToConnect - Should the Client attempt to connect with the Server?
+	 */
+	public void tryToConnect(boolean tryToConnect) {
+		this.tryToConnect = tryToConnect;
+	}
+
+	/**
+	 * Connection status.
+	 * @return True if the Client is connected to a Server.
+	 */
+	public boolean isConnected() {
+		return connected;
+	}
+
+	/**
+	 * Sets the connection status. Must be called whenever the client
+	 * acquires or loses connection to the server.
+	 * @param isConnected - New connection status.
+	 */
+	public void setConnectionStatus(boolean isConnected) {
+		this.connected = isConnected;
 	}
 }

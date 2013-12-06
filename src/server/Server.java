@@ -194,4 +194,16 @@ public class Server implements MasterClass {
 	public Log getLog() {
 		return log;
 	}
+
+	@Override
+	public void run() {
+		try {
+			log.log(EventType.START, "Starting Server as Thread");
+			start();
+		} catch (JDOMException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }
