@@ -1,4 +1,4 @@
-package serveur;
+package server;
 
 import static org.junit.Assert.*;
 
@@ -12,7 +12,7 @@ import org.junit.Test;
 import server.Server;
 
 @SuppressWarnings("unused")
-public class ServeurTests_TCPMessageHandling {
+public class ServerTests_TCPMessageHandling {
 	
 	private Server serveur;
 	

@@ -1,9 +1,8 @@
-package serveur;
+package server;
 
 import static org.junit.Assert.*;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Date;
 
@@ -12,9 +11,16 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import common.ConnectionManagement;
+
 import server.ServerTimeoutHandler;
 import server.Server;
 
+/**
+ * Tests basic timeout operation. More complex stuff gets tested by ConnectionManagement.
+ * @author etudiant
+ * @see ConnectionManagement
+ */
 public class TimeoutOfflineTests {
 	
 	private Server serveur;
@@ -36,53 +42,51 @@ public class TimeoutOfflineTests {
 	public void teardown() {
 		serveur.stop();
 	}
-/*
+	
+	/////////////////
+	// basic tests //
+	/////////////////
+	
 	@Test
 	public void testAddClient() throws UnknownHostException {
-		InetAddress localHost = InetAddress.getLocalHost();
-		timeoutHandler.addClient(localHost);
-		assertTrue(timeoutHandler.getTimeoutTable().containsKey(localHost));
+		timeoutHandler.addClient("test01");
+		assertTrue(timeoutHandler.getTimeoutTable().containsKey("test01"));
 	}
 
 	@Test
 	public void testRemoveClient() throws UnknownHostException {
-		InetAddress localHost = InetAddress.getLocalHost();
-		timeoutHandler.addClient(localHost);
-		timeoutHandler.removeClient(localHost);
-		assertFalse(timeoutHandler.getTimeoutTable().containsKey(localHost));
+		timeoutHandler.addClient("test01");
+		timeoutHandler.removeClient("test01");
+		assertFalse(timeoutHandler.getTimeoutTable().containsKey("test01"));
 	}
 
 	@Test
 	public void testUpdateClient_normal() throws UnknownHostException {
-		InetAddress localHost = InetAddress.getLocalHost();
-		timeoutHandler.addClient(localHost);
-		Date firstDate = timeoutHandler.getTimeoutTable().get(localHost);
+		timeoutHandler.addClient("test01");
+		Date firstDate = timeoutHandler.getTimeoutTable().get("test01");
 		Date secondDate = new Date(0);
-		timeoutHandler.updateClient(localHost, secondDate);
-		assertFalse(timeoutHandler.getTimeoutTable().get(localHost).equals(firstDate));
-		assertTrue(timeoutHandler.getTimeoutTable().get(localHost).equals(secondDate));
+		timeoutHandler.updateClient("test01", secondDate);
+		assertFalse(timeoutHandler.getTimeoutTable().get("test01").equals(firstDate));
+		assertTrue(timeoutHandler.getTimeoutTable().get("test01").equals(secondDate));
 	}
 	
 	/**
 	 * What happens if we try to update a client that isn't in the table? 
 	 * @throws UnknownHostException
-	 *//*
+	 */
 	@Test
 	public void testUpdateClient_unknown() throws UnknownHostException {
-		InetAddress localHost = InetAddress.getLocalHost();
-		timeoutHandler.updateClient(localHost, new Date());
-		assertFalse(timeoutHandler.getTimeoutTable().containsKey(localHost));
+		timeoutHandler.updateClient("test01", new Date());
+		assertFalse(timeoutHandler.getTimeoutTable().containsKey("test01"));
 	}
 	
 	@Test
 	public void testClientTimeout() throws UnknownHostException, InterruptedException {
-		InetAddress localHost = InetAddress.getLocalHost();
-		timeoutHandler.addClient(localHost);
+		timeoutHandler.addClient("test01");
 		serveur.setTimeoutTime(1);
 		serveur.setRunning(true);
 		timeoutHandler.start();
 		Thread.sleep(50);
-		assertFalse(timeoutHandler.getTimeoutTable().containsKey(localHost));
+		assertFalse(timeoutHandler.getTimeoutTable().containsKey("test01"));
 	}
-*/
 }
