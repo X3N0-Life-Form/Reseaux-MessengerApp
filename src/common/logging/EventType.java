@@ -10,5 +10,6 @@ public enum EventType {
 	SEND_TCP,
 	SEND_UDP,
 	TIMEOUT,
-	WARNING
+	WARNING,
+	ERROR
 }
