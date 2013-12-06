@@ -51,7 +51,6 @@ public class TCPHandlerClient extends Thread implements HandlerClient {
 		message.addInfo("login",client.getLogin());
 		message.addInfo("pass",client.getPass());
 		this.sendMessage(message,socket);
-		
 	}
 
 	/**

@@ -8,15 +8,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import client.handling.TCPHandlerClient;
+import client.handling.UDPClient;
+
 import common.CommonConstants;
 import common.MasterClass;
 import common.logging.EventType;
 import common.logging.Log;
+
 import controller.ContactListController;
 import controller.LoginController;
-import client.handling.TCPHandlerClient;
-import client.handling.UDPClient;
-import client.ClientTimeoutHandler;
 
 /**
  * Client master class, contains handler threads, IP and port maps.
@@ -67,8 +68,8 @@ public class Client implements MasterClass {
 		this.login = login;
 		this.pass = pass;
 		
-		//clientSocket = new Socket(serverIp, serverPort);
-		clientSocket = new Socket();
+		clientSocket = new Socket(serverIp, serverPort);
+		//clientSocket = new Socket();
 		this.serverIp = serverIp;
 		this.serverPort = serverPort;
 		
@@ -101,12 +102,19 @@ public class Client implements MasterClass {
 	public void start() {
 		running = true;
 		
-		tcpHandlerClient = new TCPHandlerClient(clientSocket, this);
-		udpClient = new UDPClient(this);
+		setupHandlers();
 		
 		tcpHandlerClient.start();
 		log.log(EventType.START, "Starting UDP handler");
 		udpClient.start();
+	}
+
+	/**
+	 * Creates TCP and UDP handlers, without starting them.
+	 */
+	public void setupHandlers() {
+		tcpHandlerClient = new TCPHandlerClient(clientSocket, this);
+		udpClient = new UDPClient(this);
 	}
 
 	public static void main(String args[]) {
@@ -299,4 +307,5 @@ public class Client implements MasterClass {
 	public void setConnectionStatus(boolean isConnected) {
 		this.connected = isConnected;
 	}
+
 }
