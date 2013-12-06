@@ -23,7 +23,7 @@ public class UDPHandlerClientSending extends UDPHandlerClient {
 
 	@Override
 	public void run(){
-		while(client.isRunning()) {
+		while(client.isRunning() && client.isConnected()) {
 			try{
 				Message msgLive = new Message(MessageType.REQUEST_LIST);
 				msgLive.addInfo("login", client.getLogin());
