@@ -8,17 +8,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import common.CommonConstants;
 import common.MasterClass;
 import common.logging.EventType;
 import common.logging.Log;
 import controller.ContactListController;
 import controller.LoginController;
-
-import server.Server;
-
 import client.handling.TCPHandlerClient;
 import client.handling.UDPClient;
-
 import client.ClientTimeoutHandler;
 
 /**
@@ -109,7 +106,7 @@ public class Client implements MasterClass {
 		String c_pass=args[1];
 		String ip = args[2];
 		try {
-			Client client = new Client(c_login, c_pass, ip, Server.DEFAULT_PORT_TCP);
+			Client client = new Client(c_login, c_pass, ip, CommonConstants.DEFAULT_SERVER_PORT_TCP);
 			client.printRecap();
 			client.start();
 		} catch (IOException e) {

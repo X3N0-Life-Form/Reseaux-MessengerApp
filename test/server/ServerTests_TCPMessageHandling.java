@@ -9,6 +9,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import common.CommonConstants;
+
 import server.Server;
 
 @SuppressWarnings("unused")
@@ -21,7 +23,7 @@ public class ServerTests_TCPMessageHandling {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		port = Server.DEFAULT_PORT_TCP;
+		port = CommonConstants.DEFAULT_SERVER_PORT_TCP;
 		clientSocket = new Socket();
 	}
 

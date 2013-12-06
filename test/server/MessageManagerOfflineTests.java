@@ -17,6 +17,7 @@ import server.ServerMessageManager;
 import server.Server;
 import server.handling.TCPHandlerServer;
 import server.handling.UDPHandlerServer;
+import common.CommonConstants;
 import common.Message;
 import common.MessageType;
 import common.handling.HandlingException;
@@ -63,7 +64,7 @@ public class MessageManagerOfflineTests {
 	
 	@BeforeClass
 	public static void setupBeforeClass() {
-		 port = Server.DEFAULT_PORT_TCP;
+		 port = CommonConstants.DEFAULT_SERVER_PORT_TCP;
 	}
 	
 	@Before

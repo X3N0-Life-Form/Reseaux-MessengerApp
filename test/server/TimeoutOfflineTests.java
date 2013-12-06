@@ -11,8 +11,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import common.CommonConstants;
 import common.ConnectionManagement;
-
 import server.ServerTimeoutHandler;
 import server.Server;
 
@@ -29,7 +29,7 @@ public class TimeoutOfflineTests {
 	
 	@BeforeClass
 	public static void setupBeforeClass() {
-		 port = Server.DEFAULT_PORT_TCP;
+		 port = CommonConstants.DEFAULT_SERVER_PORT_TCP;
 	}
 	
 	@Before
