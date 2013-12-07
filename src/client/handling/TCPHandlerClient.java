@@ -102,7 +102,7 @@ public class TCPHandlerClient implements HandlerClient {
 				handleConnect();
 				handleDialog();
 			} else {
-				client.getLoginController().fireErrorMessage("Unable to connect to Server");
+				client.getLoginController().fireErrorMessage(new Message(MessageType.ERROR, "Unable to connect to server"));
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
