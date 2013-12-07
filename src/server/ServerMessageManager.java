@@ -96,29 +96,17 @@ public class ServerMessageManager {
 	 */
 	public void handleMessage(Message message, DatagramSocket socket, DatagramPacket paquet) throws HandlingException, IOException, ClassNotFoundException {
 		String login = message.getInfo(MessageInfoStrings.GENERIC_LOGIN);
-		serveur.getTimeoutHandler().updateClient(login, new Date());
 		switch (message.getType()) {
 		case REQUEST_LIST:
+			serveur.getTimeoutHandler().updateClient(login, new Date());
 			if (clientIps.containsKey(login)) {
 				
 				Message clientListMsg = new Message(MessageType.CLIENT_LIST);
 				List<String> clientLogins = getClientLogins();
-				//clientListMsg.addObject("clientIps", clientIps);
 				clientListMsg.addObject(MessageInfoStrings.REQUEST_LIST_CLIENT_LOGINS, clientLogins);
-				//System.out.println("SENDER PORT :::: " + message.getInfo("port"));
 				clientListMsg.addInfo("senderPort", message.getInfo(MessageInfoStrings.GENERIC_PORT));
-				
 				clientPorts.put(login, message.getInfo(MessageInfoStrings.GENERIC_PORT));
-				//System.out.println("liste des ports avec leur login : "+clientPorts);
-				
-				/*
-				Message clientPortListMsg = new Message(MessageType.CLIENT_PORT_LIST);
-				clientPortListMsg.addObject("clientPorts", clientPorts);
-				//System.out.println("SENDER PORT :::: " + message.getInfo("port"));
-				clientPortListMsg.addInfo("senderPort", message.getInfo("port"));
-				*/
 				handler.sendMessage(clientListMsg, socket, paquet);
-				//handler.sendMessage(clientPortListMsg, socket, paquet);
 				
 			} else {
 				Message errorMsg = new Message(
@@ -134,6 +122,7 @@ public class ServerMessageManager {
 				clientIPMsg.addObject(MessageInfoStrings.REQUEST_IP_TARGET_IP, clientIps.get(login));
 				clientIPMsg.addInfo(MessageInfoStrings.REQUEST_IP_TARGET_PORT, clientPorts.get(login));
 				clientIPMsg.addInfo(MessageInfoStrings.GENERIC_LOGIN, login);
+				clientIPMsg.addInfo("senderPort", message.getInfo(MessageInfoStrings.GENERIC_PORT));
 				handler.sendMessage(clientIPMsg, socket, paquet);
 				
 			} else {

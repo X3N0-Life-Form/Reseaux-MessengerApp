@@ -10,6 +10,7 @@ import java.util.Map;
 import client.handling.HandlerClient;
 import common.Message;
 import common.MessageInfoStrings;
+import common.MessageType;
 import common.handling.HandlingException;
 import common.logging.EventType;
 import common.logging.Log;
@@ -37,10 +38,12 @@ public class ClientMessageManager {
 		
 		case OK:
 			log.log(EventType.RECEIVE_TCP, "Received OK message: " + message);
+			client.setConnectClient(true);
 			break;
 		
 		case ERROR:
 			log.log(EventType.RECEIVE_TCP, "Warning: Received Error message: " + message);
+			client.setConnectClient(false);
 			client.getLoginController().fireErrorMessage(message);
 			break;
 		}
@@ -63,6 +66,7 @@ public class ClientMessageManager {
 			break;
 			
 		case REQUEST_IP:
+			System.out.println("je demande les infos pour me connecter");
 			handler.sendMessage(message, socket);
 			break;
 			
@@ -77,14 +81,6 @@ public class ClientMessageManager {
 				client.setClientLogins(logins);
 				client.getContactListController().refresh();
 			}
-			/*
-			System.out.println("Reception de la liste des amis connecté avec leur adresses Ip");
-			@SuppressWarnings("unchecked")
-			Map<String, InetAddress> temp1 = new HashMap<String, InetAddress>((Map<String, InetAddress>) message.getObject("clientIps"));
-			client.setClientIps(temp1);
-			System.out.println("liste de amis connectés avec leur Ip: "+temp1);
-			clientIps=temp1;
-			*/
 			break;
 			
 		case CLIENT_PORT_LIST:
@@ -108,6 +104,7 @@ public class ClientMessageManager {
 			String targetLogin = message.getInfo(MessageInfoStrings.GENERIC_LOGIN);
 			clientIps.put(targetLogin, targetIP);
 			clientPorts.put(targetLogin, targetPort);
+			System.out.println("les info de l'autre client sont:"+targetLogin+ "  " +targetPort);
 			break;
 			
 		case ERROR:

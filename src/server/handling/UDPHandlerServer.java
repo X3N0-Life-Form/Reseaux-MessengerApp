@@ -58,13 +58,6 @@ public class UDPHandlerServer extends UDPHandler {
 			DatagramPacket packet = new DatagramPacket(buf, buf.length);
 			try {
 				socket.receive(packet);
-				/*InetAddress address = packet.getAddress();
-				//log.log(EventType.RECEIVE_UDP, "Received an UDP packet from " + packet.getAddress() + ":" + packet.getPort());
-				if (serveur.getClientIps().containsValue(address)) {
-					String login = 
-					serveur.getTimeoutHandler().updateClient(login, new Date());
-					//log.log(EventType.RECEIVE_UDP, "Client known, updating timeout table");
-				}*/
 				Message message = getMessage(packet);
 				messageManager.handleMessage(message, socket,packet);
 			} catch (IOException e) {

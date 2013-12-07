@@ -16,6 +16,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import common.Message;
+
+import client.Client;
+
 import controller.ContactListController;
 import controller.LoginController;
 import controller.ProcessResult;
@@ -107,8 +111,14 @@ public class LoginWindow extends JPanel implements ActionListener {
 			*/
 		}
 	}
+	
+	public void fireErrorMessage(Message message) {
+		JOptionPane.showMessageDialog(null, message.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+	}
+	
 
-	public void createContactList(List<String> clientLogins) {
+	public void createContactList(List<String> clientLogins, Client client) {
+		clientLogins.remove(client.getLogin());
 		cadre.setVisible(false);
 		try {
 			ChatMain.clw.setLogins(clientLogins);
@@ -118,9 +128,9 @@ public class LoginWindow extends JPanel implements ActionListener {
 		}
 	}
 	
-	public void refreshContactList() {
+	public void refreshContactList(Client client) {
 		try {
-			ChatMain.clw.refresh(controller.getClient().getClientLogins());
+			ChatMain.clw.refresh(controller.getClient().getClientLogins(), client);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

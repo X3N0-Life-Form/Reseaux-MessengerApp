@@ -33,8 +33,9 @@ public class LoginController {
 				ChatMain.clw.setController(clc);
 				
 				client.start();
-
-				loginWindow.createContactList(client.getClientLogins());
+				if (client.connectClient() == true) {
+					loginWindow.createContactList(client.getClientLogins(), client);
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -42,8 +43,7 @@ public class LoginController {
 	}
 
 	public void fireErrorMessage(Message message) {
-		// TODO Auto-generated method stub
-		
+		loginWindow.fireErrorMessage(message);
 	}
 
 	public synchronized void validated() {
@@ -52,6 +52,14 @@ public class LoginController {
 
 	public Client getClient() {
 		return client;
+	}
+
+	public LoginWindow getLoginWindow() {
+		return loginWindow;
+	}
+
+	public void setLoginWindow(LoginWindow loginWindow) {
+		this.loginWindow = loginWindow;
 	}
 
 }

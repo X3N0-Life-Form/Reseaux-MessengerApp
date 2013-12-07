@@ -49,7 +49,7 @@ public class UDPClient extends Thread {
 		
 		log.log(EventType.START, "Starting UDP sending handler");
 		send.start();
-		
+		/*
 		///////////////////
 		// TESTING STUFF //
 		///////////////////
@@ -102,11 +102,35 @@ public class UDPClient extends Thread {
 		///////////////////////
 		
 		log.log(EventType.START, "Starting UDP sending discuss client handler");
-		sending_client.start();
+		sending_client.start();*/
 	}
 	
+	public UDPHandlerClientDiscuss getSending_client() {
+		return sending_client;
+	}
+
+	public void setSending_client(UDPHandlerClientDiscuss sending_client) {
+		this.sending_client = sending_client;
+	}
+
 	public Client getClient() {
 		return client;
+	}
+
+	public UDPHandlerClientListening getListen() {
+		return listen;
+	}
+
+	public void setListen(UDPHandlerClientListening listen) {
+		this.listen = listen;
+	}
+
+	public UDPHandlerClientSending getSend() {
+		return send;
+	}
+
+	public void setSend(UDPHandlerClientSending send) {
+		this.send = send;
 	}
 
 }

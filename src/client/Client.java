@@ -44,7 +44,9 @@ public class Client implements MasterClass {
 	private Log log;
 	private InetAddress ipOtherClient;
 	private int portOtherClient;
-	
+	private boolean isConnectClient;
+	private TCPHandlerClient tcp;
+	private UDPClient udp;	
 	private LoginController loginController;
 	private ContactListController contactListController;
 
@@ -70,6 +72,7 @@ public class Client implements MasterClass {
 		running = false;
 		timeout = DEFAULT_TIMEOUT_TIME;
 		log = new Log();
+		setConnectClient(false);
 	}
 
 	public Client(String login, String serverIp, int port)
@@ -93,12 +96,14 @@ public class Client implements MasterClass {
 	public void start() {
 		running = true;
 		
-		TCPHandlerClient tcp = new TCPHandlerClient(clientSocket, this);
-		UDPClient udp = new UDPClient(this);
+		tcp = new TCPHandlerClient(clientSocket, this);
+		udp = new UDPClient(this);
 		
 		tcp.run();
-		log.log(EventType.START, "Starting UDP handler");
-		udp.start();
+		if(connectClient() == true) {
+			log.log(EventType.START, "Starting UDP handler");
+			udp.start();
+		}
 	}
 
 	public static void main(String args[]) {
@@ -239,5 +244,21 @@ public class Client implements MasterClass {
 	
 	public void setContactListController(ContactListController clc) {
 		this.contactListController = clc;
+	}
+
+	public boolean connectClient() {
+		return isConnectClient;
+	}
+
+	public void setConnectClient(boolean isConnectClient) {
+		this.isConnectClient = isConnectClient;
+	}
+	
+	public UDPClient getUdp() {
+		return udp;
+	}
+
+	public void setUdp(UDPClient udp) {
+		this.udp = udp;
 	}
 }

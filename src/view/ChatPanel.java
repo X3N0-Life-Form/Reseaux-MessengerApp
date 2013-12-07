@@ -8,6 +8,9 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
 import java.util.Date;
 import java.util.Map;
 
@@ -18,28 +21,65 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 
+import client.handling.UDPClient;
+import client.handling.UDPHandlerClientDiscuss;
+
+import common.Message;
+import common.MessageInfoStrings;
+import common.MessageType;
+import common.handling.HandlingException;
+
+import controller.ContactListController;
+
 public class ChatPanel extends JPanel implements ActionListener, KeyListener {	
 
 	private static final long serialVersionUID = 1L;
 	
 	private static final int FRAME_WIDTH = 520;
-	 private String login;
-	 private JEditorPane textArea = new JEditorPane();
-	 private JScrollPane scrollPaneTop;
-	 private JScrollPane scrollPaneBottom;
-	 private JFrame cadre = new javax.swing.JFrame("");
-	 private JEditorPane text = new JEditorPane();
+	private String otherLogin;
+	private JEditorPane textArea = new JEditorPane();
+	private JScrollPane scrollPaneTop;
+	private JScrollPane scrollPaneBottom;
+	private JFrame cadre = new javax.swing.JFrame("");
+	private JEditorPane text = new JEditorPane();
+	private Map<String, ChatPanel> discMap;
+	private ContactListController controller;
+	private Map<String, InetAddress> clientIps;
+    private Map<String, String> clientPorts;
+    private UDPHandlerClientDiscuss UDPHCD;
 	 
-	 private Map<String, ChatPanel> discMap;
-	 
-	 public JFrame getFrame() {
+	public JFrame getFrame() {
 		 return cadre;
 	 }
 	
-	public ChatPanel(String login, Map<String, ChatPanel> discMap){
-		this.login = login;
-		this.cadre = new javax.swing.JFrame(login);
+	public ChatPanel(String login, Map<String, ChatPanel> discMap, ContactListController controller){
+		this.otherLogin = login;
+		this.cadre = new javax.swing.JFrame(controller.getClient().getLogin()+ ":   " +login);
 		this.discMap = discMap;
+		this.controller = controller;
+		this.clientIps = controller.getClient().getClientIps();
+		this.clientPorts = controller.getClient().getClientPorts();
+		try {
+			UDPHCD = new UDPHandlerClientDiscuss(controller.getClient());
+		} catch (SocketException e1) {
+			e1.printStackTrace();
+		}
+		if (!(clientIps.containsKey(login))) {
+			Message msg = new Message(MessageType.REQUEST_IP);
+			msg.addInfo("login", otherLogin);
+			msg.addInfo("port", controller.getClient().getUDPMainListeningPort() + "");
+			try {
+				controller.getClient().getUdp().getSend().getMessageManager().handleMessage(msg, controller.getClient().getUdp().getSend().getSocket());
+			} catch (SocketException e) {
+				e.printStackTrace();
+			} catch (HandlingException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		}		
 	}
 	
 	public void lancerAffichage() throws IOException {
@@ -68,12 +108,22 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener {
 		cadre.setSize(FRAME_WIDTH, 500);
 		cadre.setVisible(true);
 		cadre.setResizable(false);
-		//cadre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		cadre.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				discMap.remove(login);
+				discMap.remove(otherLogin);
 			}
 		});
+	}
+	
+	public void addTexte(String msg) {
+		String textMessage = textArea.getText() 
+							+ "\n"
+							+ otherLogin + ":  "
+							+ msg
+							+ "\n\n\t\t\t" 
+							+ new Date() 
+							+ "\n";
+		textArea.setText(textMessage);
 	}
 
 	@Override
@@ -85,10 +135,14 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyChar() == '\n') {
-			String textMessage = textArea.getText() + "\n"
-					+ "TEST : "
-					+ text.getText().trim()
-					+ "\n\n\t\t\t" + new Date() + "\n";
+			UDPHCD.run(text.getText().trim(), otherLogin);
+			String textMessage = textArea.getText() 
+					+ "\n" 
+					+ controller.getClient().getLogin() + ":  " 
+					+ text.getText().trim() 
+					+ "\n\n\t\t\t" 
+					+ new Date() 
+					+ "\n";			
 			textArea.setText(textMessage);
 			text.setText("");
 		}
