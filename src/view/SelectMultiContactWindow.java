@@ -16,8 +16,6 @@ import javax.swing.JRadioButton;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 
-import controller.ContactListController;
-
 public class SelectMultiContactWindow extends JPanel implements ActionListener {
 	
 	private Vector<JRadioButton> listRadioLog = new Vector<JRadioButton>();
@@ -26,12 +24,10 @@ public class SelectMultiContactWindow extends JPanel implements ActionListener {
 	private List<String> listLogWithContact = new Vector<String>();
 	private JFrame cadre = new javax.swing.JFrame("Sélectionner le groupe d'amis : ");
 	private Map<String, ChatPanel>  mapListChat;
-	private ContactListController controller;
 	
-	public SelectMultiContactWindow(List<String> logins, Map<String, ChatPanel> listChat, ContactListController controller) {
+	public SelectMultiContactWindow(Vector<String> lisLog, Map<String, ChatPanel> listChat) {
 		mapListChat = listChat;
-		this.controller = controller;
-		for(String log : logins) {
+		for(String log : lisLog) {
 			listRadioLog.add(new JRadioButton(log, false));
 		}
 	}
@@ -80,7 +76,7 @@ public class SelectMultiContactWindow extends JPanel implements ActionListener {
 				loginWithContact = loginWithContact + " " + login;
 			}
 			listLogWithContact.clear();
-			ChatPanel p1 = new ChatPanel(loginWithContact, mapListChat, controller);
+			ChatPanel p1 = new ChatPanel(loginWithContact, mapListChat);
 			mapListChat.put(loginWithContact, p1);
 			try {
 				p1.lancerAffichage();

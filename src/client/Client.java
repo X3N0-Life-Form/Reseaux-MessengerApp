@@ -51,9 +51,7 @@ public class Client implements MasterClass {
 	private Log log;
 	private InetAddress ipOtherClient;
 	private int portOtherClient;
-	private boolean isConnectClient;
-	private TCPHandlerClient tcp;
-	private UDPClient udp;	
+	
 	private LoginController loginController;
 	private ContactListController contactListController;
 
@@ -82,7 +80,6 @@ public class Client implements MasterClass {
 		running = false;
 		timeout = DEFAULT_TIMEOUT_TIME;
 		log = new Log();
-		setConnectClient(false);
 	}
 
 	public Client(String login, String serverIp, int port)	{
@@ -105,17 +102,11 @@ public class Client implements MasterClass {
 	public void start() {
 		running = true;
 		
-		setupHandlers();/* my stuff
+		setupHandlers();
 		
 		tcpHandlerClient.start();
 		log.log(EventType.START, "Starting UDP handler");
 		udpClient.start();
-		*/
-		tcp.run();
-		if(connectClient() == true) {
-			log.log(EventType.START, "Starting UDP handler");
-			udp.start();
-		}
 	}
 
 	/**
@@ -124,9 +115,6 @@ public class Client implements MasterClass {
 	public void setupHandlers() {
 		tcpHandlerClient = new TCPHandlerClient(clientSocket, this);
 		udpClient = new UDPClient(this);
-		//yassine's
-		tcp = new TCPHandlerClient(clientSocket, this);
-		udp = new UDPClient(this);
 	}
 
 	public static void main(String args[]) {
@@ -320,21 +308,4 @@ public class Client implements MasterClass {
 		this.connected = isConnected;
 	}
 
-//yassine's stuff
-	public boolean connectClient() {
-		return isConnectClient;
-	}
-
-	public void setConnectClient(boolean isConnectClient) {
-		this.isConnectClient = isConnectClient;
-	}
-	
-	public UDPClient getUdp() {
-		return udp;
-	}
-
-	public void setUdp(UDPClient udp) {
-		this.udp = udp;
-	}
-//end of yassine's stuff
 }

@@ -99,7 +99,7 @@ public class TCPHandlerClient extends Thread implements HandlerClient {
 						handleConnect();
 						handleDialog();
 					} else {
-						client.getLoginController().fireErrorMessage(new Message(MessageType.ERROR, "Unable to connect to Server"));
+						client.getLoginController().fireErrorMessage("Unable to connect to Server");
 					}
 				} else {
 					Thread.sleep(5000);

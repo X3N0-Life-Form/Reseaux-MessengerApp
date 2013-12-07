@@ -23,8 +23,6 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 
-import client.Client;
-
 import controller.ContactListController;
 import controller.LoginController;
 
@@ -38,15 +36,20 @@ public class ContactListWindow extends JPanel implements ActionListener, MouseLi
 	private List<String> logins = new Vector<String>();
 	private JFrame cadre = new javax.swing.JFrame("Liste des amis connectés : ");
 	private Map<String, ChatPanel> discMap = new HashMap<String, ChatPanel>();
-
+	
 	private ContactListController controller;
+	
+	/*public ContactListWindow(){
+		for (int i = 0; i != 40; i++) {
+			logins.add("test" + i);
+		}
+	}*/
 	
 	public void setLogins(List<String> logins) {
 		this.logins = logins;
 	}
 	
-	public void refresh(List<String> listeClient, Client client) throws IOException {
-		listeClient.remove(client.getLogin());
+	public void refresh(List<String> listeClient) throws IOException {
 		loginList.removeAll();
 		loginList.setListData(listeClient.toArray());
 		cadre.validate();
@@ -110,12 +113,13 @@ public class ContactListWindow extends JPanel implements ActionListener, MouseLi
 				e1.printStackTrace();
 			}
 		} else if (e.getSource() == multiChatButton) {
-			SelectMultiContactWindow smlw = new SelectMultiContactWindow(logins, discMap, controller);
+			/*SelectMultiContactWindow smlw = new SelectMultiContactWindow(logins, discMap);
 			try {
 				smlw.lancerAffichage();
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
+			*/
 		}
 	}
 
@@ -123,8 +127,8 @@ public class ContactListWindow extends JPanel implements ActionListener, MouseLi
 	public void mouseClicked(MouseEvent e) {
 		String login = (String) loginList.getSelectedValue();
 		if (!discMap.containsKey(login)) {
-			ChatPanel p1 = new ChatPanel(login, discMap, controller);
-			discMap.put(login, p1);
+			ChatPanel p1 = new ChatPanel(login, discMap);
+			discMap.put(login, new ChatPanel(login, discMap));
 			try {
 				p1.lancerAffichage();
 			} catch (IOException e1) {
@@ -162,14 +166,6 @@ public class ContactListWindow extends JPanel implements ActionListener, MouseLi
 
 	public void setController(ContactListController clc) {
 		this.controller = clc;
-	}
-	
-	public Map<String, ChatPanel> getDiscMap() {
-		return discMap;
-	}
-
-	public void setDiscMap(Map<String, ChatPanel> discMap) {
-		this.discMap = discMap;
 	}
 
 }
