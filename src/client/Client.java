@@ -61,10 +61,13 @@ public class Client implements MasterClass {
 	public Client(String login, String pass, String serverIp, int serverPort) throws IOException {
 		super();
 		this.login = login;
-		this.serverPort = serverPort;
 		this.pass = pass;
-		clientSocket = new Socket(serverIp, serverPort);
+		
+		//clientSocket = new Socket(serverIp, serverPort);
+		clientSocket = new Socket();
 		this.serverIp = serverIp;
+		this.serverPort = serverPort;
+		
 		clientIps = new HashMap<String, InetAddress>();
 		clientPorts = new HashMap<String, String>();
 		setClientLogins(new ArrayList<String>());

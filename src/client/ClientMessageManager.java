@@ -75,7 +75,6 @@ public class ClientMessageManager {
 			List<String> logins = (List<String>) message.getObject(MessageInfoStrings.REQUEST_LIST_CLIENT_LOGINS);
 			if (counter == 0) {
 				client.setClientLogins(logins);
-				client.getLoginController().validated();
 				counter++;
 			} else {
 				client.setClientLogins(logins);
