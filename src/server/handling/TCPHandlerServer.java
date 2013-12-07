@@ -59,7 +59,7 @@ public class TCPHandlerServer extends Thread implements Handler {
 	public void sendMessage(Message message, Socket socket) throws IOException {
 		ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
 		os.writeObject(message);
-		log.log(EventType.SEND_TCP, "Sending message: " + message);
+		//log.log(EventType.SEND_TCP, "Sending message: " + message);
 		os.flush();
 	}
 
@@ -73,7 +73,7 @@ public class TCPHandlerServer extends Thread implements Handler {
 	public Message getClientMessage(Socket socket) throws IOException, ClassNotFoundException {
 		ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
 		Message message = (Message) is.readObject();
-		log.log(EventType.RECEIVE_TCP, "Received message: " + message);
+		//log.log(EventType.RECEIVE_TCP, "Received message: " + message);
 		return message;
 	}
 
