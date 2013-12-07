@@ -67,8 +67,8 @@ public class ServerMessageManager {
 						MessageType.ERROR,
 						"Error: client already connected.");
 				handler.sendMessage(errorMsg, socket);
-				log.log(EventType.ERROR, "Rejected client authentification: " + login
-						+ " is already connected.");
+				//log.log(EventType.ERROR, "Rejected client authentification: " + login
+				//		+ " is already connected.");
 				break;
 			}
 			String pass = message.getInfo(MessageInfoStrings.PASSWORD);
@@ -80,13 +80,13 @@ public class ServerMessageManager {
 						MessageType.OK,
 						"Able to authenticate client.");
 				handler.sendMessage(okMsg, socket);
-				log.log(EventType.INFO, "Client authenticated: " + login);
+				//log.log(EventType.INFO, "Client authenticated: " + login);
 			} else {
 				Message errorMsg = new Message(
 						MessageType.ERROR,
 						"Unable to authenticate client: wrong login or password.");
 				handler.sendMessage(errorMsg, socket);
-				log.log(EventType.ERROR, "Rejected client authentification: " + login);
+				//log.log(EventType.ERROR, "Rejected client authentification: " + login);
 			}
 			break;
 			

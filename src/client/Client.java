@@ -70,8 +70,8 @@ public class Client implements MasterClass {
 		this.login = login;
 		this.pass = pass;
 		
-		clientSocket = new Socket(serverIp, serverPort);
-		//clientSocket = new Socket();
+		//clientSocket = new Socket(serverIp, serverPort);
+		clientSocket = new Socket();
 		this.serverIp = serverIp;
 		this.serverPort = serverPort;
 		
