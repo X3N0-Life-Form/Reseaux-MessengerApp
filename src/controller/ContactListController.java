@@ -18,10 +18,26 @@ public class ContactListController {
 
 	public void refresh() {
 		try {
-			clw.refresh(client.getClientLogins());
+			clw.refresh(client.getClientLogins(), client);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public ContactListWindow getClw() {
+		return clw;
+	}
+
+	public void setClw(ContactListWindow clw) {
+		this.clw = clw;
+	}
+
+	public Client getClient() {
+		return client;
+	}
+
+	public void setClient(Client client) {
+		this.client = client;
 	}
 
 }

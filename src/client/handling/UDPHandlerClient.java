@@ -26,7 +26,7 @@ public abstract class UDPHandlerClient extends UDPHandler implements HandlerClie
 	
 	protected Client client;
 	protected DatagramSocket socket;
-	protected ClientMessageManager messageManager;
+	private ClientMessageManager messageManager;
 	protected Log log;
 	
 	
@@ -34,7 +34,7 @@ public abstract class UDPHandlerClient extends UDPHandler implements HandlerClie
 		this.client = client;
 		log = client.getLog();
 		this.socket = new DatagramSocket();
-		messageManager = new ClientMessageManager(client, this);
+		setMessageManager(new ClientMessageManager(client, this));
 	}
 
 	@Override
@@ -54,5 +54,21 @@ public abstract class UDPHandlerClient extends UDPHandler implements HandlerClie
 			ClassNotFoundException {
 		sendMessage(message, socket);
 	}
+
+	public ClientMessageManager getMessageManager() {
+		return messageManager;
+	}
+
+	public void setMessageManager(ClientMessageManager messageManager) {
+		this.messageManager = messageManager;
+	}
 	
+	public DatagramSocket getSocket() {
+		return socket;
+	}
+
+	public void setSocket(DatagramSocket socket) {
+		this.socket = socket;
+	}
+
 }

@@ -8,6 +8,8 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 
+import view.ChatPanel;
+
 import client.Client;
 
 import common.CommonConstants;
@@ -33,10 +35,25 @@ public class UDPHandlerClientListening extends UDPHandlerClient {
 				Message message = getMessage(p);
 				switch (message.getType()) {
 				case MSG_DISCUSS_CLIENT:
-					System.out.println("******** msg : " + message.getInfo("msg") + "************");
+					if (client.getContactListController().getClw().getDiscMap().containsKey(message.getInfo("login client origin"))) {
+						ChatPanel p1 = client.getContactListController().getClw().getDiscMap().get(message.getInfo("login client origin"));
+						p1.addTexte(message.getInfo("msg"));
+						p1.getFrame().toFront();
+					} else {
+						ChatPanel p2 = new ChatPanel(message.getInfo("login client origin"), client.getContactListController().getClw().getDiscMap(), client.getContactListController());
+						client.getContactListController().getClw().getDiscMap().put(message.getInfo("login client origin"),p2);
+						p2.getFrame().toFront();
+						try {
+							p2.lancerAffichage();
+							p2.addTexte(message.getInfo("msg"));
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+					}
+					
 					break;
 				default:
-					messageManager.handleMessage(message, socket);
+					getMessageManager().handleMessage(message, socket);
 					break;
 			}
 			} catch (IOException e) {
