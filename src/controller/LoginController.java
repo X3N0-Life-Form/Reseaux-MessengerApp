@@ -31,7 +31,7 @@ public class LoginController {
 				ChatMain.clw.setController(clc);
 				
 				client.start();
-				if (client.connectClient() == true) {
+				if (client.isConnected()) {
 					loginWindow.createContactList(client.getClientLogins(), client);
 				}
 			} catch (IOException e) {

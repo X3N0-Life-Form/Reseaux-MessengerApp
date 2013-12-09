@@ -42,12 +42,12 @@ public class ClientMessageManager {
 		
 		case OK:
 			log.log(EventType.RECEIVE_TCP, "Received OK message: " + message);
-			client.setConnectClient(true);
+			client.setConnected(true);
 			break;
 
 		case ERROR:
 			log.log(EventType.ERROR, "Warning: Received Error message: " + message);
-			client.setConnectClient(false);
+			client.setConnected(false);
 			client.getLoginController().fireErrorMessage(message);
 			break;
 			

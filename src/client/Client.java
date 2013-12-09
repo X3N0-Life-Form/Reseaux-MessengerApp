@@ -43,16 +43,13 @@ public class Client implements MasterClass {
 	private List<String> clientLogins;
 	
 	private ClientTimeoutHandler timeoutHandler;
+	
 	private TCPHandlerClient tcpHandlerClient;
-	private UDPClient udpClient;
-
-	private boolean isConnectClient;
-	private TCPHandlerClient tcp;
-	private UDPClient udp;	
+	private UDPClient udpClient;	
 	
 	private long timeout;
 	private int mainUDPListeningPort;
-	private Log log;
+	private Log log = new Log();
 	private InetAddress ipOtherClient;
 	private int portOtherClient;
 	
@@ -83,8 +80,6 @@ public class Client implements MasterClass {
 		timeoutHandler = new ClientTimeoutHandler(this);
 		running = false;
 		timeout = DEFAULT_TIMEOUT_TIME;
-		log = new Log();
-		setConnectClient(false);
 	}
 
 	public Client(String login, String serverIp, int port) {
@@ -109,15 +104,11 @@ public class Client implements MasterClass {
 		
 		setupHandlers();
 		
-		tcp.run();
-		if(connectClient() == true) {
-			//log.log(EventType.START, "Starting UDP handler");
-			udp.start();
+		tcpHandlerClient.run();
+		if (connected == true) {
+			log.log(EventType.START, "Starting UDP handler");
+			udpClient.start();
 		}
-
-		//tcpHandlerClient.start();
-		//log.log(EventType.START, "Starting UDP handler");
-		//udpClient.start();
 	}
 
 	/**
@@ -126,9 +117,6 @@ public class Client implements MasterClass {
 	public void setupHandlers() {
 		tcpHandlerClient = new TCPHandlerClient(clientSocket, this);
 		udpClient = new UDPClient(this);
-		//yassine's
-		tcp = new TCPHandlerClient(clientSocket, this);
-		udp = new UDPClient(this);
 	}
 
 	public static void main(String args[]) {
@@ -271,22 +259,6 @@ public class Client implements MasterClass {
 		this.contactListController = clc;
 	}
 
-	public boolean connectClient() {
-		return isConnectClient;
-	}
-
-	public void setConnectClient(boolean isConnectClient) {
-		this.isConnectClient = isConnectClient;
-	}
-	
-	public UDPClient getUdp() {
-		return udp;
-	}
-
-	public void setUdp(UDPClient udp) {
-		this.udp = udp;
-	}
-
 	public TCPHandlerClient getTcpHandlerClient() {
 		return tcpHandlerClient;
 	}
@@ -334,7 +306,7 @@ public class Client implements MasterClass {
 	 * acquires or loses connection to the server.
 	 * @param isConnected - New connection status.
 	 */
-	public void setConnectionStatus(boolean isConnected) {
+	public void setConnected(boolean isConnected) {
 		this.connected = isConnected;
 	}
 }
