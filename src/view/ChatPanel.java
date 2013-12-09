@@ -8,10 +8,10 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
-import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JEditorPane;
@@ -21,11 +21,9 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 
-import client.handling.UDPClient;
 import client.handling.UDPHandlerClientDiscuss;
 
 import common.Message;
-import common.MessageInfoStrings;
 import common.MessageType;
 import common.handling.HandlingException;
 
@@ -47,6 +45,10 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener {
 	private Map<String, InetAddress> clientIps;
     private Map<String, String> clientPorts;
     private UDPHandlerClientDiscuss UDPHCD;
+    
+    private int msgCount = 0;
+    private int lastMsgIdReceived = 0;
+    private Map<Integer, String> myMessages = new HashMap<Integer, String>();
 	 
 	public JFrame getFrame() {
 		 return cadre;
@@ -79,7 +81,7 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener {
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
-		}		
+		}
 	}
 	
 	public void lancerAffichage() throws IOException {
@@ -115,7 +117,11 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener {
 		});
 	}
 	
-	public void addTexte(String msg) {
+	public void addTexte(String msg, int msgId) {
+		if (msgId - lastMsgIdReceived != 0 && msgId != 0) {
+			int lostMsg = msgId - lastMsgIdReceived;
+			UDPHCD.run(MessageType.MISSING_MSG, lostMsg, otherLogin);
+		}
 		String textMessage = textArea.getText() 
 							+ "\n"
 							+ otherLogin + ":  "
@@ -124,6 +130,8 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener {
 							+ new Date() 
 							+ "\n";
 		textArea.setText(textMessage);
+		textArea.setCaretPosition(textArea.getText().length());
+		lastMsgIdReceived = msgId;
 	}
 
 	@Override
@@ -135,7 +143,9 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyChar() == '\n') {
-			UDPHCD.run(text.getText().trim(), otherLogin);
+			UDPHCD.run(text.getText().trim(), otherLogin, msgCount);
+			myMessages.put(msgCount, text.getText().trim());
+			msgCount++;
 			String textMessage = textArea.getText() 
 					+ "\n" 
 					+ controller.getClient().getLogin() + ":  " 
@@ -145,6 +155,7 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener {
 					+ "\n";			
 			textArea.setText(textMessage);
 			text.setText("");
+			textArea.setCaretPosition(textArea.getText().length());
 		}
 	}
 
@@ -158,6 +169,21 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener {
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public void displayMissingMessage(int lostMsg) {
+		String recoveredMsg = myMessages.get(lostMsg);
+		String warningText = "*********************************************";
+		warningText += "WARNING: the following message was never received";
+		
+		String textMessage = textArea.getText()
+				+ "\n"
+				+ warningText + "\n"
+				+ recoveredMsg;
+		textMessage += "*********************************************";
+		
+		textArea.setText(textMessage);
+		textArea.setCaretPosition(textArea.getText().length());
 	}
 
 

@@ -11,11 +11,14 @@ import java.util.List;
 import java.util.Map;
 
 
+import common.ErrorTypes;
 import common.Message;
 import common.MessageInfoStrings;
 import common.MessageType;
 import common.handling.Handler;
 import common.handling.HandlingException;
+import common.logging.EventType;
+import common.logging.Log;
 
 /**
  * This class determines the server's behavior upon receiving a Message from a client 
@@ -28,21 +31,23 @@ import common.handling.HandlingException;
  */
 public class ServerMessageManager {
 	
-	private Server serveur;
+	private Server server;
 	private Handler handler;
 	private Map<String, InetAddress> clientIps;
 	private Map<String, String> clientPorts;
+	private Log log;
 	
 	/**
 	 * Constructs a message manager for the specified server and handler.
-	 * @param serveur
+	 * @param server
 	 * @param handler
 	 */
-	public ServerMessageManager(Server serveur, Handler handler) {
-		this.serveur = serveur;
+	public ServerMessageManager(Server server, Handler handler) {
+		this.server = server;
 		this.handler = handler;
-		clientIps = serveur.getClientIps();
-		clientPorts = serveur.getClientPorts();
+		clientIps = server.getClientIps();
+		clientPorts = server.getClientPorts();
+		log = server.getLog();
 	}
 	
 	/**
@@ -54,31 +59,43 @@ public class ServerMessageManager {
 	 */
 	public void handleMessage(Message message, Socket socket) throws IOException, HandlingException {
 		InetAddress ip = socket.getInetAddress();
-		String login = message.getInfo(MessageInfoStrings.GENERIC_LOGIN);
+		String login = message.getInfo(MessageInfoStrings.LOGIN);
 		switch (message.getType()) {
 		
 		
 		case CONNECT:
-			String pass = message.getInfo(MessageInfoStrings.GENERIC_PASSWORD);
-			if (serveur.authenticateClient(login, pass)) {
+			/*if (clientIps.containsKey(login)) {
+				Message errorMsg = new Message(
+						MessageType.ERROR,
+						"Error: client already connected.");
+				handler.sendMessage(errorMsg, socket);
+				//log.log(EventType.ERROR, "Rejected client authentification: " + login
+				//		+ " is already connected.");
+				break;
+			}*/
+			String pass = message.getInfo(MessageInfoStrings.PASSWORD);
+			if (server.authenticateClient(login, pass)) {
 				clientIps.put(login, ip);
 				clientPorts.put(login, socket.getPort() + "");
-				serveur.getTimeoutHandler().addClient(login);
+				server.getTimeoutHandler().addClient(login);
 				Message okMsg = new Message(
 						MessageType.OK,
 						"Able to authenticate client.");
 				handler.sendMessage(okMsg, socket);
+				//log.log(EventType.INFO, "Client authenticated: " + login);
 			} else {
 				Message errorMsg = new Message(
 						MessageType.ERROR,
 						"Unable to authenticate client: wrong login or password.");
 				handler.sendMessage(errorMsg, socket);
+				//log.log(EventType.ERROR, "Rejected client authentification: " + login);
 			}
 			break;
 			
 		case DISCONNECT:
 			clientIps.remove(login);
-			serveur.getTimeoutHandler().removeClient(login);
+			clientPorts.remove(login);
+			server.getTimeoutHandler().removeClient(login);
 			break;
 		default:
 			throw new HandlingException("Message type " + message.getType() + " not handled by " + handler.getClass());
@@ -95,23 +112,24 @@ public class ServerMessageManager {
 	 * @throws ClassNotFoundException
 	 */
 	public void handleMessage(Message message, DatagramSocket socket, DatagramPacket paquet) throws HandlingException, IOException, ClassNotFoundException {
-		String login = message.getInfo(MessageInfoStrings.GENERIC_LOGIN);
+		String login = message.getInfo(MessageInfoStrings.LOGIN);
+		server.getTimeoutHandler().updateClient(login, new Date());
 		switch (message.getType()) {
 		case REQUEST_LIST:
-			serveur.getTimeoutHandler().updateClient(login, new Date());
 			if (clientIps.containsKey(login)) {
 				
 				Message clientListMsg = new Message(MessageType.CLIENT_LIST);
 				List<String> clientLogins = getClientLogins();
 				clientListMsg.addObject(MessageInfoStrings.REQUEST_LIST_CLIENT_LOGINS, clientLogins);
-				clientListMsg.addInfo("senderPort", message.getInfo(MessageInfoStrings.GENERIC_PORT));
-				clientPorts.put(login, message.getInfo(MessageInfoStrings.GENERIC_PORT));
+				clientListMsg.addInfo("senderPort", message.getInfo(MessageInfoStrings.PORT));
+				clientPorts.put(login, message.getInfo(MessageInfoStrings.PORT));
 				handler.sendMessage(clientListMsg, socket, paquet);
 				
 			} else {
 				Message errorMsg = new Message(
 						MessageType.ERROR,
 						"Client unknown, please reconnect.");
+				errorMsg.addInfo(MessageInfoStrings.ERROR_TYPE, ErrorTypes.CLIENT_UNKNOWN);
 				handler.sendMessage(errorMsg, socket, paquet);
 			}
 			break;
@@ -121,8 +139,8 @@ public class ServerMessageManager {
 				Message clientIPMsg = new Message(MessageType.CLIENT_IP);
 				clientIPMsg.addObject(MessageInfoStrings.REQUEST_IP_TARGET_IP, clientIps.get(login));
 				clientIPMsg.addInfo(MessageInfoStrings.REQUEST_IP_TARGET_PORT, clientPorts.get(login));
-				clientIPMsg.addInfo(MessageInfoStrings.GENERIC_LOGIN, login);
-				clientIPMsg.addInfo("senderPort", message.getInfo(MessageInfoStrings.GENERIC_PORT));
+				clientIPMsg.addInfo(MessageInfoStrings.LOGIN, login);
+				clientIPMsg.addInfo("senderPort", message.getInfo(MessageInfoStrings.PORT));
 				handler.sendMessage(clientIPMsg, socket, paquet);
 				
 			} else {

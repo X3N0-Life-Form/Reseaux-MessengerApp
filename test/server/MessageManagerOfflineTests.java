@@ -1,4 +1,4 @@
-package serveur;
+package server;
 
 import static org.junit.Assert.*;
 
@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.Socket;
-import java.net.SocketException;
 
 import org.junit.After;
 import org.junit.Before;
@@ -18,7 +17,7 @@ import server.ServerMessageManager;
 import server.Server;
 import server.handling.TCPHandlerServer;
 import server.handling.UDPHandlerServer;
-
+import common.CommonConstants;
 import common.Message;
 import common.MessageType;
 import common.handling.HandlingException;
@@ -60,11 +59,12 @@ public class MessageManagerOfflineTests {
 	
 	private static int port;
 	private DatagramReciever datagramReciever;
+	private DatagramPacket datagramPacket;
 	
 	
 	@BeforeClass
 	public static void setupBeforeClass() {
-		 port = Server.DEFAULT_PORT_TCP;
+		 port = CommonConstants.DEFAULT_SERVER_PORT_TCP;
 	}
 	
 	@Before
@@ -84,11 +84,10 @@ public class MessageManagerOfflineTests {
 	}
 	
 	@Test(expected=HandlingException.class)
-	public void test_giveDatagramToTCP() throws SocketException, HandlingException {
-		//tcpMessageManager.handleMessage(new Message(MessageType.OK), datagramSocket);
+	public void test_giveDatagramToTCP() throws HandlingException, IOException, ClassNotFoundException {
+		tcpMessageManager.handleMessage(new Message(MessageType.OK), datagramSocket, datagramPacket);
 	}
 
-	//TODO: check cause for handling exception
 	@Test(expected=HandlingException.class)
 	public void test_giveSocketToUDP() throws HandlingException, IOException {
 		udpMessageManager.handleMessage(new Message(MessageType.OK), clientSocket);

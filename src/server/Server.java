@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.jdom2.JDOMException;
 
+import common.CommonConstants;
 import common.MasterClass;
 import common.logging.EventType;
 import common.logging.Log;
@@ -35,7 +36,6 @@ public class Server implements MasterClass {
 	private LoginParser loginParser;
 	private Log log;
 	
-	public static final int DEFAULT_PORT_TCP = 8001;
 	public static final long DEFAULT_TIMEOUT_TIME = 5000;
 	public static final String DEFAULT_LOGIN_FILE_URL = "res/clientsSample.xml";
 	
@@ -62,7 +62,7 @@ public class Server implements MasterClass {
 	 * @throws IOException
 	 */
 	public Server() throws IOException {
-		this(DEFAULT_PORT_TCP);
+		this(CommonConstants.DEFAULT_SERVER_PORT_TCP);
 	}
 	
 	/**
@@ -194,5 +194,17 @@ public class Server implements MasterClass {
 
 	public Log getLog() {
 		return log;
+	}
+
+	@Override
+	public void run() {
+		try {
+			log.log(EventType.START, "Starting Server as Thread");
+			start();
+		} catch (JDOMException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

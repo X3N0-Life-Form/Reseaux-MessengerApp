@@ -97,18 +97,7 @@ public class ContactListWindow extends JPanel implements ActionListener, MouseLi
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == disconnectButton)
 		{
-			for(String login : discMap.keySet()){
-				discMap.get(login).getFrame().dispose();	
-			}
-			discMap.clear();
-			System.out.println("verif si la map est vide: "+discMap);
-			cadre.setVisible(false);
-			LoginWindow lw = new LoginWindow();
-			try {
-				lw.lancerAffichage();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
+			disconnect();
 		} else if (e.getSource() == multiChatButton) {
 			SelectMultiContactWindow smlw = new SelectMultiContactWindow(logins, discMap, controller);
 			try {
@@ -119,20 +108,40 @@ public class ContactListWindow extends JPanel implements ActionListener, MouseLi
 		}
 	}
 
+	/**
+	 * Go back to the login window.
+	 */
+	public void disconnect() {
+		for(String login : discMap.keySet()){
+			discMap.get(login).getFrame().dispose();	
+		}
+		discMap.clear();
+		System.out.println("verif si la map est vide: "+discMap);
+		cadre.setVisible(false);
+		LoginWindow lw = new LoginWindow();
+		try {
+			lw.lancerAffichage();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+	}
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		String login = (String) loginList.getSelectedValue();
-		if (!discMap.containsKey(login)) {
-			ChatPanel p1 = new ChatPanel(login, discMap, controller);
-			discMap.put(login, p1);
-			try {
-				p1.lancerAffichage();
-			} catch (IOException e1) {
-				e1.printStackTrace();
+		if (login != null) {
+			if (!discMap.containsKey(login)) {
+				ChatPanel p1 = new ChatPanel(login, discMap, controller);
+				discMap.put(login, p1);
+				try {
+					p1.lancerAffichage();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			} else {
+				ChatPanel p = discMap.get(login);
+				p.getFrame().toFront();
 			}
-		} else {
-			ChatPanel p = discMap.get(login);
-			p.getFrame().toFront();
 		}
 	}
 

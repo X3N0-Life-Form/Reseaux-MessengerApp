@@ -23,12 +23,12 @@ public class UDPHandlerClientSending extends UDPHandlerClient {
 
 	@Override
 	public void run(){
-		while(client.isRunning()) {
+		while(client.isRunning()) { //&& client.isConnected()
 			try{
 				Message msgLive = new Message(MessageType.REQUEST_LIST);
 				msgLive.addInfo("login", client.getLogin());
 				msgLive.addInfo("port", client.getUDPMainListeningPort() + "");
-				getMessageManager().handleMessage(msgLive, socket);
+				messageManager.handleMessage(msgLive, socket);
 				Thread.sleep(2000);//TODO: mettre ça dans une constante
 			} catch (IOException e) {
 				e.printStackTrace();

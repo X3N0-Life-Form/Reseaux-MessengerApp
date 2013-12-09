@@ -7,7 +7,9 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import client.handling.HandlerClient;
+import common.ErrorTypes;
 import common.Message;
 import common.MessageInfoStrings;
 import common.MessageType;
@@ -33,6 +35,8 @@ public class ClientMessageManager {
 		this.clientPorts = client.getClientPorts();
 	}
 
+	//TODO: extract MessageManager interface
+	
 	public void handleMessage(Message message, Socket socket) throws IOException, HandlingException {
 		switch (message.getType()) {
 		
@@ -40,11 +44,23 @@ public class ClientMessageManager {
 			log.log(EventType.RECEIVE_TCP, "Received OK message: " + message);
 			client.setConnectClient(true);
 			break;
-		
+
 		case ERROR:
-			log.log(EventType.RECEIVE_TCP, "Warning: Received Error message: " + message);
+			log.log(EventType.ERROR, "Warning: Received Error message: " + message);
 			client.setConnectClient(false);
 			client.getLoginController().fireErrorMessage(message);
+			break;
+			
+		case CONNECT:
+			log.log(EventType.SEND_TCP, "Sending connect request");
+			Message connectMsg = new Message(MessageType.CONNECT);//Note: copied from handleDialog()
+			connectMsg.addInfo(MessageInfoStrings.LOGIN,client.getLogin());//TODO handleDialog() redundant
+			connectMsg.addInfo(MessageInfoStrings.PASSWORD,client.getPass());// call messageManager instead
+			handler.sendMessage(connectMsg, socket);
+			break;
+			
+		default:
+			log.log(EventType.WARNING, "Warning: could not handle message: " + message);
 			break;
 		}
 	}
@@ -66,7 +82,6 @@ public class ClientMessageManager {
 			break;
 			
 		case REQUEST_IP:
-			System.out.println("je demande les infos pour me connecter");
 			handler.sendMessage(message, socket);
 			break;
 			
@@ -99,20 +114,28 @@ public class ClientMessageManager {
 			
 		case CLIENT_IP:
 			InetAddress targetIP = (InetAddress) message.getObject(MessageInfoStrings.REQUEST_IP_TARGET_IP);
+			// if target client is also on the server
+			if (targetIP.isAnyLocalAddress() || targetIP.isLoopbackAddress()) {
+				targetIP = InetAddress.getByName(client.getServerIp());
+			}
 			String targetPort = message.getInfo(MessageInfoStrings.REQUEST_IP_TARGET_PORT);
-			String targetLogin = message.getInfo(MessageInfoStrings.GENERIC_LOGIN);
+			String targetLogin = message.getInfo(MessageInfoStrings.LOGIN);
 			clientIps.put(targetLogin, targetIP);
 			clientPorts.put(targetLogin, targetPort);
-			System.out.println("les info de l'autre client sont:"+targetLogin+ "  " +targetPort);
 			break;
 			
 		case ERROR:
+			String type = message.getInfo(MessageInfoStrings.ERROR_TYPE);
+			if (type.equals(ErrorTypes.CLIENT_UNKNOWN)) {
+				client.getContactListController().getClw().disconnect();
+			}
 			System.out.println("ERROR:" + message);
+			//log.log(EventType.ERROR, "ERROR:" + message);
 			break;
 			
-			default:
-				log.log(EventType.INFO, "Warning: could not handle message: " + message);
-				break;
+		default:
+			log.log(EventType.WARNING, "Warning: could not handle message: " + message);
+			break;
 		}
 	}
 }

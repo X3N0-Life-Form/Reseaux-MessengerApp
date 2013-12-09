@@ -13,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
@@ -31,7 +32,7 @@ public class LoginWindow extends JPanel implements ActionListener {
 	public JLabel ipServerLabel = new JLabel("Ip Server : "); 
 	public JButton connectButton = new JButton("CONNECT");
 	public JTextField logField = new JTextField(15);
-	public JTextField passField = new JTextField(15);
+	public JPasswordField passField = new JPasswordField(15);
 	public JTextField ipServerField = new JTextField(15);
 	public JFrame cadre = new javax.swing.JFrame("Chat-Expert");
 	
@@ -53,7 +54,6 @@ public class LoginWindow extends JPanel implements ActionListener {
 		panneauLog.add(logLabel, BorderLayout.WEST);
 		panneauLog.add(logField, BorderLayout.CENTER);
 		panneauLog.setBorder(new EmptyBorder(0,0,10,0));
-		
 		
 		JPanel panneauPass = new JPanel();
 		panneauPass.setLayout(new BorderLayout());

@@ -8,18 +8,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import common.MasterClass;
-import common.logging.EventType;
-import common.logging.Log;
-import controller.ContactListController;
-import controller.LoginController;
-
-import server.Server;
-
 import client.handling.TCPHandlerClient;
 import client.handling.UDPClient;
 
-import client.ClientTimeoutHandler;
+import common.CommonConstants;
+import common.MasterClass;
+import common.logging.EventType;
+import common.logging.Log;
+
+import controller.ContactListController;
+import controller.LoginController;
 
 /**
  * Client master class, contains handler threads, IP and port maps.
@@ -31,22 +29,33 @@ public class Client implements MasterClass {
 	private static final long DEFAULT_TIMEOUT_TIME = 0;
 	private String login;
 	private String pass;
+	
 	private String serverIp;
 	private int serverPort;
 	private Socket clientSocket;
-	private boolean running;
+	
+	private boolean running = false;
+	private boolean connected = false;
+	private boolean tryToConnect = true;
+	
 	private Map<String, InetAddress> clientIps;
 	private Map<String, String> clientPorts;
 	private List<String> clientLogins;
+	
 	private ClientTimeoutHandler timeoutHandler;
+	private TCPHandlerClient tcpHandlerClient;
+	private UDPClient udpClient;
+
+	private boolean isConnectClient;
+	private TCPHandlerClient tcp;
+	private UDPClient udp;	
+	
 	private long timeout;
 	private int mainUDPListeningPort;
 	private Log log;
 	private InetAddress ipOtherClient;
 	private int portOtherClient;
-	private boolean isConnectClient;
-	private TCPHandlerClient tcp;
-	private UDPClient udp;	
+	
 	private LoginController loginController;
 	private ContactListController contactListController;
 
@@ -78,8 +87,7 @@ public class Client implements MasterClass {
 		setConnectClient(false);
 	}
 
-	public Client(String login, String serverIp, int port)
-	{
+	public Client(String login, String serverIp, int port) {
 		super();
 		this.login=login;
 	}
@@ -99,14 +107,28 @@ public class Client implements MasterClass {
 	public void start() {
 		running = true;
 		
-		tcp = new TCPHandlerClient(clientSocket, this);
-		udp = new UDPClient(this);
+		setupHandlers();
 		
 		tcp.run();
 		if(connectClient() == true) {
-			log.log(EventType.START, "Starting UDP handler");
+			//log.log(EventType.START, "Starting UDP handler");
 			udp.start();
 		}
+
+		//tcpHandlerClient.start();
+		//log.log(EventType.START, "Starting UDP handler");
+		//udpClient.start();
+	}
+
+	/**
+	 * Creates TCP and UDP handlers, without starting them.
+	 */
+	public void setupHandlers() {
+		tcpHandlerClient = new TCPHandlerClient(clientSocket, this);
+		udpClient = new UDPClient(this);
+		//yassine's
+		tcp = new TCPHandlerClient(clientSocket, this);
+		udp = new UDPClient(this);
 	}
 
 	public static void main(String args[]) {
@@ -114,7 +136,7 @@ public class Client implements MasterClass {
 		String c_pass=args[1];
 		String ip = args[2];
 		try {
-			Client client = new Client(c_login, c_pass, ip, Server.DEFAULT_PORT_TCP);
+			Client client = new Client(c_login, c_pass, ip, CommonConstants.DEFAULT_SERVER_PORT_TCP);
 			client.printRecap();
 			client.start();
 		} catch (IOException e) {
@@ -263,5 +285,56 @@ public class Client implements MasterClass {
 
 	public void setUdp(UDPClient udp) {
 		this.udp = udp;
+	}
+
+	public TCPHandlerClient getTcpHandlerClient() {
+		return tcpHandlerClient;
+	}
+
+	public UDPClient getUdpClient() {
+		return udpClient;
+	}
+
+	public Socket getClientSocket() {
+		return clientSocket;
+	}
+
+	@Override
+	public void run() {
+		log.log(EventType.START, "Starting Client as Thread");
+		start();
+	}
+
+	/**
+	 * Server connection behavior.
+	 * @return True if the Client attempts to connect to the Server when disconnected.
+	 */
+	public boolean tryToConnect() {
+		return tryToConnect;
+	}
+	
+	/**
+	 * Sets the Server connection behavior. 
+	 * @param tryToConnect - Should the Client attempt to connect with the Server?
+	 */
+	public void tryToConnect(boolean tryToConnect) {
+		this.tryToConnect = tryToConnect;
+	}
+
+	/**
+	 * Connection status.
+	 * @return True if the Client is connected to a Server.
+	 */
+	public boolean isConnected() {
+		return connected;
+	}
+
+	/**
+	 * Sets the connection status. Must be called whenever the client
+	 * acquires or loses connection to the server.
+	 * @param isConnected - New connection status.
+	 */
+	public void setConnectionStatus(boolean isConnected) {
+		this.connected = isConnected;
 	}
 }

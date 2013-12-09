@@ -102,7 +102,8 @@ public class UDPClient extends Thread {
 		///////////////////////
 		
 		log.log(EventType.START, "Starting UDP sending discuss client handler");
-		sending_client.start();*/
+		*/		
+		sending_client.start();
 	}
 	
 	public UDPHandlerClientDiscuss getSending_client() {

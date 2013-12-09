@@ -14,6 +14,7 @@ import client.Client;
 
 import common.CommonConstants;
 import common.Message;
+import common.MessageInfoStrings;
 import common.handling.HandlingException;
 import common.logging.EventType;
 
@@ -37,23 +38,29 @@ public class UDPHandlerClientListening extends UDPHandlerClient {
 				case MSG_DISCUSS_CLIENT:
 					if (client.getContactListController().getClw().getDiscMap().containsKey(message.getInfo("login client origin"))) {
 						ChatPanel p1 = client.getContactListController().getClw().getDiscMap().get(message.getInfo("login client origin"));
-						p1.addTexte(message.getInfo("msg"));
+						p1.addTexte(message.getInfo("msg"), Integer.parseInt(message.getInfo(MessageInfoStrings.MESSAGE_ID)));
 						p1.getFrame().toFront();
 					} else {
 						ChatPanel p2 = new ChatPanel(message.getInfo("login client origin"), client.getContactListController().getClw().getDiscMap(), client.getContactListController());
 						client.getContactListController().getClw().getDiscMap().put(message.getInfo("login client origin"),p2);
-						p2.getFrame().toFront();
 						try {
 							p2.lancerAffichage();
-							p2.addTexte(message.getInfo("msg"));
+							p2.addTexte(message.getInfo("msg"), Integer.parseInt(message.getInfo(MessageInfoStrings.MESSAGE_ID)));
+							p2.getFrame().toFront();
 						} catch (IOException e1) {
 							e1.printStackTrace();
 						}
 					}
 					
 					break;
+					
+				case MISSING_MSG:
+					ChatPanel cp = client.getContactListController().getClw().getDiscMap().get(message.getInfo("login client origin"));
+					int lostMsg = Integer.parseInt(message.getInfo(MessageInfoStrings.MESSAGE_ID));
+					cp.displayMissingMessage(lostMsg);
+					break;
 				default:
-					getMessageManager().handleMessage(message, socket);
+					messageManager.handleMessage(message, socket);
 					break;
 			}
 			} catch (IOException e) {
