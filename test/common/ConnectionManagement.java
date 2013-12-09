@@ -3,7 +3,6 @@ package common;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
-import java.net.DatagramSocket;
 import java.net.Socket;
 
 import org.jdom2.JDOMException;
@@ -29,8 +28,10 @@ public class ConnectionManagement {
 	private Server server;
 	private Client client;
 	private TCPHandlerClient tcpHandlerClient;
+	@SuppressWarnings("unused")
 	private UDPClient udpClient;
 	private Thread serverThread;
+	@SuppressWarnings("unused")
 	private Thread clientThread;
 	private static int serverPort;
 

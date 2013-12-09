@@ -8,18 +8,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.ListSelectionModel;
-import javax.swing.border.EmptyBorder;
 
 import controller.ContactListController;
 
 public class SelectMultiContactWindow extends JPanel implements ActionListener {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -356526002533626897L;
 	private Vector<JRadioButton> listRadioLog = new Vector<JRadioButton>();
 	private Vector<JRadioButton> listRadioLogWithContact = new Vector<JRadioButton>();
 	private JButton startButton = new JButton("START");

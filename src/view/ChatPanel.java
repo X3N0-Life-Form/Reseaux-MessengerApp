@@ -22,11 +22,9 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 
 import client.handling.UDPHandlerClientDiscuss;
-
 import common.Message;
 import common.MessageType;
 import common.handling.HandlingException;
-
 import controller.ContactListController;
 
 public class ChatPanel extends JPanel implements ActionListener, KeyListener {	
@@ -43,7 +41,8 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener {
 	private Map<String, ChatPanel> discMap;
 	private ContactListController controller;
 	private Map<String, InetAddress> clientIps;
-    private Map<String, String> clientPorts;
+    @SuppressWarnings("unused")
+	private Map<String, String> clientPorts;
     private UDPHandlerClientDiscuss UDPHCD;
     
     private int msgCount = 0;

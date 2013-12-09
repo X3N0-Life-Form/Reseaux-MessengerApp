@@ -11,6 +11,7 @@ public class ChatMain {
 	public static void main(String[] arg) throws IOException
 	{
 		LoginWindow window = new LoginWindow();
+		@SuppressWarnings("unused")
 		LoginController lc = new LoginController(window);
 		window.lancerAffichage();
 	}

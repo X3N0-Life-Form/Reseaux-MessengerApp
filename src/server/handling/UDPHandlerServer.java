@@ -5,10 +5,8 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.Date;
 
 import server.Server;
 import server.ServerMessageManager;
@@ -19,7 +17,6 @@ import common.Message;
 import common.handling.Handler;
 import common.handling.HandlingException;
 import common.handling.UDPHandler;
-import common.logging.EventType;
 import common.logging.Log;
 
 /**
