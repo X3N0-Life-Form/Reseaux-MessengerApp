@@ -76,7 +76,7 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener {
 				msg.addInfo("login", login);
 				msg.addInfo("port", controller.getClient().getUDPMainListeningPort() + "");
 				try {
-					controller.getClient().getUdp().getSend().getMessageManager().handleMessage(msg, controller.getClient().getUdp().getSend().getSocket());
+					controller.getClient().getUdpClient().getSend().getMessageManager().handleMessage(msg, controller.getClient().getUdpClient().getSend().getSocket());
 				} catch (SocketException e) {
 					e.printStackTrace();
 				} catch (HandlingException e) {

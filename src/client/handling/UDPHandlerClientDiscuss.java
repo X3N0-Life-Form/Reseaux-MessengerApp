@@ -7,9 +7,9 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.util.Vector;
 
 import client.Client;
-
 import common.Message;
 import common.MessageInfoStrings;
 import common.MessageType;
@@ -80,6 +80,31 @@ public class UDPHandlerClientDiscuss extends UDPHandlerClient {
 		
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public void run(String text, Vector<String> listLoginOtherClient, int msgCount) {
+		if(client.isRunning()){
+			System.out.println("la liste des autres client a qui envoyé le msg: "+listLoginOtherClient);
+			for(String loginOtherClient : listLoginOtherClient) {
+				try{		
+					System.out.println("j'envois au login : "+loginOtherClient);
+					Message msgClient = new Message(MessageType.MSG_DISCUSS_CLIENT_SEVERAL);
+					msgClient.addInfo("msg", text);
+					msgClient.addInfo("login client origin", client.getLogin());
+					msgClient.addObject("list login other client", listLoginOtherClient);
+					msgClient.addInfo("ip other client", client.getClientIps().get(loginOtherClient).getHostAddress());
+					msgClient.addInfo("port other client", client.getClientPorts().get(loginOtherClient) + "");
+					msgClient.addInfo(MessageInfoStrings.MESSAGE_ID, msgCount + "");
+					getMessageManager().handleMessage(msgClient, socket);
+				 } catch (IOException e) {
+						e.printStackTrace();
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					} catch (HandlingException e) {
+						e.printStackTrace();
+					}
+			}
 		}
 	}
 

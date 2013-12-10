@@ -80,7 +80,7 @@ public class ServerTimeoutHandler extends Thread {
 			Map<String, Date> timeoutTableClone = new HashMap<String, Date>(timeoutTable);
 			for (String login : timeoutTableClone.keySet()) {
 				Date now = new Date();
-				if (timeoutTableClone.get(login) != null &&	(now.getTime() - timeoutTable.get(login).getTime()) > serveur.getTimeoutTime()) {
+				if (timeoutTableClone.get(login) != null && (now.getTime() - timeoutTableClone.get(login).getTime()) > serveur.getTimeoutTime()) {
 					//log.log(EventType.TIMEOUT, "Client timed out: "	+ login);
 					removeClient(login);
 					break;

@@ -38,14 +38,14 @@ public class UDPHandlerClientListening extends UDPHandlerClient {
 				case MSG_DISCUSS_CLIENT:
 					if (client.getContactListController().getClw().getDiscMap().containsKey(message.getInfo("login client origin"))) {
 						ChatPanel p1 = client.getContactListController().getClw().getDiscMap().get(message.getInfo("login client origin"));
-						p1.addTexte(message.getInfo("msg"), Integer.parseInt(message.getInfo(MessageInfoStrings.MESSAGE_ID)));
+						p1.addTexte(message.getInfo("msg"), Integer.parseInt(message.getInfo(MessageInfoStrings.MESSAGE_ID)), message.getInfo("login client origin"));
 						p1.getFrame().toFront();
 					} else {
 						ChatPanel p2 = new ChatPanel(message.getInfo("login client origin"), client.getContactListController().getClw().getDiscMap(), client.getContactListController());
 						client.getContactListController().getClw().getDiscMap().put(message.getInfo("login client origin"),p2);
 						try {
 							p2.lancerAffichage();
-							p2.addTexte(message.getInfo("msg"), Integer.parseInt(message.getInfo(MessageInfoStrings.MESSAGE_ID)));
+							p2.addTexte(message.getInfo("msg"), Integer.parseInt(message.getInfo(MessageInfoStrings.MESSAGE_ID)), message.getInfo("login client origin"));
 							p2.getFrame().toFront();
 						} catch (IOException e1) {
 							e1.printStackTrace();
