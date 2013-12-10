@@ -79,7 +79,8 @@ public class ServerTimeoutHandler extends Thread {
 		while (serveur.isRunning()) {
 			for (String login : timeoutTable.keySet()) {
 				Date now = new Date();
-				if ((now.getTime() - timeoutTable.get(login).getTime()) > serveur.getTimeoutTime()) {
+				if (timeoutTable.get(login) != null &&
+						(now.getTime() - timeoutTable.get(login).getTime()) > serveur.getTimeoutTime()) {
 					//log.log(EventType.TIMEOUT, "Client timed out: "	+ login);
 					removeClient(login);
 					break;
