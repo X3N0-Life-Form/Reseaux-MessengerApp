@@ -97,9 +97,7 @@ public class ClientMessageManager {
 			}
 			break;
 			
-		case CLIENT_PORT_LIST:
-			//System.out.println("Reception de la liste des amis connecté avec leur ports d'écoute");
-			
+		case CLIENT_PORT_LIST://TODO:not used anymore, remove it
 			@SuppressWarnings("unchecked")
 			Map<String, String> temp2 = new HashMap<String, String>((Map<String, String>) message.getObject("clientPorts"));
 			client.setClientPorts(temp2);
@@ -128,9 +126,11 @@ public class ClientMessageManager {
 			String type = message.getInfo(MessageInfoStrings.ERROR_TYPE);
 			if (type.equals(ErrorTypes.CLIENT_UNKNOWN)) {
 				client.getContactListController().getClw().disconnect();
+			} else if (type.equals(ErrorTypes.ALREADY_CONNECTED)) {
+				
 			}
-			System.out.println("ERROR:" + message);
-			//log.log(EventType.ERROR, "ERROR:" + message);
+			log.log(EventType.ERROR, "ERROR:" + message);
+			client.getLoginController().fireErrorMessage(message);
 			break;
 			
 		default:

@@ -64,15 +64,17 @@ public class ServerMessageManager {
 		
 		
 		case CONNECT:
-			/*if (clientIps.containsKey(login)) {
+			if (clientIps.containsKey(login)) {
 				Message errorMsg = new Message(
 						MessageType.ERROR,
 						"Error: client already connected.");
+				errorMsg.addInfo(MessageInfoStrings.ERROR_TYPE, ErrorTypes.ALREADY_CONNECTED);
 				handler.sendMessage(errorMsg, socket);
-				//log.log(EventType.ERROR, "Rejected client authentification: " + login
-				//		+ " is already connected.");
+				log.log(EventType.ERROR, "Rejected client authentification: "
+						+ login + " is already connected.");
 				break;
-			}*/
+			}
+			
 			String pass = message.getInfo(MessageInfoStrings.PASSWORD);
 			if (server.authenticateClient(login, pass)) {
 				clientIps.put(login, ip);

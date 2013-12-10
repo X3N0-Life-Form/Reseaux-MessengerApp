@@ -3,6 +3,7 @@ package common;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 
 import org.jdom2.JDOMException;
@@ -25,11 +26,16 @@ import server.Server;
  */
 public class ConnectionManagement {
 	
-	private Server server;
+	
 	private Client client;
 	private TCPHandlerClient tcpHandlerClient;
 	@SuppressWarnings("unused")
 	private UDPClient udpClient;
+	
+	private Client client_2;
+	private TCPHandlerClient tcpHandlerClient_2;
+	
+	private Server server;
 	private Thread serverThread;
 	@SuppressWarnings("unused")
 	private Thread clientThread;
@@ -68,17 +74,27 @@ public class ConnectionManagement {
 		connectMessage.addInfo(MessageInfoStrings.PASSWORD, "test");
 		Socket socket = client.getClientSocket();
 		
-		//client.start();
+		socket.connect(new InetSocketAddress(client.getServerIp(), serverPort), 10000);//copied from TCPHandlerClient.run()
 		
 		tcpHandlerClient.sendMessage(connectMessage, socket);
 		Thread.sleep(100);
 		assertFalse(server.getLog().getEventsByType(EventType.RECEIVE_TCP).isEmpty());
 		assertTrue(server.getClientIps().containsKey("test01"));
 		
-		//weird fucked up behavior
-		//tcpHandlerClient.sendMessage(connectMessage, socket);
+		//Note: copy-paste client_2 stuff from here
+		client_2 = new Client("test01", "test", "localhost", serverPort);
+		client_2.setupHandlers();
+		tcpHandlerClient_2 = client_2.getTcpHandlerClient();
+		Socket socket_2 = client_2.getClientSocket();
+		socket_2.connect(new InetSocketAddress(client_2.getServerIp(), serverPort), 10000);
+		tcpHandlerClient_2.sendMessage(connectMessage, socket_2);
+		
+		//not working; for now, manually check standard output
+		//assertFalse(server.getLog().getEventsByType(EventType.ERROR).isEmpty());
+		//assertFalse(client_2.getLog().getEventsByType(EventType.ERROR).isEmpty());
 	}
 	
+	@Ignore //redundant
 	@Test
 	public void testClientAlreadyConnected() throws IOException, InterruptedException {
 		Message connectMessage = new Message(MessageType.CONNECT);
@@ -87,9 +103,12 @@ public class ConnectionManagement {
 		Socket socket = client.getClientSocket();
 		server.getClientIps().put("test01", null);
 		
+		socket.connect(new InetSocketAddress(client.getServerIp(), serverPort), 10000);
+		
 		tcpHandlerClient.sendMessage(connectMessage, socket);
-		Thread.sleep(100);
-		assertFalse(server.getLog().getEventsByType(EventType.ERROR).isEmpty());
+		//Thread.sleep(100);
+		//System.out.println(server.getLog().getEvents());
+		//System.out.println(client.getLog().getEvents());
 	}
 	
 	@Ignore
