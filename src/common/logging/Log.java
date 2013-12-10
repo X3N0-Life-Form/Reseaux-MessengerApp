@@ -24,7 +24,7 @@ public class Log {
 	public synchronized void log(EventType type, String comment) {
 		Event e = new Event(type, comment);
 		events.add(e);
-		System.out.println(e.getTime() + "  " + comment);
+		System.out.println(e.getTime() + "  " + comment + " (" + type + ")");
 	}
 	
 	public List<Event> getEvents() {
