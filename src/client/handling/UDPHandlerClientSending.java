@@ -9,8 +9,8 @@ import java.net.InetAddress;
 import java.net.SocketException;
 
 import client.Client;
-
 import common.Message;
+import common.MessageInfoStrings;
 import common.MessageType;
 import common.handling.HandlingException;
 import common.logging.EventType;
@@ -23,21 +23,23 @@ public class UDPHandlerClientSending extends UDPHandlerClient {
 
 	@Override
 	public void run(){
-		while(client.isRunning()) { //&& client.isConnected()
-			try{
-				Message msgLive = new Message(MessageType.REQUEST_LIST);
-				msgLive.addInfo("login", client.getLogin());
-				msgLive.addInfo("port", client.getUDPMainListeningPort() + "");
-				messageManager.handleMessage(msgLive, socket);
-				Thread.sleep(2000);//TODO: mettre ça dans une constante
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			} catch (HandlingException e) {
-				e.printStackTrace();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+		while(client.isRunning()) {
+			if (client.isConnected()) {
+				try{
+					Message msgLive = new Message(MessageType.REQUEST_LIST);
+					msgLive.addInfo(MessageInfoStrings.LOGIN, client.getLogin());
+					msgLive.addInfo(MessageInfoStrings.PORT, client.getUDPMainListeningPort() + "");
+					messageManager.handleMessage(msgLive, socket);
+					Thread.sleep(Client.LIVE_DELAY);
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				} catch (HandlingException e) {
+					e.printStackTrace();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
