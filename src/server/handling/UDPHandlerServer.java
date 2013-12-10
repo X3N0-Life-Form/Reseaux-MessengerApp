@@ -100,4 +100,11 @@ public class UDPHandlerServer extends UDPHandler {
 		throw new HandlingException("Can't handle a Socket.");
 	}
 
+	/**
+	 * Return this handler's DatagramSocket. 
+	 * @return DatagramSocket.
+	 */
+	public DatagramSocket getSocket() {
+		return socket;
+	}
 }
