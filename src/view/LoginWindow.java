@@ -96,19 +96,6 @@ public class LoginWindow extends JPanel implements ActionListener {
 			String pass = new String(passField.getPassword());
 			String ipServer = ipServerField.getText();
 			controller.processLogin(login, pass, ipServer);
-			/*
-			if (pr.isOk()) {
-				cadre.setVisible(false);
-				try {
-					ChatMain.clw.lancerAffichage();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-				
-			} else {
-				JOptionPane.showMessageDialog(null, pr.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
-			}
-			*/
 		}
 	}
 	
