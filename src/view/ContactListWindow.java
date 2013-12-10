@@ -1,11 +1,15 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.CheckboxGroup;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +24,9 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 
 import client.Client;
+
 import controller.ContactListController;
+import controller.LoginController;
 
 public class ContactListWindow extends JPanel implements ActionListener, MouseListener {
 	
@@ -32,17 +38,21 @@ public class ContactListWindow extends JPanel implements ActionListener, MouseLi
 	private JButton multiChatButton = new JButton("Multi-Chat");
 	private JScrollPane scrollPane = new JScrollPane();
 	private JList loginList = new JList();
+	private Map<String, InetAddress> clientIps = new HashMap<String, InetAddress>();
 	private List<String> logins = new Vector<String>();
 	private JFrame cadre = new javax.swing.JFrame("Liste des amis connectés : ");
 	private Map<String, ChatPanel> discMap = new HashMap<String, ChatPanel>();
 
 	private ContactListController controller;
+	private Map<Vector<String>, ChatPanel>  mapListChat = new HashMap<Vector<String>, ChatPanel>();
 	
 	public void setLogins(List<String> logins) {
 		this.logins = logins;
 	}
 	
 	public void refresh(List<String> listeClient, Client client) throws IOException {
+		logins.clear();
+		logins = listeClient;
 		listeClient.remove(client.getLogin());
 		loginList.removeAll();
 		loginList.setListData(listeClient.toArray());
@@ -96,13 +106,21 @@ public class ContactListWindow extends JPanel implements ActionListener, MouseLi
 		{
 			disconnect();
 		} else if (e.getSource() == multiChatButton) {
-			SelectMultiContactWindow smlw = new SelectMultiContactWindow(logins, discMap, controller);
+			SelectMultiContactWindow smlw = new SelectMultiContactWindow(logins, controller, mapListChat);
 			try {
 				smlw.lancerAffichage();
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
 		}
+	}
+
+	public Map<Vector<String>, ChatPanel> getMapListChat() {
+		return mapListChat;
+	}
+
+	public void setMapListChat(Map<Vector<String>, ChatPanel> mapListChat) {
+		this.mapListChat = mapListChat;
 	}
 
 	/**
@@ -113,6 +131,10 @@ public class ContactListWindow extends JPanel implements ActionListener, MouseLi
 			discMap.get(login).getFrame().dispose();	
 		}
 		discMap.clear();
+		for(Vector<String> listLogin : mapListChat.keySet()) {
+			mapListChat.get(listLogin).getFrame().dispose();
+		}
+		mapListChat.clear();
 		System.out.println("verif si la map est vide: "+discMap);
 		cadre.setVisible(false);
 		LoginWindow lw = new LoginWindow();

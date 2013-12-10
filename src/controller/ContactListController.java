@@ -3,6 +3,7 @@ package controller;
 import java.io.IOException;
 
 import view.ContactListWindow;
+import view.SelectMultiContactWindow;
 import client.Client;
 
 /**
@@ -14,6 +15,7 @@ import client.Client;
 public class ContactListController { //TODO: extract interface or abstract class
 	
 	private ContactListWindow clw;
+	private SelectMultiContactWindow smlw;
 	private Client client;
 
 	public ContactListController(ContactListWindow clw, Client client) {
@@ -47,6 +49,14 @@ public class ContactListController { //TODO: extract interface or abstract class
 
 	public void setClient(Client client) {
 		this.client = client;
+	}
+
+	public SelectMultiContactWindow getSmlw() {
+		return smlw;
+	}
+
+	public void setSmlw(SelectMultiContactWindow smlw) {
+		this.smlw = smlw;
 	}
 
 	/**
