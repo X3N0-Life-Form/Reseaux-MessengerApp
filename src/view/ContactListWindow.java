@@ -116,6 +116,9 @@ public class ContactListWindow extends JPanel implements ActionListener, MouseLi
 		System.out.println("verif si la map est vide: "+discMap);
 		cadre.setVisible(false);
 		LoginWindow lw = new LoginWindow();
+		
+		controller.disconnect();
+		
 		try {
 			lw.lancerAffichage();
 		} catch (IOException e1) {

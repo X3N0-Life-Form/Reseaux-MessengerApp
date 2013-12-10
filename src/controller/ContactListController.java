@@ -5,7 +5,13 @@ import java.io.IOException;
 import view.ContactListWindow;
 import client.Client;
 
-public class ContactListController {
+/**
+ * 
+ * @author etudiant
+ * @see Client
+ * @see ContactListWindow
+ */
+public class ContactListController { //TODO: extract interface or abstract class
 	
 	private ContactListWindow clw;
 	private Client client;
@@ -16,6 +22,9 @@ public class ContactListController {
 		this.client.setContactListController(this);
 	}
 
+	/**
+	 * Refreshes the contact list.
+	 */
 	public void refresh() {
 		try {
 			clw.refresh(client.getClientLogins(), client);
@@ -38,6 +47,13 @@ public class ContactListController {
 
 	public void setClient(Client client) {
 		this.client = client;
+	}
+
+	/**
+	 * Calls the Client's disconnect method.
+	 */
+	public void disconnect() {
+		client.disconnect();
 	}
 
 }

@@ -77,11 +77,8 @@ public class ClientMessageManager {
 		switch (message.getType()) {
 		
 		case REQUEST_LIST:
-			System.out.println("envoi d'un signe de vie");
-			handler.sendMessage(message, socket);
-			break;
-			
 		case REQUEST_IP:
+		case DISCONNECT:
 			handler.sendMessage(message, socket);
 			break;
 			

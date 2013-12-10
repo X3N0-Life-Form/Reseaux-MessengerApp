@@ -94,11 +94,7 @@ public class ServerMessageManager {
 			}
 			break;
 			
-		case DISCONNECT:
-			clientIps.remove(login);
-			clientPorts.remove(login);
-			server.getTimeoutHandler().removeClient(login);
-			break;
+		
 		default:
 			throw new HandlingException("Message type " + message.getType() + " not handled by " + handler.getClass());
 		}
@@ -152,6 +148,13 @@ public class ServerMessageManager {
 				handler.sendMessage(errorMsg, socket, paquet);
 			}
 			break;
+			
+		case DISCONNECT:
+			clientIps.remove(login);
+			clientPorts.remove(login);
+			server.getTimeoutHandler().removeClient(login);
+			break;
+			
 		default:
 			throw new HandlingException("Message type " + message.getType() + " not handled by " + handler.getClass());
 	}

@@ -10,12 +10,14 @@ import java.util.Map;
 
 import client.handling.TCPHandlerClient;
 import client.handling.UDPClient;
-
 import common.CommonConstants;
 import common.MasterClass;
+import common.Message;
+import common.MessageInfoStrings;
+import common.MessageType;
+import common.handling.HandlingException;
 import common.logging.EventType;
 import common.logging.Log;
-
 import controller.ContactListController;
 import controller.LoginController;
 
@@ -27,6 +29,8 @@ import controller.LoginController;
 public class Client implements MasterClass { 
 	
 	private static final long DEFAULT_TIMEOUT_TIME = 0;
+	public static final long LIVE_DELAY = 2000;
+	
 	private String login;
 	private String pass;
 	
@@ -308,5 +312,22 @@ public class Client implements MasterClass {
 	 */
 	public void setConnected(boolean isConnected) {
 		this.connected = isConnected;
+	}
+
+	public void disconnect() {
+		Message disconnectMsg = new Message(MessageType.DISCONNECT);
+		disconnectMsg.addInfo(MessageInfoStrings.LOGIN, login);
+		
+		ClientMessageManager messageManager = udpClient.getSend().getMessageManager();
+		try {
+			messageManager.handleMessage(disconnectMsg, udpClient.getSend().getSocket());
+			connected = false;
+		} catch (HandlingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 }
