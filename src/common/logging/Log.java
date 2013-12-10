@@ -6,7 +6,15 @@ import java.io.OutputStreamWriter;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * This class is used to log events according to type, date and error message (see {@link Event}).
+ * It can be used by either a Client or a Server, which then passes the Log object to its Handlers,
+ * MessageManagers, etc.
+ * @author etudiant
+ * @see Event
+ */
 public class Log {
+	
 	private List<Event> events;
 	
 	/**

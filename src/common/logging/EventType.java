@@ -1,5 +1,11 @@
 package common.logging;
 
+/**
+ * Enumerates the various types of event recorded by the Log class.
+ * @author etudiant
+ * @see Log
+ * @see Event
+ */
 public enum EventType {
 	PARSING,
 	START,
