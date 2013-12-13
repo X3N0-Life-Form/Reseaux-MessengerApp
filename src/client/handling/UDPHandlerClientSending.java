@@ -15,8 +15,18 @@ import common.MessageType;
 import common.handling.HandlingException;
 import common.logging.EventType;
 
+/**
+ * UDPHandler dedicated to sending messages to the Server.
+ * @author etudiant
+ *
+ */
 public class UDPHandlerClientSending extends UDPHandlerClient {
 	
+	/**
+	 * Constructs a UDPHandlerClientSending for the specified {@link Client}.
+	 * @param client - Client
+	 * @throws SocketException
+	 */
 	public UDPHandlerClientSending(Client client) throws SocketException {
 		super(client);
 	}

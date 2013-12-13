@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import server.Server;
 import client.handling.TCPHandlerClient;
 import client.handling.UDPClient;
 import common.CommonConstants;
@@ -314,6 +315,10 @@ public class Client implements MasterClass {
 		this.connected = isConnected;
 	}
 
+	/**
+	 * Disconnects the {@link Client}: sends a DISCONNECT {@link Message} to the {@link Server}
+	 * and sets the Client's connection status to false.
+	 */
 	public void disconnect() {
 		Message disconnectMsg = new Message(MessageType.DISCONNECT);
 		disconnectMsg.addInfo(MessageInfoStrings.LOGIN, login);

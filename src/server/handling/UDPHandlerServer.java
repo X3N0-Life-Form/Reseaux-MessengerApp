@@ -96,6 +96,9 @@ public class UDPHandlerServer extends UDPHandler {
 		return serveur;
 	}
 
+	/**
+	 * Not implemented. Throws a {@link HandlingException}.
+	 */
 	@Override
 	public void sendMessage(Message message, Socket socket)
 			throws HandlingException {

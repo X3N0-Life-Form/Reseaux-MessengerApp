@@ -18,8 +18,20 @@ import common.MessageInfoStrings;
 import common.handling.HandlingException;
 import common.logging.EventType;
 
+/**
+ * UDPHandler dedicated to listening for incoming UDP packets.
+ * Technically capable of sending messages back, this is discouraged, favor the use
+ * of a dedicated sender class instead.
+ * @author etudiant
+ *
+ */
 public class UDPHandlerClientListening extends UDPHandlerClient {
 	
+	/**
+	 * Constructs a UDPHandlerClientListening object for the specified {@link Client}.
+	 * @param client
+	 * @throws SocketException
+	 */
 	public UDPHandlerClientListening(Client client) throws SocketException{
 		super(client);
 		client.setUDPMainListeningPort(socket.getLocalPort());
@@ -81,8 +93,7 @@ public class UDPHandlerClientListening extends UDPHandlerClient {
 		    o.writeObject(message.getObjects());
 			byte[] buf = b.toByteArray();
 			InetAddress ad = InetAddress.getByName(client.getServerIp());
-			//DatagramPacket p = new DatagramPacket(buf, buf.length, ad, client.getPort());
-			DatagramPacket p = new DatagramPacket(buf, buf.length, ad, 8001);
+			DatagramPacket p = new DatagramPacket(buf, buf.length, ad, client.getServerPort());
 			
 			socket.send(p);
 		

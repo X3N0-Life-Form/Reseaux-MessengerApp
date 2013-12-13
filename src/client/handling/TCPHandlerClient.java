@@ -100,7 +100,7 @@ public class TCPHandlerClient extends Thread implements HandlerClient {
 			} else {
 				client.getLoginController().fireErrorMessage(new Message(MessageType.ERROR, "Unable to connect to server"));
 			}
-			/*
+			/* TODO
 			while (client.isRunning()) {
 				if (!client.isConnected() && client.tryToConnect()) {
 					InetAddress inet = InetAddress.getByName(client.getServerIp());
@@ -131,6 +131,9 @@ public class TCPHandlerClient extends Thread implements HandlerClient {
 		return client;
 	}
 
+	/**
+	 * Not implemented. Throws a {@link HandlingException}.
+	 */
 	@Override
 	public void sendMessage(Message message, DatagramSocket socket) throws HandlingException{
 		throw new HandlingException("Can't handle a DatagramSocket.");

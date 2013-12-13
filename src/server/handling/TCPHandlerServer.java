@@ -95,6 +95,9 @@ public class TCPHandlerServer extends Thread implements Handler {
 		return serveur;
 	}
 
+	/**
+	 * Not implemented. Throws a {@link HandlingException}.
+	 */
 	@Override
 	public void sendMessage(Message message, DatagramSocket socket, DatagramPacket paquet) throws HandlingException {
 		throw new HandlingException("Can't handle a DatagramSocket.");
