@@ -3,12 +3,10 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -17,14 +15,20 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import common.Message;
-
 import client.Client;
 
-import controller.ContactListController;
+import common.Message;
+
+import controller.Controller;
 import controller.LoginController;
 
-public class LoginWindow extends JPanel implements ActionListener {
+/**
+ * Login window, this is where a user enters its login, password and the address
+ * of the server he wants to connect to.
+ * @author etudiant
+ * @see LoginController
+ */
+public class LoginWindow extends JPanel implements ActionListener, View {
 	
 	/**
 	 * 
@@ -41,10 +45,17 @@ public class LoginWindow extends JPanel implements ActionListener {
 	
 	private LoginController controller;
 	
+	@Override
+	public Controller getController() {
+		return controller;
+	}
+	
+	@Override
 	public void setController(LoginController controller) {
 		this.controller = controller;
 	}
 	
+	@Override
 	public void lancerAffichage() throws IOException
 	{
 		connectButton.addActionListener(this);
@@ -102,11 +113,21 @@ public class LoginWindow extends JPanel implements ActionListener {
 		}
 	}
 	
+	/**
+	 * Displays an error dialog box with the specified message.
+	 * @param message - Message object.
+	 */
 	public void fireErrorMessage(Message message) {
 		JOptionPane.showMessageDialog(null, message.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 
+	/**
+	 * Creates a {@link ContactListWindow} for the specified {@link Client} and list
+	 * of logins.
+	 * @param clientLogins - List of connected clients.
+	 * @param client
+	 */
 	public void createContactList(List<String> clientLogins, Client client) {
 		clientLogins.remove(client.getLogin());
 		cadre.setVisible(false);
@@ -118,6 +139,10 @@ public class LoginWindow extends JPanel implements ActionListener {
 		}
 	}
 	
+	/**
+	 * Refreshes the ContactListWindow.
+	 * @param client
+	 */
 	public void refreshContactList(Client client) {
 		try {
 			ChatMain.clw.refresh(controller.getClient().getClientLogins(), client);
@@ -125,4 +150,5 @@ public class LoginWindow extends JPanel implements ActionListener {
 			e.printStackTrace();
 		}
 	}
+
 }

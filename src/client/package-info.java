@@ -1,8 +1,9 @@
 /**
- * 
+ * This package contains Client-side classes. UDP and TCP messages are handled
+ * in the client.handling sub-package.
  */
 /**
- * @author Adrarsis
+ * @author etudiant
  *
  */
 package client;
