@@ -1,6 +1,7 @@
 package client;
 
 import java.io.IOException;
+import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -12,12 +13,19 @@ import client.handling.HandlerClient;
 import common.ErrorTypes;
 import common.Message;
 import common.MessageInfoStrings;
+import common.MessageManager;
 import common.MessageType;
 import common.handling.HandlingException;
 import common.logging.EventType;
 import common.logging.Log;
 
-public class ClientMessageManager {
+/**
+ * Similar to its Server-side counterpart, decyphers received {@link Message} objects
+ * and sends Messages back to the Server or other Clients.
+ * @author etudiant
+ *
+ */
+public class ClientMessageManager implements MessageManager {
 	
 	private Client client;
 	private HandlerClient handler;
@@ -27,6 +35,11 @@ public class ClientMessageManager {
 	
 	private int counter = 0;
 	
+	/**
+	 * Constructs a MessageManager for the specified Client and Handler.
+	 * @param client
+	 * @param handler
+	 */
 	public ClientMessageManager(Client client, HandlerClient handler){
 		this.client=client;
 		log = client.getLog();
@@ -34,9 +47,8 @@ public class ClientMessageManager {
 		this.clientIps = client.getClientIps();
 		this.clientPorts = client.getClientPorts();
 	}
-
-	//TODO: extract MessageManager interface
 	
+	@Override
 	public void handleMessage(Message message, Socket socket) throws IOException, HandlingException {
 		switch (message.getType()) {
 		
@@ -65,14 +77,7 @@ public class ClientMessageManager {
 		}
 	}
 	
-	/**
-	 * Handles UDP Message reception.
-	 * @param message - Message to handle.
-	 * @param socket - Receiving DatagramSocket.
-	 * @throws HandlingException
-	 * @throws IOException
-	 * @throws ClassNotFoundException
-	 */
+	@Override
 	public void handleMessage(Message message, DatagramSocket socket) throws HandlingException, IOException, ClassNotFoundException {
 		switch (message.getType()) {
 		
@@ -135,4 +140,15 @@ public class ClientMessageManager {
 			break;
 		}
 	}
+
+	/**
+	 * Not implemented. Throws a {@link HandlingException}.
+	 */
+	@Override
+	public void handleMessage(Message message, DatagramSocket socket,
+			DatagramPacket packet) throws HandlingException, IOException,
+			ClassNotFoundException {
+		throw new HandlingException("This method has not been implemented on this MessageManager");
+	}
+
 }

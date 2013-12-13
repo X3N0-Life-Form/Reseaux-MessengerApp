@@ -11,9 +11,12 @@ import java.util.List;
 import java.util.Map;
 
 
+
+
 import common.ErrorTypes;
 import common.Message;
 import common.MessageInfoStrings;
+import common.MessageManager;
 import common.MessageType;
 import common.handling.Handler;
 import common.handling.HandlingException;
@@ -29,7 +32,7 @@ import common.logging.Log;
  * @see UDPHandlerServer
  * @see TCPHandlerServer
  */
-public class ServerMessageManager {
+public class ServerMessageManager implements MessageManager {
 	
 	private Server server;
 	private Handler handler;
@@ -50,13 +53,7 @@ public class ServerMessageManager {
 		log = server.getLog();
 	}
 	
-	/**
-	 * Deals with Messages received through a regular Socket.
-	 * @param message - Message that needs to be handled.
-	 * @param socket
-	 * @throws IOException
-	 * @throws HandlingException If this Manager's Handler is unable to deal with Sockets.
-	 */
+	@Override
 	public void handleMessage(Message message, Socket socket) throws IOException, HandlingException {
 		InetAddress ip = socket.getInetAddress();
 		String login = message.getInfo(MessageInfoStrings.LOGIN);
@@ -100,15 +97,7 @@ public class ServerMessageManager {
 		}
 	}
 
-	/**
-	 * Deals with Messages received through a DatagramSocket.
-	 * @param message - Message that needs to be handled.
-	 * @param socket
-	 * @param paquet
-	 * @throws HandlingException If this Manager's Handler is unable to deal with DatagramSockets.
-	 * @throws IOException
-	 * @throws ClassNotFoundException
-	 */
+	@Override
 	public void handleMessage(Message message, DatagramSocket socket, DatagramPacket paquet) throws HandlingException, IOException, ClassNotFoundException {
 		String login = message.getInfo(MessageInfoStrings.LOGIN);
 		server.getTimeoutHandler().updateClient(login, new Date());
@@ -170,5 +159,14 @@ public class ServerMessageManager {
 			res.add(current);
 		}
 		return res;
+	}
+
+	/**
+	 * Not implemented. Throws a {@link HandlingException}.
+	 */
+	@Override
+	public void handleMessage(Message message, DatagramSocket socket)
+			throws HandlingException, IOException, ClassNotFoundException {
+		throw new HandlingException("This method has not been implemented on this MessageManager");
 	}
 }
