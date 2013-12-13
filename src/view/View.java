@@ -3,7 +3,6 @@ package view;
 import java.io.IOException;
 
 import controller.Controller;
-import controller.LoginController;
 
 /**
  * View classes are linked to a Controller, which processes the View's input
@@ -28,5 +27,5 @@ public interface View {
 	 * Sets the Controller linked to this View.
 	 * @param controller
 	 */
-	void setController(LoginController controller);
+	void setController(Controller controller);
 }

@@ -7,12 +7,12 @@ import view.SelectMultiContactWindow;
 import client.Client;
 
 /**
- * 
+ * Controller used by the contact list View and the multiple selection View.
  * @author etudiant
  * @see Client
  * @see ContactListWindow
  */
-public class ContactListController { //TODO: extract interface or abstract class
+public class ContactListController extends Controller {
 	
 	private ContactListWindow clw;
 	private SelectMultiContactWindow smlw;

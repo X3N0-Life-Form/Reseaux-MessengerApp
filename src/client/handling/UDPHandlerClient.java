@@ -29,7 +29,11 @@ public abstract class UDPHandlerClient extends UDPHandler implements HandlerClie
 	protected ClientMessageManager messageManager;
 	protected Log log;
 	
-	
+	/**
+	 * Constructs a UDPHandler for the specified {@link Client}.
+	 * @param client
+	 * @throws SocketException
+	 */
 	public UDPHandlerClient(Client client) throws SocketException{
 		this.client = client;
 		log = client.getLog();

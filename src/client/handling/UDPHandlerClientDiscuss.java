@@ -15,8 +15,18 @@ import common.MessageInfoStrings;
 import common.MessageType;
 import common.handling.HandlingException;
 
+/**
+ * UDPHandler capable of both receiving and sending messages to other clients.
+ * @author etudiant
+ *
+ */
 public class UDPHandlerClientDiscuss extends UDPHandlerClient {
 	
+	/**
+	 * Constructs a UDPHandlerClientDiscuss for the specified {@link Client}.
+	 * @param client - Client
+	 * @throws SocketException
+	 */
 	public UDPHandlerClientDiscuss(Client client) throws SocketException {
 		super(client);
 	}

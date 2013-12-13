@@ -23,14 +23,18 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 
 import client.handling.UDPHandlerClientDiscuss;
-
 import common.Message;
 import common.MessageType;
 import common.handling.HandlingException;
-
 import controller.ContactListController;
+import controller.Controller;
 
-public class ChatPanel extends JPanel implements ActionListener, KeyListener {	
+/**
+ * Chat View: displays messages exchanged between one or more users.
+ * @author etudiant
+ *
+ */
+public class ChatPanel extends JPanel implements ActionListener, KeyListener, View {	
 
 	private static final long serialVersionUID = 1L;
 	
@@ -52,6 +56,12 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener {
     private int msgCount = 0;
     private int lastMsgIdReceived = 0;
 	
+    /**
+     * Contructs a group discussion ChatPanel.
+     * @param loginWithMultiDiscuss
+     * @param discMapMultiDiscuss
+     * @param controller
+     */
 	public ChatPanel(Vector<String> loginWithMultiDiscuss, Map<Vector<String>,ChatPanel> discMapMultiDiscuss, ContactListController controller) {
 		
 		this.otherLoginMultiDiscuss = loginWithMultiDiscuss;
@@ -90,7 +100,12 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener {
 		}
 	}
 	
-	
+	/**
+	 * Contructs a group discussion ChatPanel, but differently.
+	 * @param login
+	 * @param discMap
+	 * @param controller
+	 */
 	public ChatPanel(String login, Map<String, ChatPanel> discMap, ContactListController controller){
 		
 		this.otherLogin = login;
@@ -123,6 +138,7 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener {
 		}
 	}
 	
+	@Override
 	public void lancerAffichage() throws IOException {
 		
 		textArea.setEditable(false);
@@ -160,8 +176,13 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener {
 		});
 	}
 	
-	
-	public void addTexte(String msg, int msgId, String loginOriginMsg) {
+	/**
+	 * Add text to the discussion panel.
+	 * @param msg
+	 * @param msgId
+	 * @param loginOriginMsg
+	 */
+	public void addText(String msg, int msgId, String loginOriginMsg) {
 		/*if (msgId - lastMsgIdReceived != 0 && msgId != 0) {
 			int lostMsg = msgId - lastMsgIdReceived;
 			UDPHCD.run(MessageType.MISSING_MSG, lostMsg, otherLogin);
@@ -223,6 +244,10 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener {
 	@Override
 	public void keyTyped(KeyEvent e) {}
 
+	/**
+	 * Displays a missing message warning.
+	 * @param lostMsg
+	 */
 	public void displayMissingMessage(int lostMsg) {
 		String recoveredMsg = myMessages.get(lostMsg);
 		String warningText = "*********************************************";
@@ -241,5 +266,15 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener {
 	public JFrame getFrame() {
 		 return cadre;
 	 }
+
+	@Override
+	public Controller getController() {
+		return controller;
+	}
+
+	@Override
+	public void setController(Controller controller) {
+		this.controller = (ContactListController) controller;
+	}
 
 }

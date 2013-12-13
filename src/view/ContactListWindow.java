@@ -1,15 +1,11 @@
 package view;
 
 import java.awt.BorderLayout;
-import java.awt.CheckboxGroup;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,11 +20,16 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 
 import client.Client;
-
 import controller.ContactListController;
-import controller.LoginController;
+import controller.Controller;
 
-public class ContactListWindow extends JPanel implements ActionListener, MouseListener {
+/**
+ * Displays a list of all connected contacts. The user may choose another user to discuss with,
+ * start a group discussion or disconnect itself from the server.
+ * @author etudiant
+ * @see ChatPanel
+ */
+public class ContactListWindow extends JPanel implements ActionListener, MouseListener, View {
 	
 	/**
 	 * 
@@ -38,7 +39,7 @@ public class ContactListWindow extends JPanel implements ActionListener, MouseLi
 	private JButton multiChatButton = new JButton("Multi-Chat");
 	private JScrollPane scrollPane = new JScrollPane();
 	private JList loginList = new JList();
-	private Map<String, InetAddress> clientIps = new HashMap<String, InetAddress>();
+	//private Map<String, InetAddress> clientIps = new HashMap<String, InetAddress>();
 	private List<String> logins = new Vector<String>();
 	private JFrame cadre = new javax.swing.JFrame("Liste des amis connectés : ");
 	private Map<String, ChatPanel> discMap = new HashMap<String, ChatPanel>();
@@ -50,6 +51,12 @@ public class ContactListWindow extends JPanel implements ActionListener, MouseLi
 		this.logins = logins;
 	}
 	
+	/**
+	 * Refreshes the list of connected clients.
+	 * @param listeClient
+	 * @param client
+	 * @throws IOException
+	 */
 	public void refresh(List<String> listeClient, Client client) throws IOException {
 		logins.clear();
 		logins = listeClient;
@@ -59,7 +66,7 @@ public class ContactListWindow extends JPanel implements ActionListener, MouseLi
 		cadre.validate();
 	}
 	
-	
+	@Override
 	public void lancerAffichage() throws IOException
 	{
 		disconnectButton.addActionListener(this);
@@ -168,31 +175,24 @@ public class ContactListWindow extends JPanel implements ActionListener, MouseLi
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseEntered(MouseEvent e) {}
 
 	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseExited(MouseEvent e) {}
 
 	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mousePressed(MouseEvent e) {}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseReleased(MouseEvent e) {}
 
-	public void setController(ContactListController clc) {
-		this.controller = clc;
+	public void setController(Controller clc) {
+		this.controller = (ContactListController) clc;
+	}
+	
+	@Override
+	public Controller getController() {
+		return controller;
 	}
 	
 	public Map<String, ChatPanel> getDiscMap() {
@@ -202,5 +202,5 @@ public class ContactListWindow extends JPanel implements ActionListener, MouseLi
 	public void setDiscMap(Map<String, ChatPanel> discMap) {
 		this.discMap = discMap;
 	}
-
+	
 }

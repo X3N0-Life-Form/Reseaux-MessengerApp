@@ -15,10 +15,20 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 import controller.ContactListController;
+import controller.Controller;
 
-@SuppressWarnings("serial")
-public class SelectMultiContactWindow extends JPanel implements ActionListener {
+/**
+ * View  allowing the user to select multiple contacts and start a group discussion.
+ * @author etudiant
+ * @see ContactListWindow
+ * @see ChatPanel
+ */
+public class SelectMultiContactWindow extends JPanel implements ActionListener, View {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1468670957626069617L;
 	private JButton startButton = new JButton("START");
 	private JFrame cadre = new javax.swing.JFrame("Sélectionner le groupe d'amis : ");
 	private Vector<JRadioButton> listRadioLog = new Vector<JRadioButton>();
@@ -31,7 +41,12 @@ public class SelectMultiContactWindow extends JPanel implements ActionListener {
 	private Vector<String> loginsWithMultiDiscuss = new Vector<String>();	
 	private ContactListController controller;
 	
-	
+	/**
+	 * Constructs a SelectMultiContactWindow with the specified list of logins.
+	 * @param logins - List of logins.
+	 * @param controller - ContactListController
+	 * @param mapListChat - Map containing any existing group ChatPanels
+	 */
 	public SelectMultiContactWindow(List<String> logins, ContactListController controller, Map<Vector<String>, ChatPanel>  mapListChat) {
 		this.mapListChat = mapListChat;
 		this.listLogWithContact = logins;
@@ -42,11 +57,9 @@ public class SelectMultiContactWindow extends JPanel implements ActionListener {
 	}
 	
 	
-	
 	public Map<Vector<String>, ChatPanel> getMapListChat() {
 		return mapListChat;
 	}
-
 
 
 	public void setMapListChat(Map<Vector<String>, ChatPanel> mapListChat) {
@@ -54,7 +67,7 @@ public class SelectMultiContactWindow extends JPanel implements ActionListener {
 	}
 
 
-
+	@Override
 	public void lancerAffichage() throws IOException
 	{
 		JPanel panneauPrincipal = new JPanel();
@@ -74,7 +87,6 @@ public class SelectMultiContactWindow extends JPanel implements ActionListener {
 		cadre.setVisible(true);
 		cadre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
-
 	
 	
 	@Override
@@ -90,6 +102,7 @@ public class SelectMultiContactWindow extends JPanel implements ActionListener {
 				}
 			}
 		}		
+		
 		if (e.getSource() == startButton) {
 			
 			for(JRadioButton buttonWithContact : listRadioLogWithContact) {
@@ -118,5 +131,16 @@ public class SelectMultiContactWindow extends JPanel implements ActionListener {
 			}
 			cadre.setVisible(false);
 		}
+	}
+
+
+	@Override
+	public Controller getController() {
+		return controller;
+	}
+
+	@Override
+	public void setController(Controller controller) {
+		this.controller = (ContactListController) controller;
 	}
 }

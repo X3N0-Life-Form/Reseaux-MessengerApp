@@ -51,8 +51,8 @@ public class LoginWindow extends JPanel implements ActionListener, View {
 	}
 	
 	@Override
-	public void setController(LoginController controller) {
-		this.controller = controller;
+	public void setController(Controller controller) {
+		this.controller = (LoginController) controller;
 	}
 	
 	@Override
