@@ -1,11 +1,15 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.CheckboxGroup;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +24,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 
 import client.Client;
+
 import controller.ContactListController;
 import controller.Controller;
 
@@ -39,7 +44,7 @@ public class ContactListWindow extends JPanel implements ActionListener, MouseLi
 	private JButton multiChatButton = new JButton("Multi-Chat");
 	private JScrollPane scrollPane = new JScrollPane();
 	private JList loginList = new JList();
-	//private Map<String, InetAddress> clientIps = new HashMap<String, InetAddress>();
+	private Map<String, InetAddress> clientIps = new HashMap<String, InetAddress>();
 	private List<String> logins = new Vector<String>();
 	private JFrame cadre = new javax.swing.JFrame("Liste des amis connectés : ");
 	private Map<String, ChatPanel> discMap = new HashMap<String, ChatPanel>();
@@ -202,5 +207,5 @@ public class ContactListWindow extends JPanel implements ActionListener, MouseLi
 	public void setDiscMap(Map<String, ChatPanel> discMap) {
 		this.discMap = discMap;
 	}
-	
+
 }

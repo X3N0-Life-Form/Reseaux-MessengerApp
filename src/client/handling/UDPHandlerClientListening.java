@@ -7,6 +7,8 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.util.Collections;
+import java.util.Vector;
 
 import view.ChatPanel;
 
@@ -47,6 +49,30 @@ public class UDPHandlerClientListening extends UDPHandlerClient {
 				socket.receive(p);
 				Message message = getMessage(p);
 				switch (message.getType()) {
+				case MSG_DISCUSS_CLIENT_SEVERAL:
+					System.out.println("J'ai reçus un message");
+					@SuppressWarnings("unchecked")
+					Vector<String> listLoginOtherClient = new Vector<String>((Vector<String>) message.getObject("list login other client"));
+					System.out.println("dont la liste des logins est la suivante: "+listLoginOtherClient);
+					listLoginOtherClient.remove(client.getLogin());
+					listLoginOtherClient.add(message.getInfo("login client origin"));
+					Collections.sort(listLoginOtherClient);
+					if(client.getContactListController().getClw().getMapListChat().containsKey(listLoginOtherClient)) {
+						ChatPanel p1 = client.getContactListController().getClw().getMapListChat().get(listLoginOtherClient);
+						p1.addText(message.getInfo("msg"), Integer.parseInt(message.getInfo(MessageInfoStrings.MESSAGE_ID)), message.getInfo("login client origin"));
+						p1.getFrame().toFront();
+					}else {
+						ChatPanel p2 = new ChatPanel(listLoginOtherClient, client.getContactListController().getClw().getMapListChat(), client.getContactListController());
+						client.getContactListController().getClw().getMapListChat().put(listLoginOtherClient, p2);
+						try {
+							p2.lancerAffichage();
+							p2.addText(message.getInfo("msg"), Integer.parseInt(message.getInfo(MessageInfoStrings.MESSAGE_ID)), message.getInfo("login client origin"));
+							p2.getFrame().toFront();
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+					}
+					break;
 				case MSG_DISCUSS_CLIENT:
 					if (client.getContactListController().getClw().getDiscMap().containsKey(message.getInfo("login client origin"))) {
 						ChatPanel p1 = client.getContactListController().getClw().getDiscMap().get(message.getInfo("login client origin"));

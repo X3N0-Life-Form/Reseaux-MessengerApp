@@ -112,6 +112,11 @@ public class ClientMessageManager implements MessageManager {
 			handler.sendMessage(message, socket);
 			break;
 			
+		case MSG_DISCUSS_CLIENT_SEVERAL:
+			System.out.println("envoi du message aux autres clients");
+			handler.sendMessage(message, socket);
+			break;
+			
 		case CLIENT_IP:
 			InetAddress targetIP = (InetAddress) message.getObject(MessageInfoStrings.REQUEST_IP_TARGET_IP);
 			// if target client is also on the server
@@ -122,6 +127,7 @@ public class ClientMessageManager implements MessageManager {
 			String targetLogin = message.getInfo(MessageInfoStrings.LOGIN);
 			clientIps.put(targetLogin, targetIP);
 			clientPorts.put(targetLogin, targetPort);
+			System.out.println("les info de l'autre client sont:"+targetLogin+ "  " + targetIP+ "  " +targetPort);
 			break;
 			
 		case ERROR:

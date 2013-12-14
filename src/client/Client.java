@@ -85,6 +85,7 @@ public class Client implements MasterClass {
 		timeoutHandler = new ClientTimeoutHandler(this);
 		running = false;
 		timeout = DEFAULT_TIMEOUT_TIME;
+		log = new Log();
 	}
 
 	public Client(String login, String serverIp, int port) {

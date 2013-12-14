@@ -1,5 +1,6 @@
 package view;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,11 +22,14 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 import client.handling.UDPHandlerClientDiscuss;
+
 import common.Message;
 import common.MessageType;
 import common.handling.HandlingException;
+
 import controller.ContactListController;
 import controller.Controller;
 
@@ -159,7 +163,11 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener, Vi
 		panneauChat.setLayout(new BorderLayout());
 		panneauChat.add(scrollPaneTop, BorderLayout.NORTH);
 		panneauChat.add(scrollPaneBottom, BorderLayout.CENTER);
-
+		/*//Color grey = new Color(48,48,48);
+		//panneauChat.setBackground(Color.black);
+		panneauChat.setBorder(new LineBorder(Color.BLACK, 5));
+		
+		//cadre.getContentPane().setBackground(grey);*/
 		cadre.setContentPane(panneauChat);
 		cadre.setLocation(400, 200);
 		cadre.setSize(FRAME_WIDTH, 500);
