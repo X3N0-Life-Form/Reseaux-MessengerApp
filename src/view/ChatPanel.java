@@ -61,7 +61,7 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener, Vi
     private int lastMsgIdReceived = 0;
 	
     /**
-     * Contructs a group discussion ChatPanel.
+     * Constructs a group discussion ChatPanel.
      * @param loginWithMultiDiscuss
      * @param discMapMultiDiscuss
      * @param controller
@@ -214,7 +214,7 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener, Vi
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyChar() == '\n') {
 			if(discussMultip == true) {
-				UDPHCD.run(text.getText().trim(), otherLoginMultiDiscuss, msgCount);
+				UDPHCD.run(text.getText().trim(), otherLoginMultiDiscuss, this, msgCount);
 				System.out.println("chat panel: j'envoi le message aux autres clients !!!!!!");
 				//myMessages.put(msgCount, text.getText().trim());
 				//msgCount++;
@@ -229,7 +229,7 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener, Vi
 				text.setText("");
 				textArea.setCaretPosition(textArea.getText().length());
 			}else {
-				UDPHCD.run(text.getText().trim(), otherLogin, msgCount);
+				UDPHCD.run(text.getText().trim(), otherLogin, this, msgCount);
 				myMessages.put(msgCount, text.getText().trim());
 				msgCount++;
 				String textMessage = textArea.getText() 
@@ -259,12 +259,29 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener, Vi
 	public void displayMissingMessage(int lostMsg) {
 		String recoveredMsg = myMessages.get(lostMsg);
 		String warningText = "*********************************************";
-		warningText += "WARNING: the following message was never received";
+		warningText += "\nWARNING: the following message was never received";
 		
 		String textMessage = textArea.getText()
 				+ "\n"
 				+ warningText + "\n"
 				+ recoveredMsg;
+		textMessage += "*********************************************";
+		
+		textArea.setText(textMessage);
+		textArea.setCaretPosition(textArea.getText().length());
+	}
+	
+	/**
+	 * Displays a message stating that the specified user has disconnected.
+	 * @param login
+	 */
+	public void displayDisconnectedMessage(String login) {
+		String warningText = "*********************************************";
+		warningText += "\nWARNING: the user " + login + "has been disconnected.";
+		
+		String textMessage = textArea.getText()
+				+ "\n"
+				+ warningText + "\n";
 		textMessage += "*********************************************";
 		
 		textArea.setText(textMessage);

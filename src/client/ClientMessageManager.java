@@ -95,6 +95,7 @@ public class ClientMessageManager implements MessageManager {
 				counter++;
 			} else {
 				client.setClientLogins(logins);
+				client.removedDisconnectedClients();
 				client.getContactListController().refresh();
 			}
 			break;

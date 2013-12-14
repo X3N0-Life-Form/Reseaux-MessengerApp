@@ -336,4 +336,17 @@ public class Client implements MasterClass {
 			e.printStackTrace();
 		}
 	}
+
+	/**
+	 * Called after updating the login list, this removes old clients from the IP and port Maps.
+	 */
+	public void removedDisconnectedClients() {
+		Map<String, InetAddress> clientIpsClone = new HashMap<String, InetAddress>(clientIps);
+		for (String login : clientIpsClone.keySet()) {
+			if (!clientLogins.contains(login)) {
+				clientIps.remove(login);
+				clientPorts.remove(login);
+			}
+		}
+	}
 }
