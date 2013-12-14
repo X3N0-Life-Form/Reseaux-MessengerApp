@@ -3,6 +3,8 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -18,9 +20,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import client.Client;
-
 import common.Message;
-
 import controller.Controller;
 import controller.LoginController;
 
@@ -30,7 +30,7 @@ import controller.LoginController;
  * @author etudiant
  * @see LoginController
  */
-public class LoginWindow extends JPanel implements ActionListener, View {
+public class LoginWindow extends JPanel implements ActionListener, KeyListener, View {
 	
 	/**
 	 * 
@@ -106,13 +106,16 @@ public class LoginWindow extends JPanel implements ActionListener, View {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == connectButton)
-		{
-			String login = logField.getText();
-			String pass = new String(passField.getPassword());
-			String ipServer = ipServerField.getText();
-			controller.processLogin(login, pass, ipServer);
+		if (e.getSource() == connectButton)	{
+			processLogin();
 		}
+	}
+
+	public void processLogin() {
+		String login = logField.getText();
+		String pass = new String(passField.getPassword());
+		String ipServer = ipServerField.getText();
+		controller.processLogin(login, pass, ipServer);
 	}
 	
 	/**
@@ -152,5 +155,18 @@ public class LoginWindow extends JPanel implements ActionListener, View {
 			e.printStackTrace();
 		}
 	}
+
+	@Override
+	public void keyPressed(KeyEvent e) { //TODO make it work
+		if (e.getKeyChar() == '\n') {
+			processLogin();
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {}
+
+	@Override
+	public void keyTyped(KeyEvent e) {}
 
 }
