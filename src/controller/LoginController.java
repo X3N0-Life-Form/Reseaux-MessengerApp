@@ -4,9 +4,9 @@ import java.io.IOException;
 
 import javax.swing.JOptionPane;
 
+import common.CommonConstants;
 import common.Message;
 import common.MessageType;
-
 import view.ChatMain;
 import view.LoginWindow;
 import client.Client;
@@ -44,7 +44,7 @@ public class LoginController extends Controller {
 			fireErrorMessage(new Message(MessageType.ERROR, "Veuillez remplir tous les champs."));
 		} else {
 			try {
-				client = new Client(login, pass, ipServer, 8001);
+				client = new Client(login, pass, ipServer, CommonConstants.DEFAULT_SERVER_PORT_TCP);
 				client.setLoginController(this);
 				
 				ContactListController clc = new ContactListController(ChatMain.clw, client);

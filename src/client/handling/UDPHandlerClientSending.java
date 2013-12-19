@@ -9,7 +9,6 @@ import java.net.InetAddress;
 import java.net.SocketException;
 
 import client.Client;
-
 import common.Message;
 import common.MessageInfoStrings;
 import common.MessageType;
@@ -35,20 +34,22 @@ public class UDPHandlerClientSending extends UDPHandlerClient {
 	@Override
 	public void run(){
 		while(client.isRunning()) {
+			try {
+				Thread.sleep(Client.LIVE_DELAY);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			if (client.isConnected()) {
 				try{
 					Message msgLive = new Message(MessageType.REQUEST_LIST);
 					msgLive.addInfo(MessageInfoStrings.LOGIN, client.getLogin());
 					msgLive.addInfo(MessageInfoStrings.PORT, client.getUDPMainListeningPort() + "");
 					messageManager.handleMessage(msgLive, socket);
-					Thread.sleep(Client.LIVE_DELAY);
 				} catch (IOException e) {
 					e.printStackTrace();
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				} catch (HandlingException e) {
-					e.printStackTrace();
-				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 			}

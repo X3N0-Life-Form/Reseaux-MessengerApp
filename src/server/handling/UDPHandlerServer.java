@@ -12,10 +12,10 @@ import java.util.Date;
 
 import server.Server;
 import server.ServerMessageManager;
-
 import common.CommonConstants;
 import common.MasterClass;
 import common.Message;
+import common.MessageInfoStrings;
 import common.handling.Handler;
 import common.handling.HandlingException;
 import common.handling.UDPHandler;
@@ -69,6 +69,11 @@ public class UDPHandlerServer extends UDPHandler {
 			} catch (HandlingException e) {
 				e.printStackTrace();
 			}
+			try {
+				Thread.sleep(CommonConstants.SLEEP_SMALL);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			};
 		}
 	}
 
@@ -81,7 +86,7 @@ public class UDPHandlerServer extends UDPHandler {
 		    ObjectOutputStream o = new ObjectOutputStream(b);
 		    o.writeObject(message);
 			byte[] buf = b.toByteArray();
-			int senderPort = Integer.parseInt(message.getInfo("senderPort"));
+			int senderPort = Integer.parseInt(message.getInfo(MessageInfoStrings.PORT));
 			DatagramPacket p = new DatagramPacket(buf, buf.length, packet.getAddress(), senderPort);
 			System.out.println("Sending  udp message to: " + p.getAddress() + ":" + p.getPort() + "; message="+ message);
 			socket.send(p);

@@ -37,8 +37,10 @@ public class UDPHandlerClientDiscuss extends UDPHandlerClient {
 	 * @param text
 	 * @param listLoginOtherClient
 	 * @param msgCount
+	 * @return false if the message could not be send to everyone.
 	 */
-	public void run(String text, Vector<String> listLoginOtherClient, ChatPanel panel, int msgCount) {
+	public boolean run(String text, Vector<String> listLoginOtherClient, ChatPanel panel, int msgCount) {
+		boolean status = true;
 		if(client.isRunning()){
 			System.out.println("la liste des autres client a qui envoyé le msg: "+listLoginOtherClient);
 			for(String loginOtherClient : listLoginOtherClient) {
@@ -60,11 +62,15 @@ public class UDPHandlerClientDiscuss extends UDPHandlerClient {
 					} catch (HandlingException e) {
 						e.printStackTrace();
 					}
+					// status stays true
 				} else {
 					panel.displayDisconnectedMessage(loginOtherClient);
+					status = false;
 				}
 			}
+			return status;
 		}
+		return false; // client wasn't running
 	}
 
 	@Override
@@ -97,8 +103,9 @@ public class UDPHandlerClientDiscuss extends UDPHandlerClient {
 	 * @param text
 	 * @param loginOtherClient
 	 * @param msgCount
+	 * @return false if the message could not be send.
 	 */
-	public void run(String text, String loginOtherClient, ChatPanel panel, int msgCount) {
+	public boolean run(String text, String loginOtherClient, ChatPanel panel, int msgCount) {
 		if(client.isRunning()) {
 			if (client.getClientIps().get(loginOtherClient) != null) {
 				try{
@@ -116,10 +123,13 @@ public class UDPHandlerClientDiscuss extends UDPHandlerClient {
 				} catch (HandlingException e) {
 					e.printStackTrace();
 				}
+				return true;
 			} else {
 				panel.displayDisconnectedMessage(loginOtherClient);
+				return false;
 			}
 		}
+		return false; // client wasn't running
 	}
 
 	@Override

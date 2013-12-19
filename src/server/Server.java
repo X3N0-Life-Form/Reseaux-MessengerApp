@@ -13,7 +13,6 @@ import common.CommonConstants;
 import common.MasterClass;
 import common.logging.EventType;
 import common.logging.Log;
-
 import server.handling.TCPHandlerServer;
 import server.handling.UDPHandlerServer;
 
@@ -36,7 +35,7 @@ public class Server implements MasterClass {
 	private LoginParser loginParser;
 	private Log log;
 	
-	public static final long DEFAULT_TIMEOUT_TIME = 5000;
+	public static final long DEFAULT_TIMEOUT_TIME = 50000;
 	public static final String DEFAULT_LOGIN_FILE_URL = "res/clientsSample.xml";
 	
 	/**
@@ -125,7 +124,10 @@ public class Server implements MasterClass {
 				
 				log.log(EventType.START, "Starting TCP handler thread for " + socket.getInetAddress());
 				tcph.start();
+				Thread.sleep(CommonConstants.SLEEP_SMALL);
 			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}

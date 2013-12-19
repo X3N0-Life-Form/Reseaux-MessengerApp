@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import common.CommonConstants;
 import common.logging.EventType;
 import common.logging.Log;
 
@@ -85,6 +86,11 @@ public class ServerTimeoutHandler extends Thread {
 					removeClient(login);
 					break;
 				}
+			}
+			try {
+				Thread.sleep(CommonConstants.SLEEP_SMALL);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 		}
 	}

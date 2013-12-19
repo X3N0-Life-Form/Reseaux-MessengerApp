@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -20,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 import client.Client;
 import controller.ContactListController;
@@ -43,7 +45,7 @@ public class ContactListWindow extends JPanel implements ActionListener, MouseLi
 	private JList loginList = new JList();
 	//private Map<String, InetAddress> clientIps = new HashMap<String, InetAddress>();
 	private List<String> logins = new Vector<String>();
-	private JFrame cadre = new javax.swing.JFrame("Liste des amis connectés : ");
+	private JFrame cadre;
 	private Map<String, ChatPanel> discMap = new HashMap<String, ChatPanel>();
 
 	private ContactListController controller;
@@ -71,6 +73,8 @@ public class ContactListWindow extends JPanel implements ActionListener, MouseLi
 	@Override
 	public void lancerAffichage() throws IOException
 	{
+		String login = controller.getClient().getLogin();
+		cadre = new javax.swing.JFrame(login + " - Liste des amis connectés : ");
 		disconnectButton.addActionListener(this);
 		multiChatButton.addActionListener(this);
 		loginList.setListData(logins.toArray());
@@ -113,6 +117,11 @@ public class ContactListWindow extends JPanel implements ActionListener, MouseLi
 				disconnect();
 			}
 		});
+		
+		panneauPrincipal.setBorder(new LineBorder(Color.darkGray, 5));
+		panneauAction.setBorder(new LineBorder(Color.darkGray, 5));
+		panneauAction.setBackground(Color.darkGray);
+		panneauListeContact.setBorder(new LineBorder(Color.darkGray, 5));
 	}
 
 	@Override
@@ -152,12 +161,11 @@ public class ContactListWindow extends JPanel implements ActionListener, MouseLi
 		mapListChat.clear();
 		System.out.println("verif si la map est vide: "+discMap);
 		cadre.setVisible(false);
-		LoginWindow lw = new LoginWindow();
 		
 		controller.disconnect();
 		
 		try {
-			lw.lancerAffichage();
+			ChatMain.lw.lancerAffichage();
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}

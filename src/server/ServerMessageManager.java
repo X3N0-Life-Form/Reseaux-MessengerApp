@@ -81,13 +81,13 @@ public class ServerMessageManager implements MessageManager {
 						MessageType.OK,
 						"Able to authenticate client.");
 				handler.sendMessage(okMsg, socket);
-				//log.log(EventType.INFO, "Client authenticated: " + login);
+				log.log(EventType.INFO, "Client authenticated: " + login);
 			} else {
 				Message errorMsg = new Message(
 						MessageType.ERROR,
 						"Unable to authenticate client: wrong login or password.");
 				handler.sendMessage(errorMsg, socket);
-				//log.log(EventType.ERROR, "Rejected client authentification: " + login);
+				log.log(EventType.ERROR, "Rejected client authentification: " + login);
 			}
 			break;
 			
@@ -107,8 +107,10 @@ public class ServerMessageManager implements MessageManager {
 				
 				Message clientListMsg = new Message(MessageType.CLIENT_LIST);
 				List<String> clientLogins = getClientLogins();
+				
 				clientListMsg.addObject(MessageInfoStrings.REQUEST_LIST_CLIENT_LOGINS, clientLogins);
-				clientListMsg.addInfo("senderPort", message.getInfo(MessageInfoStrings.PORT));
+				clientListMsg.addInfo(MessageInfoStrings.PORT, message.getInfo(MessageInfoStrings.PORT));
+				
 				clientPorts.put(login, message.getInfo(MessageInfoStrings.PORT));
 				handler.sendMessage(clientListMsg, socket, paquet);
 				
@@ -120,6 +122,7 @@ public class ServerMessageManager implements MessageManager {
 				handler.sendMessage(errorMsg, socket, paquet);
 			}
 			break;
+			
 		case REQUEST_IP:
 			if (clientIps.containsKey(login)) {
 				
@@ -127,7 +130,7 @@ public class ServerMessageManager implements MessageManager {
 				clientIPMsg.addObject(MessageInfoStrings.REQUEST_IP_TARGET_IP, clientIps.get(login));
 				clientIPMsg.addInfo(MessageInfoStrings.REQUEST_IP_TARGET_PORT, clientPorts.get(login));
 				clientIPMsg.addInfo(MessageInfoStrings.LOGIN, login);
-				clientIPMsg.addInfo("senderPort", message.getInfo(MessageInfoStrings.PORT));
+				clientIPMsg.addInfo(MessageInfoStrings.PORT, message.getInfo(MessageInfoStrings.PORT));
 				handler.sendMessage(clientIPMsg, socket, paquet);
 				
 			} else {

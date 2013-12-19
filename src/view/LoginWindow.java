@@ -30,7 +30,29 @@ import controller.LoginController;
  * @author etudiant
  * @see LoginController
  */
-public class LoginWindow extends JPanel implements ActionListener, KeyListener, View {
+public class LoginWindow extends JPanel implements ActionListener, View {
+	
+	//TODO
+	/**
+	 * 
+	 * @author etudiant
+	 *
+	 */
+	protected class LoginWindowKeyListener implements KeyListener {
+
+		@Override
+		public void keyTyped(KeyEvent e) {}
+		
+		@Override
+		public void keyReleased(KeyEvent e) {}
+		
+		@Override
+		public void keyPressed(KeyEvent e) {
+			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+				processLogin();
+			}
+		}
+	}
 	
 	/**
 	 * 
@@ -61,6 +83,10 @@ public class LoginWindow extends JPanel implements ActionListener, KeyListener, 
 	public void lancerAffichage() throws IOException
 	{
 		connectButton.addActionListener(this);
+		connectButton.addKeyListener(new LoginWindowKeyListener());
+		logField.addKeyListener(new LoginWindowKeyListener());
+		passField.addKeyListener(new LoginWindowKeyListener());
+		ipServerField.addKeyListener(new LoginWindowKeyListener());
 		
 		logField.setSize(30, 5);
 		passField.setSize(30, 5);
@@ -155,18 +181,5 @@ public class LoginWindow extends JPanel implements ActionListener, KeyListener, 
 			e.printStackTrace();
 		}
 	}
-
-	@Override
-	public void keyPressed(KeyEvent e) { //TODO make it work
-		if (e.getKeyChar() == '\n') {
-			processLogin();
-		}
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {}
-
-	@Override
-	public void keyTyped(KeyEvent e) {}
 
 }

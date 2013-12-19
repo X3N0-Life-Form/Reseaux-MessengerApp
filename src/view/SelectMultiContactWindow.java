@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -13,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 
 import controller.ContactListController;
 import controller.Controller;
@@ -33,6 +35,7 @@ public class SelectMultiContactWindow extends JPanel implements ActionListener, 
 	private JFrame cadre = new javax.swing.JFrame("Sélectionner le groupe d'amis : ");
 	private Vector<JRadioButton> listRadioLog = new Vector<JRadioButton>();
 	private Vector<JRadioButton> listRadioLogWithContact = new Vector<JRadioButton>();
+	private JScrollPane scrollPane = new JScrollPane();
 	
 	private Map<Vector<String>, ChatPanel>  mapListChat;
 	
@@ -79,11 +82,13 @@ public class SelectMultiContactWindow extends JPanel implements ActionListener, 
 		startButton.addActionListener(this);
 		panneauPrincipal.add(startButton, BorderLayout.SOUTH);
 		
+		scrollPane.getViewport().setView(panneauPrincipal);
+		
 		cadre.setContentPane(panneauPrincipal);
 		cadre.setLocation(600, 200);
 		cadre.pack();
 		cadre.setResizable(false);
-		cadre.setSize(300, 400);
+		cadre.setMaximumSize(new Dimension(300, 400));
 		cadre.setVisible(true);
 		cadre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}

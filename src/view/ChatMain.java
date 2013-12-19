@@ -15,6 +15,7 @@ public class ChatMain {
 	 * ContactListWindow shared by everyone.
 	 */
 	public static ContactListWindow clw = new ContactListWindow();
+	public static LoginWindow lw = new LoginWindow();
 	
 	/**
 	 * Takes no arguments.
@@ -23,10 +24,8 @@ public class ChatMain {
 	 */
 	public static void main(String[] arg) throws IOException
 	{
-		LoginWindow window = new LoginWindow();
-		@SuppressWarnings("unused") // yes, it is used.
-		LoginController lc = new LoginController(window);
-		window.lancerAffichage();
+		LoginController lc = new LoginController(lw);
+		lw.lancerAffichage();
 	}
 
 }

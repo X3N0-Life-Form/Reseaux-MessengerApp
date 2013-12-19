@@ -25,11 +25,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 import client.handling.UDPHandlerClientDiscuss;
-
 import common.Message;
 import common.MessageType;
 import common.handling.HandlingException;
-
 import controller.ContactListController;
 import controller.Controller;
 
@@ -182,6 +180,10 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener, Vi
 				}
 			}
 		});
+		
+		scrollPaneTop.setBorder(new LineBorder(Color.darkGray, 5));
+		scrollPaneBottom.setBorder(new LineBorder(Color.darkGray, 5));
+		panneauChat.setBorder(new LineBorder(Color.darkGray, 5));
 	}
 	
 	/**
@@ -213,8 +215,10 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener, Vi
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyChar() == '\n') {
-			if(discussMultip == true) {
-				UDPHCD.run(text.getText().trim(), otherLoginMultiDiscuss, this, msgCount);
+			if (discussMultip == true) {
+				if (UDPHCD.run(text.getText().trim(), otherLoginMultiDiscuss, this, msgCount)) {
+					
+				}
 				System.out.println("chat panel: j'envoi le message aux autres clients !!!!!!");
 				//myMessages.put(msgCount, text.getText().trim());
 				//msgCount++;
@@ -228,20 +232,21 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener, Vi
 				textArea.setText(textMessage);
 				text.setText("");
 				textArea.setCaretPosition(textArea.getText().length());
-			}else {
-				UDPHCD.run(text.getText().trim(), otherLogin, this, msgCount);
-				myMessages.put(msgCount, text.getText().trim());
-				msgCount++;
-				String textMessage = textArea.getText() 
-						+ "\n" 
-						+ controller.getClient().getLogin() + ":  " 
-						+ text.getText().trim() 
-						+ "\n\n\t\t\t" 
-						+ new Date() 
-						+ "\n";			
-				textArea.setText(textMessage);
-				text.setText("");
-				textArea.setCaretPosition(textArea.getText().length());
+			} else {
+				if(UDPHCD.run(text.getText().trim(), otherLogin, this, msgCount)) {
+					myMessages.put(msgCount, text.getText().trim());
+					msgCount++;
+					String textMessage = textArea.getText() 
+							+ "\n" 
+							+ controller.getClient().getLogin() + ":  " 
+							+ text.getText().trim() 
+							+ "\n\n\t\t\t" 
+							+ new Date() 
+							+ "\n";			
+					textArea.setText(textMessage);
+					text.setText("");
+					textArea.setCaretPosition(textArea.getText().length());
+				}
 			}
 		}
 	}
@@ -277,7 +282,7 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener, Vi
 	 */
 	public void displayDisconnectedMessage(String login) {
 		String warningText = "*********************************************";
-		warningText += "\nWARNING: the user " + login + "has been disconnected.";
+		warningText += "\nWARNING: the user " + login + " has been disconnected.";
 		
 		String textMessage = textArea.getText()
 				+ "\n"
@@ -300,6 +305,23 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener, Vi
 	@Override
 	public void setController(Controller controller) {
 		this.controller = (ContactListController) controller;
+	}
+
+	/**
+	 * Displays a message stating that the specified user has reconnected.
+	 * @param login
+	 */
+	public void displayReconnectedMessage(String login) {
+		String warningText = "*********************************************";
+		warningText += "\nINFO: the user " + login + " has reconnected.";
+		
+		String textMessage = textArea.getText()
+				+ "\n"
+				+ warningText + "\n";
+		textMessage += "*********************************************";
+		
+		textArea.setText(textMessage);
+		textArea.setCaretPosition(textArea.getText().length());
 	}
 
 }

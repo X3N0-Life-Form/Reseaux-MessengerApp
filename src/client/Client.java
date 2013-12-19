@@ -7,8 +7,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import server.Server;
+import view.ChatPanel;
 import client.handling.TCPHandlerClient;
 import client.handling.UDPClient;
 import common.CommonConstants;
@@ -30,7 +32,7 @@ import controller.LoginController;
 public class Client implements MasterClass { 
 	
 	private static final long DEFAULT_TIMEOUT_TIME = 0;
-	public static final long LIVE_DELAY = 2000;
+	public static final long LIVE_DELAY = 4000;
 	
 	private String login;
 	private String pass;
@@ -324,9 +326,9 @@ public class Client implements MasterClass {
 		Message disconnectMsg = new Message(MessageType.DISCONNECT);
 		disconnectMsg.addInfo(MessageInfoStrings.LOGIN, login);
 		
-		ClientMessageManager messageManager = udpClient.getSend().getMessageManager();
 		try {
-			messageManager.handleMessage(disconnectMsg, udpClient.getSend().getSocket());
+			udpClient.getSend().getMessageManager()
+				.handleMessage(disconnectMsg, udpClient.getSend().getSocket());
 			connected = false;
 		} catch (HandlingException e) {
 			e.printStackTrace();
@@ -340,7 +342,7 @@ public class Client implements MasterClass {
 	/**
 	 * Called after updating the login list, this removes old clients from the IP and port Maps.
 	 */
-	public void removedDisconnectedClients() {
+	public void removeDisconnectedClients() {
 		Map<String, InetAddress> clientIpsClone = new HashMap<String, InetAddress>(clientIps);
 		for (String login : clientIpsClone.keySet()) {
 			if (!clientLogins.contains(login)) {
@@ -349,4 +351,79 @@ public class Client implements MasterClass {
 			}
 		}
 	}
+
+	/**
+	 * Reconnects disconnected clients and informs that these clients are reconnected.
+	 */
+	public void updateChatPanels() {
+		Map<String, ChatPanel> wereDisconnectedMulti = new HashMap<String, ChatPanel>();
+		Map<String, ChatPanel> wereDisconnectedSingle = new HashMap<String, ChatPanel>();
+		///////////////////////////
+		// multi user ChatPanels //
+		///////////////////////////
+		Map<Vector<String>, ChatPanel> chatPanelMap = contactListController.getClw().getMapListChat();
+		for (Vector<String> currentPanelList : chatPanelMap.keySet()) {
+			for (String login : currentPanelList) {
+				if (!clientIps.containsKey(login)) {
+					Message msg = new Message(MessageType.REQUEST_IP); //TODO: extract method
+					msg.addInfo(MessageInfoStrings.LOGIN, login);
+					msg.addInfo(MessageInfoStrings.PORT, getUDPMainListeningPort() + "");
+					try {
+						udpClient.getSend().getMessageManager().handleMessage(msg, udpClient.getSend().getSocket());
+					} catch (HandlingException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					}
+					
+					wereDisconnectedMulti.put(login, chatPanelMap.get(currentPanelList));
+				}
+			}
+		}
+		////////////////////////////
+		// single user ChatPanels //
+		////////////////////////////
+		Map<String, ChatPanel> chatPanelMapSingle = contactListController.getClw().getDiscMap();
+		for (String login : chatPanelMapSingle.keySet()) {
+			if (!clientIps.containsKey(login)) {
+				Message msg = new Message(MessageType.REQUEST_IP); //TODO: extract method
+				msg.addInfo(MessageInfoStrings.LOGIN, login);
+				msg.addInfo(MessageInfoStrings.PORT, getUDPMainListeningPort() + "");
+				try {
+					udpClient.getSend().getMessageManager().handleMessage(msg, udpClient.getSend().getSocket());
+				} catch (HandlingException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				}
+				
+				wereDisconnectedSingle.put(login, chatPanelMapSingle.get(login));
+			}
+		}
+		
+		/////////////////
+		// final stuff //
+		/////////////////
+		for (String key : wereDisconnectedSingle.keySet()) {
+			if (clientIps.containsKey(key)) {
+				System.out.println("######### reconnected - " + key);
+				wereDisconnectedSingle.get(key).displayReconnectedMessage(key);
+			} else {
+				System.out.println("######### still out - " + key);
+			}
+		}
+		for (String key : wereDisconnectedMulti.keySet()) {
+			if (clientIps.containsKey(key)) {
+				System.out.println("######### reconnected - " + key);
+				wereDisconnectedSingle.get(key).displayReconnectedMessage(key);
+			} else {
+				System.out.println("######### still out - " + key);
+			}
+		}
+	}
+	
 }
