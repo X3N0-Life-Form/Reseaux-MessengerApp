@@ -42,7 +42,7 @@ public class MessageManagerOfflineTests {
 	
 	@BeforeClass
 	public static void setupBeforeClass() {
-		 serverPort = CommonConstants.DEFAULT_SERVER_PORT_TCP;
+		 serverPort = CommonConstants.DEFAULT_SERVER_PORT;
 	}
 	
 	@Before

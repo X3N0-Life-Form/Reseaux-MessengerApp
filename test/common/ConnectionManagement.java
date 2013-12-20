@@ -42,7 +42,7 @@ public class ConnectionManagement {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		serverPort = CommonConstants.DEFAULT_SERVER_PORT_TCP;
+		serverPort = CommonConstants.DEFAULT_SERVER_PORT;
 	}
 
 	@Before

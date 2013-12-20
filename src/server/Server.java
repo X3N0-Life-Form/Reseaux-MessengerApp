@@ -61,7 +61,7 @@ public class Server implements MasterClass {
 	 * @throws IOException
 	 */
 	public Server() throws IOException {
-		this(CommonConstants.DEFAULT_SERVER_PORT_TCP);
+		this(CommonConstants.DEFAULT_SERVER_PORT);
 	}
 	
 	/**

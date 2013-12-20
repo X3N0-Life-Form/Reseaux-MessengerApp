@@ -44,7 +44,7 @@ public class LoginController extends Controller {
 			fireErrorMessage(new Message(MessageType.ERROR, "Veuillez remplir tous les champs."));
 		} else {
 			try {
-				client = new Client(login, pass, ipServer, CommonConstants.DEFAULT_SERVER_PORT_TCP);
+				client = new Client(login, pass, ipServer, CommonConstants.DEFAULT_SERVER_PORT);
 				client.setLoginController(this);
 				
 				ContactListController clc = new ContactListController(ChatMain.clw, client);

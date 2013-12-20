@@ -29,7 +29,7 @@ public class TimeoutOfflineTests {
 	
 	@BeforeClass
 	public static void setupBeforeClass() {
-		 port = CommonConstants.DEFAULT_SERVER_PORT_TCP;
+		 port = CommonConstants.DEFAULT_SERVER_PORT;
 	}
 	
 	@Before

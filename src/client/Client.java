@@ -143,7 +143,7 @@ public class Client implements MasterClass {
 		String c_pass=args[1];
 		String ip = args[2];
 		try {
-			Client client = new Client(c_login, c_pass, ip, CommonConstants.DEFAULT_SERVER_PORT_TCP);
+			Client client = new Client(c_login, c_pass, ip, CommonConstants.DEFAULT_SERVER_PORT);
 			client.printRecap();
 			client.start();
 		} catch (IOException e) {

@@ -3,6 +3,7 @@ package client.handling;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.ConnectException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -11,7 +12,7 @@ import java.net.Socket;
 
 import client.Client;
 import client.ClientMessageManager;
-
+import common.CommonConstants;
 import common.MasterClass;
 import common.Message;
 import common.MessageType;
@@ -92,12 +93,16 @@ public class TCPHandlerClient extends Thread implements HandlerClient {
 	public void run() {
 		try {
 			InetAddress inet = InetAddress.getByName(client.getServerIp());
-			boolean up = inet.isReachable(10000);
-			if (up) {
-				socket.connect(new InetSocketAddress(client.getServerIp(), 8001), 10000);
-				handleConnect();
-				handleDialog();
-			} else {
+			boolean up = inet.isReachable(5000);
+			try {
+				if (up) {
+					socket.connect(new InetSocketAddress(client.getServerIp(), CommonConstants.DEFAULT_SERVER_PORT), 5000);
+					handleConnect();
+					handleDialog();
+				} else {
+					client.getLoginController().fireErrorMessage(new Message(MessageType.ERROR, "Unable to connect to server"));
+				}
+			} catch (ConnectException e) {
 				client.getLoginController().fireErrorMessage(new Message(MessageType.ERROR, "Unable to connect to server"));
 			}
 			/* TODO
