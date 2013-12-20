@@ -7,19 +7,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
+import server.Server;
+import view.ChatPanel;
+import client.handling.TCPHandlerClient;
+import client.handling.UDPClient;
+import common.CommonConstants;
 import common.MasterClass;
+import common.Message;
+import common.MessageInfoStrings;
+import common.MessageType;
+import common.handling.HandlingException;
 import common.logging.EventType;
 import common.logging.Log;
 import controller.ContactListController;
 import controller.LoginController;
-
-import server.Server;
-
-import client.handling.TCPHandlerClient;
-import client.handling.UDPClient;
-
-import client.ClientTimeoutHandler;
 
 /**
  * Client master class, contains handler threads, IP and port maps.
@@ -29,26 +32,40 @@ import client.ClientTimeoutHandler;
 public class Client implements MasterClass { 
 	
 	private static final long DEFAULT_TIMEOUT_TIME = 0;
+	public static final long LIVE_DELAY = 4000;
+	
 	private String login;
 	private String pass;
+	
 	private String serverIp;
 	private int serverPort;
 	private Socket clientSocket;
-	private boolean running;
+	
+	private boolean running = false;
+	private boolean connected = false;
+	private boolean tryToConnect = true;
+	
 	private Map<String, InetAddress> clientIps;
 	private Map<String, String> clientPorts;
 	private List<String> clientLogins;
+	
 	private ClientTimeoutHandler timeoutHandler;
+	
+	private TCPHandlerClient tcpHandlerClient;
+	private UDPClient udpClient;	
+	
 	private long timeout;
 	private int mainUDPListeningPort;
-	private Log log;
+	private Log log = new Log();
 	private InetAddress ipOtherClient;
 	private int portOtherClient;
-	private boolean isConnectClient;
-	private TCPHandlerClient tcp;
-	private UDPClient udp;	
+	
 	private LoginController loginController;
 	private ContactListController contactListController;
+	
+	private Map<String, ChatPanel> wereDisconnectedMulti = new HashMap<String, ChatPanel>();
+
+	private Map<String, ChatPanel> wereDisconnectedSingle = new HashMap<String, ChatPanel>();
 
 	/**
 	 * Constructs a Client object.
@@ -75,11 +92,9 @@ public class Client implements MasterClass {
 		running = false;
 		timeout = DEFAULT_TIMEOUT_TIME;
 		log = new Log();
-		setConnectClient(false);
 	}
 
-	public Client(String login, String serverIp, int port)
-	{
+	public Client(String login, String serverIp, int port) {
 		super();
 		this.login=login;
 	}
@@ -99,14 +114,21 @@ public class Client implements MasterClass {
 	public void start() {
 		running = true;
 		
-		tcp = new TCPHandlerClient(clientSocket, this);
-		udp = new UDPClient(this);
+		setupHandlers();
 		
-		tcp.run();
-		if(connectClient() == true) {
+		tcpHandlerClient.run();
+		if (connected == true) {
 			log.log(EventType.START, "Starting UDP handler");
-			udp.start();
+			udpClient.start();
 		}
+	}
+
+	/**
+	 * Creates TCP and UDP handlers, without starting them.
+	 */
+	public void setupHandlers() {
+		tcpHandlerClient = new TCPHandlerClient(clientSocket, this);
+		udpClient = new UDPClient(this);
 	}
 
 	public static void main(String args[]) {
@@ -114,7 +136,7 @@ public class Client implements MasterClass {
 		String c_pass=args[1];
 		String ip = args[2];
 		try {
-			Client client = new Client(c_login, c_pass, ip, Server.DEFAULT_PORT_TCP);
+			Client client = new Client(c_login, c_pass, ip, CommonConstants.DEFAULT_SERVER_PORT_TCP);
 			client.printRecap();
 			client.start();
 		} catch (IOException e) {
@@ -152,6 +174,10 @@ public class Client implements MasterClass {
 
 	public void setServerPort(int port) {
 		this.serverPort = port;
+	}
+	
+	public void setRunning(boolean run) {
+		running = run;
 	}
 	
 	public boolean isRunning() {
@@ -249,19 +275,187 @@ public class Client implements MasterClass {
 		this.contactListController = clc;
 	}
 
-	public boolean connectClient() {
-		return isConnectClient;
+	public TCPHandlerClient getTcpHandlerClient() {
+		return tcpHandlerClient;
 	}
 
-	public void setConnectClient(boolean isConnectClient) {
-		this.isConnectClient = isConnectClient;
+	public UDPClient getUdpClient() {
+		return udpClient;
+	}
+
+	public Socket getClientSocket() {
+		return clientSocket;
+	}
+
+	@Override
+	public void run() {
+		log.log(EventType.START, "Starting Client as Thread");
+		start();
+	}
+
+	/**
+	 * Server connection behavior.
+	 * @return True if the Client attempts to connect to the Server when disconnected.
+	 */
+	public boolean tryToConnect() {
+		return tryToConnect;
 	}
 	
-	public UDPClient getUdp() {
-		return udp;
+	/**
+	 * Sets the Server connection behavior. 
+	 * @param tryToConnect - Should the Client attempt to connect with the Server?
+	 */
+	public void tryToConnect(boolean tryToConnect) {
+		this.tryToConnect = tryToConnect;
 	}
 
-	public void setUdp(UDPClient udp) {
-		this.udp = udp;
+	/**
+	 * Connection status.
+	 * @return True if the Client is connected to a Server.
+	 */
+	public boolean isConnected() {
+		return connected;
 	}
+
+	/**
+	 * Sets the connection status. Must be called whenever the client
+	 * acquires or loses connection to the server.
+	 * @param isConnected - New connection status.
+	 */
+	public void setConnected(boolean isConnected) {
+		this.connected = isConnected;
+	}
+
+	/**
+	 * Disconnects the {@link Client}: sends a DISCONNECT {@link Message} to the {@link Server}
+	 * and sets the Client's connection status to false.
+	 */
+	public void disconnect() {
+		Message disconnectMsg = new Message(MessageType.DISCONNECT);
+		disconnectMsg.addInfo(MessageInfoStrings.LOGIN, login);
+		
+		try {
+			udpClient.getSend().getMessageManager().handleMessage(disconnectMsg, udpClient.getSend().getSocket());
+			connected = false;
+			running = false;
+		} catch (HandlingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Called after updating the login list, this removes old clients from the IP and port Maps.
+	 */
+	public void removeDisconnectedClients() {
+		Map<String, InetAddress> clientIpsClone = new HashMap<String, InetAddress>(clientIps);
+		for (String login : clientIpsClone.keySet()) {
+			if (!clientLogins.contains(login)) {
+				clientIps.remove(login);
+				clientPorts.remove(login);
+			}
+		}
+	}
+
+	/**
+	 * Reconnects disconnected clients and informs that these clients are reconnected.
+	 */
+	public void updateChatPanels() {
+		///////////////////////////
+		// multi user ChatPanels //
+		///////////////////////////
+		Map<Vector<String>, ChatPanel> chatPanelMap = contactListController.getClw().getMapListChat();
+		for (Vector<String> currentPanelList : chatPanelMap.keySet()) {
+			for (String login : currentPanelList) {
+				if (!clientIps.containsKey(login)) {
+					Message msg = new Message(MessageType.REQUEST_IP); //TODO: extract method
+					msg.addInfo(MessageInfoStrings.LOGIN, login);
+					msg.addInfo(MessageInfoStrings.PORT, getUDPMainListeningPort() + "");
+					try {
+						udpClient.getSend().getMessageManager().handleMessage(msg, udpClient.getSend().getSocket());
+					} catch (HandlingException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					}
+					
+					wereDisconnectedMulti.put(login, chatPanelMap.get(currentPanelList));
+				}
+			}
+		}
+		////////////////////////////
+		// single user ChatPanels //
+		////////////////////////////
+		Map<String, ChatPanel> chatPanelMapSingle = contactListController.getClw().getDiscMap();
+		for (String login : chatPanelMapSingle.keySet()) {
+			if (!clientIps.containsKey(login)) {
+				Message msg = new Message(MessageType.REQUEST_IP); //TODO: extract method
+				msg.addInfo(MessageInfoStrings.LOGIN, login);
+				msg.addInfo(MessageInfoStrings.PORT, getUDPMainListeningPort() + "");
+				try {
+					udpClient.getSend().getMessageManager().handleMessage(msg, udpClient.getSend().getSocket());
+				} catch (HandlingException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				}
+				
+				wereDisconnectedSingle.put(login, chatPanelMapSingle.get(login));
+			}
+		}
+		
+		
+	}
+	
+	public void reconnectedClients() {
+		/////////////////
+		// final stuff //
+		/////////////////
+		for (String key : wereDisconnectedSingle.keySet()) {
+			if (clientIps.containsKey(key)) {
+				System.out.println("######### reconnected - " + key);
+				wereDisconnectedSingle.get(key).displayReconnectedMessage(key);
+				wereDisconnectedSingle.clear();
+			} else {
+				System.out.println("######### still out - " + key);
+			}
+		}
+		for (String key : wereDisconnectedMulti.keySet()) {
+			if (clientIps.containsKey(key)) {
+				System.out.println("######### reconnected - " + key);
+				wereDisconnectedMulti.get(key).displayReconnectedMessage(key);
+				wereDisconnectedMulti.clear();
+			} else {
+				System.out.println("######### still out - " + key);
+			}
+		}		
+	}
+	
+	public Map<String, ChatPanel> getWereDisconnectedMulti() {
+		return wereDisconnectedMulti;
+	}
+
+	public void setWereDisconnectedMulti(
+			Map<String, ChatPanel> wereDisconnectedMulti) {
+		this.wereDisconnectedMulti = wereDisconnectedMulti;
+	}
+
+	public Map<String, ChatPanel> getWereDisconnectedSingle() {
+		return wereDisconnectedSingle;
+	}
+
+	public void setWereDisconnectedSingle(
+			Map<String, ChatPanel> wereDisconnectedSingle) {
+		this.wereDisconnectedSingle = wereDisconnectedSingle;
+	}
+
+	
+	
 }

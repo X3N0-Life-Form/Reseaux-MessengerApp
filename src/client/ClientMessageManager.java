@@ -1,21 +1,31 @@
 package client;
 
 import java.io.IOException;
+import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import client.handling.HandlerClient;
+import common.ErrorTypes;
 import common.Message;
 import common.MessageInfoStrings;
+import common.MessageManager;
 import common.MessageType;
 import common.handling.HandlingException;
 import common.logging.EventType;
 import common.logging.Log;
 
-public class ClientMessageManager {
+/**
+ * Similar to its Server-side counterpart, decyphers received {@link Message} objects
+ * and sends Messages back to the Server or other Clients.
+ * @author etudiant
+ *
+ */
+public class ClientMessageManager implements MessageManager {
 	
 	private Client client;
 	private HandlerClient handler;
@@ -25,6 +35,11 @@ public class ClientMessageManager {
 	
 	private int counter = 0;
 	
+	/**
+	 * Constructs a MessageManager for the specified Client and Handler.
+	 * @param client
+	 * @param handler
+	 */
 	public ClientMessageManager(Client client, HandlerClient handler){
 		this.client=client;
 		log = client.getLog();
@@ -32,41 +47,49 @@ public class ClientMessageManager {
 		this.clientIps = client.getClientIps();
 		this.clientPorts = client.getClientPorts();
 	}
-
+	
+	@Override
 	public void handleMessage(Message message, Socket socket) throws IOException, HandlingException {
 		switch (message.getType()) {
 		
 		case OK:
 			log.log(EventType.RECEIVE_TCP, "Received OK message: " + message);
-			client.setConnectClient(true);
+			client.setConnected(true);
 			break;
-		
+
 		case ERROR:
-			log.log(EventType.RECEIVE_TCP, "Warning: Received Error message: " + message);
-			client.setConnectClient(false);
+			log.log(EventType.ERROR, "Warning: Received Error message: " + message);
+			client.setConnected(false);
 			client.getLoginController().fireErrorMessage(message);
+			break;
+			
+		case CONNECT:
+			log.log(EventType.SEND_TCP, "Sending connect request");
+			Message connectMsg = new Message(MessageType.CONNECT);//Note: copied from handleDialog()
+			connectMsg.addInfo(MessageInfoStrings.LOGIN,client.getLogin());//TODO handleDialog() redundant
+			connectMsg.addInfo(MessageInfoStrings.PASSWORD,client.getPass());// call messageManager instead
+			handler.sendMessage(connectMsg, socket);
+			break;
+			
+		default:
+			log.log(EventType.WARNING, "Warning: could not handle message: " + message);
 			break;
 		}
 	}
 	
-	/**
-	 * Handles UDP Message reception.
-	 * @param message - Message to handle.
-	 * @param socket - Receiving DatagramSocket.
-	 * @throws HandlingException
-	 * @throws IOException
-	 * @throws ClassNotFoundException
-	 */
+	@Override
 	public void handleMessage(Message message, DatagramSocket socket) throws HandlingException, IOException, ClassNotFoundException {
 		switch (message.getType()) {
 		
 		case REQUEST_LIST:
-			System.out.println("envoi d'un signe de vie");
 			handler.sendMessage(message, socket);
 			break;
 			
 		case REQUEST_IP:
-			System.out.println("je demande les infos pour me connecter");
+			handler.sendMessage(message, socket);
+			break;
+			
+		case DISCONNECT:
 			handler.sendMessage(message, socket);
 			break;
 			
@@ -78,13 +101,13 @@ public class ClientMessageManager {
 				counter++;
 			} else {
 				client.setClientLogins(logins);
+				client.removeDisconnectedClients();
+				client.updateChatPanels();
 				client.getContactListController().refresh();
 			}
 			break;
 			
-		case CLIENT_PORT_LIST:
-			//System.out.println("Reception de la liste des amis connecté avec leur ports d'écoute");
-			
+		case CLIENT_PORT_LIST://TODO:not used anymore, remove it
 			@SuppressWarnings("unchecked")
 			Map<String, String> temp2 = new HashMap<String, String>((Map<String, String>) message.getObject("clientPorts"));
 			client.setClientPorts(temp2);
@@ -97,22 +120,49 @@ public class ClientMessageManager {
 			handler.sendMessage(message, socket);
 			break;
 			
+		case MSG_DISCUSS_CLIENT_SEVERAL:
+			System.out.println("envoi du message aux autres clients");
+			handler.sendMessage(message, socket);
+			break;
+			
 		case CLIENT_IP:
 			InetAddress targetIP = (InetAddress) message.getObject(MessageInfoStrings.REQUEST_IP_TARGET_IP);
+			// if target client is also on the server
+			if (targetIP.isAnyLocalAddress() || targetIP.isLoopbackAddress()) {
+				targetIP = InetAddress.getByName(client.getServerIp());
+			}
 			String targetPort = message.getInfo(MessageInfoStrings.REQUEST_IP_TARGET_PORT);
-			String targetLogin = message.getInfo(MessageInfoStrings.GENERIC_LOGIN);
+			String targetLogin = message.getInfo(MessageInfoStrings.LOGIN);
 			clientIps.put(targetLogin, targetIP);
 			clientPorts.put(targetLogin, targetPort);
-			System.out.println("les info de l'autre client sont:"+targetLogin+ "  " +targetPort);
+			System.out.println("les info de l'autre client sont:"+targetLogin+ "  " + targetIP+ "  " +targetPort);
 			break;
 			
 		case ERROR:
-			System.out.println("ERROR:" + message);
+			String type = message.getInfo(MessageInfoStrings.ERROR_TYPE);
+			if (type.equals(ErrorTypes.CLIENT_UNKNOWN)) {
+				client.getContactListController().getClw().disconnect();
+			} else if (type.equals(ErrorTypes.ALREADY_CONNECTED)) {
+				
+			}
+			log.log(EventType.ERROR, "ERROR:" + message);
+			client.getLoginController().fireErrorMessage(message);
 			break;
 			
-			default:
-				log.log(EventType.INFO, "Warning: could not handle message: " + message);
-				break;
+		default:
+			log.log(EventType.WARNING, "Warning: could not handle message: " + message);
+			break;
 		}
 	}
+
+	/**
+	 * Not implemented. Throws a {@link HandlingException}.
+	 */
+	@Override
+	public void handleMessage(Message message, DatagramSocket socket,
+			DatagramPacket packet) throws HandlingException, IOException,
+			ClassNotFoundException {
+		throw new HandlingException("This method has not been implemented on this MessageManager");
+	}
+
 }

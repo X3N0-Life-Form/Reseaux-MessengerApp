@@ -1,10 +1,10 @@
 package server;
 
-import java.net.InetAddress;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import common.CommonConstants;
 import common.logging.EventType;
 import common.logging.Log;
 
@@ -78,13 +78,19 @@ public class ServerTimeoutHandler extends Thread {
 	@Override
 	public void run() {
 		while (serveur.isRunning()) {
-			for (String login : timeoutTable.keySet()) {
+			Map<String, Date> timeoutTableClone = new HashMap<String, Date>(timeoutTable);
+			for (String login : timeoutTableClone.keySet()) {
 				Date now = new Date();
-				if ((now.getTime() - timeoutTable.get(login).getTime()) > serveur.getTimeoutTime()) {
-					//log.log(EventType.TIMEOUT, "Client timed out: "	+ timeoutTable.get(ip) + "(" + ip + ")");
+				if (timeoutTableClone.get(login) != null && (now.getTime() - timeoutTableClone.get(login).getTime()) > serveur.getTimeoutTime()) {
+					//log.log(EventType.TIMEOUT, "Client timed out: "	+ login);
 					removeClient(login);
 					break;
 				}
+			}
+			try {
+				Thread.sleep(CommonConstants.SLEEP_SMALL);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 		}
 	}

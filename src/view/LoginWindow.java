@@ -3,6 +3,8 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -13,37 +15,78 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import common.Message;
-
 import client.Client;
-
-import controller.ContactListController;
+import common.Message;
+import controller.Controller;
 import controller.LoginController;
-import controller.ProcessResult;
 
-public class LoginWindow extends JPanel implements ActionListener {
+/**
+ * Login window, this is where a user enters its login, password and the address
+ * of the server he wants to connect to.
+ * @author etudiant
+ * @see LoginController
+ */
+public class LoginWindow extends JPanel implements ActionListener, View {
 	
+	//TODO
+	/**
+	 * 
+	 * @author etudiant
+	 *
+	 */
+	protected class LoginWindowKeyListener implements KeyListener {
+
+		@Override
+		public void keyTyped(KeyEvent e) {}
+		
+		@Override
+		public void keyReleased(KeyEvent e) {}
+		
+		@Override
+		public void keyPressed(KeyEvent e) {
+			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+				processLogin();
+			}
+		}
+	}
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6789010216375385228L;
 	public JLabel logLabel = new JLabel("Log   : "); 
 	public JLabel passLabel = new JLabel("Pass : "); 
 	public JLabel ipServerLabel = new JLabel("Ip Server : "); 
 	public JButton connectButton = new JButton("CONNECT");
 	public JTextField logField = new JTextField(15);
-	public JTextField passField = new JTextField(15);
+	public JPasswordField passField = new JPasswordField(15);
 	public JTextField ipServerField = new JTextField(15);
 	public JFrame cadre = new javax.swing.JFrame("Chat-Expert");
 	
 	private LoginController controller;
 	
-	public void setController(LoginController controller) {
-		this.controller = controller;
+	@Override
+	public Controller getController() {
+		return controller;
 	}
 	
+	@Override
+	public void setController(Controller controller) {
+		this.controller = (LoginController) controller;
+	}
+	
+	@Override
 	public void lancerAffichage() throws IOException
 	{
 		connectButton.addActionListener(this);
+		connectButton.addKeyListener(new LoginWindowKeyListener());
+		logField.addKeyListener(new LoginWindowKeyListener());
+		passField.addKeyListener(new LoginWindowKeyListener());
+		ipServerField.addKeyListener(new LoginWindowKeyListener());
 		
 		logField.setSize(30, 5);
 		passField.setSize(30, 5);
@@ -53,7 +96,6 @@ public class LoginWindow extends JPanel implements ActionListener {
 		panneauLog.add(logLabel, BorderLayout.WEST);
 		panneauLog.add(logField, BorderLayout.CENTER);
 		panneauLog.setBorder(new EmptyBorder(0,0,10,0));
-		
 		
 		JPanel panneauPass = new JPanel();
 		panneauPass.setLayout(new BorderLayout());
@@ -90,33 +132,33 @@ public class LoginWindow extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == connectButton)
-		{
-			String login = logField.getText();
-			String pass = passField.getText();
-			String ipServer = ipServerField.getText();
-			controller.processLogin(login, pass, ipServer);
-			/*
-			if (pr.isOk()) {
-				cadre.setVisible(false);
-				try {
-					ChatMain.clw.lancerAffichage();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-				
-			} else {
-				JOptionPane.showMessageDialog(null, pr.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
-			}
-			*/
+		if (e.getSource() == connectButton)	{
+			processLogin();
 		}
 	}
+
+	public void processLogin() {
+		String login = logField.getText();
+		String pass = new String(passField.getPassword());
+		String ipServer = ipServerField.getText();
+		controller.processLogin(login, pass, ipServer);
+	}
 	
+	/**
+	 * Displays an error dialog box with the specified message.
+	 * @param message - Message object.
+	 */
 	public void fireErrorMessage(Message message) {
 		JOptionPane.showMessageDialog(null, message.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 
+	/**
+	 * Creates a {@link ContactListWindow} for the specified {@link Client} and list
+	 * of logins.
+	 * @param clientLogins - List of connected clients.
+	 * @param client
+	 */
 	public void createContactList(List<String> clientLogins, Client client) {
 		clientLogins.remove(client.getLogin());
 		cadre.setVisible(false);
@@ -128,6 +170,10 @@ public class LoginWindow extends JPanel implements ActionListener {
 		}
 	}
 	
+	/**
+	 * Refreshes the ContactListWindow.
+	 * @param client
+	 */
 	public void refreshContactList(Client client) {
 		try {
 			ChatMain.clw.refresh(controller.getClient().getClientLogins(), client);
@@ -135,4 +181,5 @@ public class LoginWindow extends JPanel implements ActionListener {
 			e.printStackTrace();
 		}
 	}
+
 }

@@ -7,6 +7,11 @@ import java.net.DatagramPacket;
 
 import common.Message;
 
+/**
+ * Abstract class implementing the {@link Handler} interface.
+ * @author etudiant
+ *
+ */
 public abstract class UDPHandler extends Thread implements Handler {
 
 	/**

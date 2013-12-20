@@ -2,7 +2,14 @@ package common.logging;
 
 import java.util.Date;
 
+/**
+ * Represents an event. Has a type, date and comment.
+ * @author etudiant
+ * @see Log
+ * @see EventType
+ */
 public class Event {
+	
 	private EventType type;
 	private Date time;
 	private String comment;

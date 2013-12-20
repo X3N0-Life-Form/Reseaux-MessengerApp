@@ -19,9 +19,9 @@ import client.Client;
 public class UDPClient extends Thread {
 	
 	private Client client;
-	private UDPHandlerClientListening listen;
-	private UDPHandlerClientSending send;
-	private UDPHandlerClientDiscuss sending_client;
+	private UDPHandlerClientListening listeningHandler;
+	private UDPHandlerClientSending sendingHandler;
+	private UDPHandlerClientDiscuss discussHandler;
 	private Log log;
 	
 	/**
@@ -33,9 +33,9 @@ public class UDPClient extends Thread {
 		this.client = client;
 		log = client.getLog();
 		try {
-			listen = new UDPHandlerClientListening(this.client);
-			send = new UDPHandlerClientSending(this.client);
-			sending_client = new UDPHandlerClientDiscuss(this.client);
+			listeningHandler = new UDPHandlerClientListening(this.client);
+			sendingHandler = new UDPHandlerClientSending(this.client);
+			discussHandler = new UDPHandlerClientDiscuss(this.client);
 		} catch (SocketException e) {
 			e.printStackTrace();
 		}
@@ -43,74 +43,27 @@ public class UDPClient extends Thread {
 
 	@Override
 	public void run() {
-		
 		log.log(EventType.START, "Starting UDP listening handler");
-		listen.start();
+		listeningHandler.start();
 		
 		log.log(EventType.START, "Starting UDP sending handler");
-		send.start();
-		/*
-		///////////////////
-		// TESTING STUFF //
-		///////////////////
-		if(client.getLogin().equals("test01"))
-		{
-			while(client.getClientIps().get("test02") == null)
-			{
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-			
-			client.setLoginotherclient("test02");
-			client.setIpotherclient(client.getClientIps().get("test02"));
-			while(client.getClientPorts().get("test02") == null)
-			{
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-			client.setPortotherclient(Integer.valueOf(client.getClientPorts().get("test02")));
-		}else{
-			while(client.getClientIps().get("test01") == null)
-			{
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-			
-			client.setLoginotherclient("test01");
-			client.setIpotherclient(client.getClientIps().get("test01"));
-			while(client.getClientPorts().get("test01") == null)
-			{
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-			client.setPortotherclient(Integer.valueOf(client.getClientPorts().get("test01")));
-		}
-		///////////////////////
-		// END TESTING STUFF //
-		///////////////////////
-		
-		log.log(EventType.START, "Starting UDP sending discuss client handler");
-		sending_client.start();*/
+		sendingHandler.start();
 	}
 	
+	/**
+	 * Discussion handler getter.
+	 * @return UDPHandlerClientDiscuss handler.
+	 */
 	public UDPHandlerClientDiscuss getSending_client() {
-		return sending_client;
+		return discussHandler;
 	}
 
+	/**
+	 * Discuss handler setter.
+	 * @param sending_client - new UDPHandlerClientDiscuss.
+	 */
 	public void setSending_client(UDPHandlerClientDiscuss sending_client) {
-		this.sending_client = sending_client;
+		this.discussHandler = sending_client;
 	}
 
 	public Client getClient() {
@@ -118,19 +71,19 @@ public class UDPClient extends Thread {
 	}
 
 	public UDPHandlerClientListening getListen() {
-		return listen;
+		return listeningHandler;
 	}
 
 	public void setListen(UDPHandlerClientListening listen) {
-		this.listen = listen;
+		this.listeningHandler = listen;
 	}
 
 	public UDPHandlerClientSending getSend() {
-		return send;
+		return sendingHandler;
 	}
 
 	public void setSend(UDPHandlerClientSending send) {
-		this.send = send;
+		this.sendingHandler = send;
 	}
 
 }

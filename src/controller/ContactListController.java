@@ -3,11 +3,19 @@ package controller;
 import java.io.IOException;
 
 import view.ContactListWindow;
+import view.SelectMultiContactWindow;
 import client.Client;
 
-public class ContactListController {
+/**
+ * Controller used by the contact list View and the multiple selection View.
+ * @author etudiant
+ * @see Client
+ * @see ContactListWindow
+ */
+public class ContactListController extends Controller {
 	
 	private ContactListWindow clw;
+	private SelectMultiContactWindow smlw;
 	private Client client;
 
 	public ContactListController(ContactListWindow clw, Client client) {
@@ -16,6 +24,9 @@ public class ContactListController {
 		this.client.setContactListController(this);
 	}
 
+	/**
+	 * Refreshes the contact list.
+	 */
 	public void refresh() {
 		try {
 			clw.refresh(client.getClientLogins(), client);
@@ -38,6 +49,21 @@ public class ContactListController {
 
 	public void setClient(Client client) {
 		this.client = client;
+	}
+
+	public SelectMultiContactWindow getSmlw() {
+		return smlw;
+	}
+
+	public void setSmlw(SelectMultiContactWindow smlw) {
+		this.smlw = smlw;
+	}
+
+	/**
+	 * Calls the Client's disconnect method.
+	 */
+	public void disconnect() {
+		client.disconnect();
 	}
 
 }

@@ -26,15 +26,19 @@ public abstract class UDPHandlerClient extends UDPHandler implements HandlerClie
 	
 	protected Client client;
 	protected DatagramSocket socket;
-	private ClientMessageManager messageManager;
+	protected ClientMessageManager messageManager;
 	protected Log log;
 	
-	
+	/**
+	 * Constructs a UDPHandler for the specified {@link Client}.
+	 * @param client
+	 * @throws SocketException
+	 */
 	public UDPHandlerClient(Client client) throws SocketException{
 		this.client = client;
 		log = client.getLog();
 		this.socket = new DatagramSocket();
-		setMessageManager(new ClientMessageManager(client, this));
+		messageManager = new ClientMessageManager(client, this);
 	}
 
 	@Override
