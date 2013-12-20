@@ -1,5 +1,6 @@
 bin/
 jar/client.jar
+jar/client_console.jar
 jar/server.jar
 jar/chat.jar
 doc/*

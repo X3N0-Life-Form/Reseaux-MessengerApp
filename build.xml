@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project default="serveur" name="Create Runnable Jar for Project Reseaux-MessengerApp">
-    <!--this file was created by Eclipse Runnable JAR Export Wizard-->
+<project default="default" name="Does stuff for Project Reseaux-MessengerApp">
+
+	<target name="default" depends="build_server" description="default task, it compiles the source code into jar files">
+	
+	</target>
+
+    <!--this file was created by Eclipse Runnable JAR Export Wizard (+ some custom stuff)-->
     <!--ANT 1.7 is required                                        -->
-    <target name="client">
-        <jar destfile="jar/client.jar" filesetmanifest="mergewithoutmain">
+    <target name="build_client_console">
+        <jar destfile="jar/client_console.jar" filesetmanifest="mergewithoutmain">
             <manifest>
                 <attribute name="Main-Class" value="client.Client"/>
                 <attribute name="Class-Path" value="."/>
@@ -11,7 +16,8 @@
             <fileset dir="bin"/>
         </jar>
     </target>
-	<target name="server">
+
+	<target name="build_server">
         <jar destfile="jar/server.jar" filesetmanifest="mergewithoutmain">
             <manifest>
                 <attribute name="Main-Class" value="server.Server"/>
@@ -21,7 +27,12 @@
         	<zipfileset excludes="META-INF/*.SF" src="jar/jdom-2.0.5.jar"/>
         </jar>
     </target>
- 	<target name="chat">
+	<target name="launch_server" depends="build_server">
+		<java jar="jar/server.jar" fork="true">
+		</java>
+	</target>
+
+ 	<target name="build_client_gui">
         <jar destfile="jar/chat.jar" filesetmanifest="mergewithoutmain">
             <manifest>
                 <attribute name="Main-Class" value="view.ChatMain"/>
@@ -30,6 +41,7 @@
             <fileset dir="bin"/>
         </jar>
     </target>
+
 	<target name="javadoc">
         <javadoc access="protected" author="true" classpath="jar/jdom-2.0.5.jar:/home/etudiant/eclipse-jee-kepler/plugins/org.hamcrest.core_1.3.0.v201303031735.jar:/home/etudiant/eclipse-jee-kepler/plugins/org.junit_4.11.0.v201303080030/junit.jar" destdir="doc" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" packagenames="common.logging,client,server.handling,server,common,view,client.handling,client.GUI,common.handling,controller" source="1.7" sourcepath="test:src" splitindex="true" use="true" version="true"/>
     </target>
