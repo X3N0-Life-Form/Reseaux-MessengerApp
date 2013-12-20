@@ -11,8 +11,8 @@
             <fileset dir="bin"/>
         </jar>
     </target>
-	<target name="serveur">
-        <jar destfile="jar/serveur.jar" filesetmanifest="mergewithoutmain">
+	<target name="server">
+        <jar destfile="jar/server.jar" filesetmanifest="mergewithoutmain">
             <manifest>
                 <attribute name="Main-Class" value="server.Server"/>
                 <attribute name="Class-Path" value="."/>
@@ -21,8 +21,17 @@
         	<zipfileset excludes="META-INF/*.SF" src="jar/jdom-2.0.5.jar"/>
         </jar>
     </target>
+ 	<target name="chat">
+        <jar destfile="jar/chat.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="view.ChatMain"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+            <fileset dir="bin"/>
+        </jar>
+    </target>
 	<target name="javadoc">
-        <javadoc access="protected" author="true" classpath="jar/jdom-2.0.5.jar:/usr/lib/eclipse/dropins/jdt/plugins/org.junit_4.8.2.v4_8_2_v20110321-1705/junit.jar:/usr/lib/eclipse/dropins/jdt/plugins/org.hamcrest.core_1.1.0.jar" destdir="doc" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" packagenames="client.handling,client,client.GUI,serveur.handling,vue,commun,commun.logging" source="1.7" sourcefiles="src/serveur/Serveur.java,src/serveur/LoginParser.java,src/serveur/ServerMessageManager.java,src/serveur/package-info.java,src/serveur/ServerTimeoutHandler.java" sourcepath="test:src" splitindex="true" use="true" version="true"/>
+        <javadoc access="protected" author="true" classpath="jar/jdom-2.0.5.jar:/home/etudiant/eclipse-jee-kepler/plugins/org.hamcrest.core_1.3.0.v201303031735.jar:/home/etudiant/eclipse-jee-kepler/plugins/org.junit_4.11.0.v201303080030/junit.jar" destdir="doc" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" packagenames="common.logging,client,server.handling,server,common,view,client.handling,client.GUI,common.handling,controller" source="1.7" sourcepath="test:src" splitindex="true" use="true" version="true"/>
     </target>
 </project>
 
