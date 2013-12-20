@@ -460,7 +460,7 @@ public class Client implements MasterClass {
 				System.out.println("######### reconnected - " + key);
 				wereDisconnectedSingle.get(key).displayReconnectedMessage(key);
 				clearSingle = true;
-				break;
+				//break;
 			} else {
 				System.out.println("######### still out - " + key);
 			}
@@ -474,7 +474,7 @@ public class Client implements MasterClass {
 				System.out.println("######### reconnected - " + key);
 				wereDisconnectedMulti.get(key).displayReconnectedMessage(key);
 				clearMulti = true;
-				break;
+				//break;
 			} else {
 				System.out.println("######### still out - " + key);
 			}
