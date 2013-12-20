@@ -7,6 +7,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.util.Date;
 
 import client.Client;
 import common.Message;
@@ -36,6 +37,12 @@ public class UDPHandlerClientSending extends UDPHandlerClient {
 		while(client.isRunning()) {
 			if (client.isConnected()) {
 				try{
+					
+					Date now = new Date();
+					if (now.getTime() - client.getServerTimeoutDate().getTime() > 4000) { //TODO extract constant
+						client.setServerUp(false);
+					}
+					
 					Message msgLive = new Message(MessageType.REQUEST_LIST);
 					msgLive.addInfo(MessageInfoStrings.LOGIN, client.getLogin());
 					msgLive.addInfo(MessageInfoStrings.PORT, client.getUDPMainListeningPort() + "");

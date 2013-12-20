@@ -17,11 +17,14 @@ import java.util.Vector;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+
+import common.Message;
 
 import client.Client;
 import controller.ContactListController;
@@ -171,18 +174,26 @@ public class ContactListWindow extends JPanel implements ActionListener, MouseLi
 			e1.printStackTrace();
 		}*/
 	}
+	
+	public void fireErrorMessage(String message) {
+		JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.INFORMATION_MESSAGE);
+	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		String login = (String) loginList.getSelectedValue();
 		if (login != null) {
 			if (!discMap.containsKey(login)) {
-				ChatPanel p1 = new ChatPanel(login, discMap, controller);
-				discMap.put(login, p1);
-				try {
-					p1.lancerAffichage();
-				} catch (IOException e1) {
-					e1.printStackTrace();
+				if (controller.getClient().isServerUp()) {
+					ChatPanel p1 = new ChatPanel(login, discMap, controller);
+					discMap.put(login, p1);
+					try {
+						p1.lancerAffichage();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				} else {
+					fireErrorMessage("Server is down; user IP can't be retrieved");
 				}
 			} else {
 				ChatPanel p = discMap.get(login);

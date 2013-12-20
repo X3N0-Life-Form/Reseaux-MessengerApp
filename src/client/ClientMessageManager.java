@@ -5,6 +5,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,6 +56,8 @@ public class ClientMessageManager implements MessageManager {
 		case OK:
 			log.log(EventType.RECEIVE_TCP, "Received OK message: " + message);
 			client.setConnected(true);
+			client.setServerUp(true);
+			client.setServerTimeoutDate(new Date());
 			break;
 
 		case ERROR:
@@ -96,6 +99,7 @@ public class ClientMessageManager implements MessageManager {
 		case CLIENT_LIST:
 			@SuppressWarnings("unchecked")
 			List<String> logins = (List<String>) message.getObject(MessageInfoStrings.REQUEST_LIST_CLIENT_LOGINS);
+			client.resetServerTimeout();
 			if (counter == 0) {
 				client.setClientLogins(logins);
 				counter++;

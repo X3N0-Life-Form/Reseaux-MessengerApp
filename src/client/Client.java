@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,6 +60,8 @@ public class Client implements MasterClass {
 	private Log log = new Log();
 	private InetAddress ipOtherClient;
 	private int portOtherClient;
+	private boolean serverUp = false;
+	private Date serverTimeoutDate;
 	
 	private LoginController loginController;
 	private ContactListController contactListController;
@@ -454,6 +457,27 @@ public class Client implements MasterClass {
 	public void setWereDisconnectedSingle(
 			Map<String, ChatPanel> wereDisconnectedSingle) {
 		this.wereDisconnectedSingle = wereDisconnectedSingle;
+	}
+
+	public boolean isServerUp() {
+		return serverUp;
+	}
+
+	public void setServerUp(boolean serverUp) {
+		this.serverUp = serverUp;
+	}
+
+	public void resetServerTimeout() {
+		setServerTimeoutDate(new Date());
+		serverUp = true;
+	}
+
+	public Date getServerTimeoutDate() {
+		return serverTimeoutDate;
+	}
+
+	public void setServerTimeoutDate(Date serverTimeoutDate) {
+		this.serverTimeoutDate = serverTimeoutDate;
 	}
 
 	
