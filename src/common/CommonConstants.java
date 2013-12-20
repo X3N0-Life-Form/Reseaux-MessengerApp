@@ -14,4 +14,22 @@ public class CommonConstants {
 	 * Do not instantiate.
 	 */
 	private CommonConstants() {}
+	
+	/**
+	 * Extracts the port number off an IP string
+	 * @param ipAddress - IPv4 address with port (ex: 127.0.0.1:8050)
+	 * @return port number (ex: 8050)
+	 */
+	public static int extractPort(String ipAddress) {
+		try {
+			if (ipAddress.lastIndexOf(":") >= 0) {
+				String string = ipAddress.substring(ipAddress.lastIndexOf(":") + 1);
+				return Integer.parseInt(string);
+			} else {
+				return -1;
+			}
+		} catch (NumberFormatException e) {
+			return -1;
+		}
+	}
 }

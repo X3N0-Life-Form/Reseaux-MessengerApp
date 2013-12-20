@@ -69,11 +69,20 @@ public class Server implements MasterClass {
 	 * @param args
 	 */
 	public static void main(String args[]) {
+		int port = CommonConstants.DEFAULT_SERVER_PORT;
 		for (int i = 0; i < args.length; i++) {
-			//TODO: handle args
+			if (args[i].equals("-port")) {
+				try {
+					port = Integer.parseInt(args[++i]);
+				} catch (NumberFormatException e) {
+					System.out.println("Invalid port number: " + args[i] + "; using default port number");
+				}
+			} else {
+				System.out.println("Unrecognised argument: " + args[i]);
+			}
 		}
 		try {
-			Server serveur = new Server();
+			Server serveur = new Server(port);
 			serveur.loginParser.parse();
 			serveur.printRecap();
 			serveur.start();
