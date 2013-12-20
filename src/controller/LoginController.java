@@ -48,6 +48,7 @@ public class LoginController extends Controller {
 				if (port == -1) {
 					port = CommonConstants.DEFAULT_SERVER_PORT;
 				}
+				ipServer = CommonConstants.trimPort(ipServer);
 				client = new Client(login, pass, ipServer, port);
 				client.setLoginController(this);
 				

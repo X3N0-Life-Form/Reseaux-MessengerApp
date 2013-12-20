@@ -80,7 +80,9 @@ public class Server implements MasterClass {
 			} else {
 				System.out.println("Unrecognised argument: " + args[i]);
 			}
+			//TODO: add config file parsing
 		}
+		
 		try {
 			Server serveur = new Server(port);
 			serveur.loginParser.parse();

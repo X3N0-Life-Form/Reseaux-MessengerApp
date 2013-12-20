@@ -32,4 +32,17 @@ public class CommonConstants {
 			return -1;
 		}
 	}
+
+	/**
+	 * Trims the port off an IPv4
+	 * @param ipServer
+	 * @return The provided IP minus the port (if it has one).
+	 */
+	public static String trimPort(String ipServer) {
+		if (ipServer.lastIndexOf(":") >= 0) {
+			return ipServer.substring(0, ipServer.lastIndexOf(":"));
+		} else {
+			return ipServer;
+		}
+	}
 }

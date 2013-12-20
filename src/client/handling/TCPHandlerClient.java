@@ -15,6 +15,7 @@ import client.ClientMessageManager;
 import common.CommonConstants;
 import common.MasterClass;
 import common.Message;
+import common.MessageInfoStrings;
 import common.MessageType;
 import common.handling.HandlingException;
 
@@ -50,8 +51,8 @@ public class TCPHandlerClient extends Thread implements HandlerClient {
 	 */
 	public void handleConnect() throws IOException, ClassNotFoundException, HandlingException {
 		Message message = new Message(MessageType.CONNECT);
-		message.addInfo("login",client.getLogin());
-		message.addInfo("pass",client.getPass());
+		message.addInfo(MessageInfoStrings.LOGIN,client.getLogin());
+		message.addInfo(MessageInfoStrings.PASSWORD,client.getPass());
 		this.sendMessage(message,socket);
 	}
 
@@ -105,23 +106,7 @@ public class TCPHandlerClient extends Thread implements HandlerClient {
 			} catch (ConnectException e) {
 				client.getLoginController().fireErrorMessage(new Message(MessageType.ERROR, "Unable to connect to server"));
 			}
-			/* TODO
-			while (client.isRunning()) {
-				if (!client.isConnected() && client.tryToConnect()) {
-					InetAddress inet = InetAddress.getByName(client.getServerIp());
-					boolean up = inet.isReachable(10000);
-					if (up) {
-						socket.connect(new InetSocketAddress(client.getServerIp(), client.getServerPort()), 10000);
-						handleConnect();
-						handleDialog();
-					} else {
-						client.getLoginController().fireErrorMessage(new Message(MessageType.ERROR, "Unable to connect to Server"));
-					}
-				} else {
-					Thread.sleep(5000);
-				}
-			}
-		*/
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
