@@ -216,7 +216,8 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener, Vi
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyChar() == '\n') {
 			if (discussMultip == true) {
-				if (UDPHCD.run(text.getText().trim(), otherLoginMultiDiscuss, this, msgCount)) {
+				//if (UDPHCD.run(text.getText().trim(), otherLoginMultiDiscuss, this, msgCount)) {
+				UDPHCD.run(text.getText().trim(), otherLoginMultiDiscuss, this, msgCount);
 					System.out.println("chat panel: j'envoi le message aux autres clients !!!!!!");
 					String textMessage = textArea.getText() 
 							+ "\n" 
@@ -228,7 +229,7 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener, Vi
 					textArea.setText(textMessage);
 					text.setText("");
 					textArea.setCaretPosition(textArea.getText().length());
-				} else { text.setText(""); }
+				//} else { text.setText(""); }
 			} else {
 				if(UDPHCD.run(text.getText().trim(), otherLogin, this, msgCount)) {
 					myMessages.put(msgCount, text.getText().trim());
