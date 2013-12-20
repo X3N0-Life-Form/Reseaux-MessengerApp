@@ -1,6 +1,10 @@
 package client;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -334,19 +338,47 @@ public class Client implements MasterClass {
 	 * and sets the Client's connection status to false.
 	 */
 	public void disconnect() {
-		Message disconnectMsg = new Message(MessageType.DISCONNECT);
-		disconnectMsg.addInfo(MessageInfoStrings.LOGIN, login);
 		
-		try {
-			udpClient.getSend().getMessageManager().handleMessage(disconnectMsg, udpClient.getSend().getSocket());
-			connected = false;
-			running = false;
-		} catch (HandlingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+		if (serverUp) {
+			Message disconnectMsg = new Message(MessageType.DISCONNECT);
+			disconnectMsg.addInfo(MessageInfoStrings.LOGIN, login);
+			
+			try {
+				udpClient.getSend().getMessageManager().handleMessage(disconnectMsg, udpClient.getSend().getSocket());
+				connected = false;
+				running = false;
+			} catch (HandlingException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		} else {
+			Message disconnectMsgClient =  new Message(MessageType.DISCONNECT_CLIENT);
+			disconnectMsgClient.addInfo(MessageInfoStrings.LOGIN, login);
+			
+			for (String key : clientIps.keySet()) {
+				InetAddress targetAddress = clientIps.get(key);
+				int targetPort = Integer.parseInt(clientPorts.get(key));
+				try {
+					DatagramSocket targetSocket = new DatagramSocket();
+					
+					ByteArrayOutputStream b = new ByteArrayOutputStream();
+				    ObjectOutputStream o = new ObjectOutputStream(b);
+				    o.writeObject(disconnectMsgClient);
+					byte[] buf = b.toByteArray();
+					DatagramPacket p = new DatagramPacket(buf, buf.length, targetAddress, targetPort);
+					targetSocket.connect(targetAddress, targetPort);
+					targetSocket.send(p);
+					System.out.println("Sending disco message to " + key + "(" + targetAddress + 
+							" : " + targetPort + ")");
+					
+					
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 

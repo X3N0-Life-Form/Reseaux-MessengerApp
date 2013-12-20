@@ -90,10 +90,12 @@ public class UDPHandlerServer extends UDPHandler {
 			DatagramPacket p = new DatagramPacket(buf, buf.length, packet.getAddress(), senderPort);
 			System.out.println("Sending  udp message to: " + p.getAddress() + ":" + p.getPort() + "; message="+ message);
 			socket.send(p);
-		
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+
+		} catch (NumberFormatException e) {
+			//do nothing, the target is already dead.
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override

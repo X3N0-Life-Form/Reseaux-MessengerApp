@@ -96,6 +96,16 @@ public class ClientMessageManager implements MessageManager {
 			handler.sendMessage(message, socket);
 			break;
 			
+		case DISCONNECT_CLIENT:
+			System.out.println("received disconnect client msg");
+			String toRemove = message.getInfo(MessageInfoStrings.LOGIN);
+			client.getClientLogins().remove(toRemove);
+			client.getClientIps().remove(toRemove);
+			client.getClientPorts().remove(toRemove);
+			client.updateChatPanels(); // tell user that this client is now disconnected
+			client.getContactListController().refresh();
+			break;
+			
 		case CLIENT_LIST:
 			@SuppressWarnings("unchecked")
 			List<String> logins = (List<String>) message.getObject(MessageInfoStrings.REQUEST_LIST_CLIENT_LOGINS);
