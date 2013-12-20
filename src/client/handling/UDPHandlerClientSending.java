@@ -39,7 +39,7 @@ public class UDPHandlerClientSending extends UDPHandlerClient {
 				try{
 					
 					Date now = new Date();
-					if (now.getTime() - client.getServerTimeoutDate().getTime() > 4000) { //TODO extract constant
+					if (now.getTime() - client.getServerTimeoutDate().getTime() > Client.DEFAULT_SERVER_TIMEOUT) {
 						client.setServerUp(false);
 					}
 					

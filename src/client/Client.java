@@ -38,6 +38,7 @@ public class Client implements MasterClass {
 	
 	private static final long DEFAULT_TIMEOUT_TIME = 0;
 	public static final long LIVE_DELAY = 4000;
+	public static final long DEFAULT_SERVER_TIMEOUT = 4000;
 	
 	private String login;
 	private String pass;
@@ -138,6 +139,11 @@ public class Client implements MasterClass {
 		udpClient = new UDPClient(this);
 	}
 
+	/**
+	 * Was used for testing.
+	 * @param args
+	 */
+	@Deprecated
 	public static void main(String args[]) {
 		String c_login=args[0];
 		String c_pass=args[1];
