@@ -1,7 +1,8 @@
 /**
- * Package dedicated to event logging.
+ * 
  */
 /**
+ * Package dedicated to event logging.
  * @author etudiant
  *
  */

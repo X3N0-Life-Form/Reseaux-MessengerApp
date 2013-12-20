@@ -1,7 +1,8 @@
 /**
- * This package contains GUI classes.
+ * 
  */
 /**
+ * This package contains GUI classes.
  * @author etudiant
  *
  */
