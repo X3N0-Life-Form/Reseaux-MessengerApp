@@ -125,9 +125,11 @@ public class SelectMultiContactWindow extends JPanel implements ActionListener, 
 				p.getFrame().toFront();
 				loginsWithMultiDiscuss.clear();
 			}else {
-				ChatPanel p1 = new ChatPanel(new Vector<String>(loginsWithMultiDiscuss), mapListChat, controller);
-				//mapListChat.put(loginsWithMultiDiscuss, p1);
+				Vector<String> copy = new Vector<String>(loginsWithMultiDiscuss);
 				loginsWithMultiDiscuss.clear();
+				ChatPanel p1 = new ChatPanel(copy, mapListChat, controller);
+				//mapListChat.put(loginsWithMultiDiscuss, p1);
+				
 				try {
 					p1.lancerAffichage();
 				} catch (IOException e1) {

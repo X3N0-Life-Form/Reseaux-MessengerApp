@@ -453,24 +453,35 @@ public class Client implements MasterClass {
 		/////////////////
 		// final stuff //
 		/////////////////
+		boolean clearSingle = false;
+		boolean clearMulti = false;
 		for (String key : wereDisconnectedSingle.keySet()) {
 			if (clientIps.containsKey(key)) {
 				System.out.println("######### reconnected - " + key);
 				wereDisconnectedSingle.get(key).displayReconnectedMessage(key);
-				wereDisconnectedSingle.clear();
+				clearSingle = true;
+				break;
 			} else {
 				System.out.println("######### still out - " + key);
 			}
 		}
+		if (clearSingle) {
+			wereDisconnectedSingle.clear();
+		}
+		
 		for (String key : wereDisconnectedMulti.keySet()) {
 			if (clientIps.containsKey(key)) {
 				System.out.println("######### reconnected - " + key);
 				wereDisconnectedMulti.get(key).displayReconnectedMessage(key);
-				wereDisconnectedMulti.clear();
+				clearMulti = true;
+				break;
 			} else {
 				System.out.println("######### still out - " + key);
 			}
-		}		
+		}
+		if (clearMulti) {
+			wereDisconnectedMulti.clear();
+		}
 	}
 	
 	public Map<String, ChatPanel> getWereDisconnectedMulti() {
