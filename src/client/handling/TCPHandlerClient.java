@@ -97,7 +97,7 @@ public class TCPHandlerClient extends Thread implements HandlerClient {
 			boolean up = inet.isReachable(5000);
 			try {
 				if (up) {
-					socket.connect(new InetSocketAddress(client.getServerIp(), CommonConstants.DEFAULT_SERVER_PORT), 5000);
+					socket.connect(new InetSocketAddress(client.getServerIp(), client.getServerPort()), 5000);
 					handleConnect();
 					handleDialog();
 				} else {
@@ -105,6 +105,7 @@ public class TCPHandlerClient extends Thread implements HandlerClient {
 				}
 			} catch (ConnectException e) {
 				client.getLoginController().fireErrorMessage(new Message(MessageType.ERROR, "Unable to connect to server"));
+				e.printStackTrace();
 			}
 
 		} catch (IOException e) {
