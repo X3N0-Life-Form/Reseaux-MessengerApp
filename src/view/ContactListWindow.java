@@ -94,8 +94,8 @@ public class ContactListWindow extends JPanel implements ActionListener, MouseLi
 		
 		JPanel panneauAction = new JPanel();
 		panneauAction.setLayout(new BorderLayout());
-		panneauAction.add(disconnectButton, BorderLayout.WEST);
-		panneauAction.add(multiChatButton, BorderLayout.EAST);
+		//panneauAction.add(disconnectButton, BorderLayout.WEST);
+		panneauAction.add(multiChatButton);
 		panneauAction.setBorder(new EmptyBorder(0,30,10,30));
 		
 		JPanel panneauPrincipal = new JPanel();
@@ -115,6 +115,7 @@ public class ContactListWindow extends JPanel implements ActionListener, MouseLi
 			@Override
 			public void windowClosing(WindowEvent e) {
 				disconnect();
+				System.exit(0);
 			}
 		});
 		
@@ -163,12 +164,12 @@ public class ContactListWindow extends JPanel implements ActionListener, MouseLi
 		cadre.setVisible(false);
 		
 		controller.disconnect();
-		
+		/*
 		try {
 			ChatMain.demarre();
 		} catch (IOException e1) {
 			e1.printStackTrace();
-		}
+		}*/
 	}
 
 	@Override

@@ -90,7 +90,7 @@ public class SelectMultiContactWindow extends JPanel implements ActionListener, 
 		cadre.setResizable(false);
 		cadre.setMaximumSize(new Dimension(300, 400));
 		cadre.setVisible(true);
-		cadre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		cadre.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 	}
 	
 	
