@@ -2,14 +2,13 @@ package controller;
 
 import java.io.IOException;
 
-import javax.swing.JOptionPane;
+import view.ChatMain;
+import view.LoginWindow;
+import client.Client;
 
 import common.CommonConstants;
 import common.Message;
 import common.MessageType;
-import view.ChatMain;
-import view.LoginWindow;
-import client.Client;
 
 /**
  * Controller linked to a LoginWindow.
@@ -41,7 +40,7 @@ public class LoginController extends Controller {
 	 */
 	public void processLogin(String login, String pass, String ipServer) {
 		if (login.isEmpty() || pass.isEmpty() || ipServer.isEmpty()) {
-			fireErrorMessage(new Message(MessageType.ERROR, "Veuillez remplir tous les champs."));
+			fireErrorMessage(new Message(MessageType.ERROR, "Please fill up each field."));
 		} else {
 			try {
 				int port = CommonConstants.extractPort(ipServer);

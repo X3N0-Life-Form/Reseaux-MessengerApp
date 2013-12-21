@@ -15,7 +15,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 
 import controller.ContactListController;
@@ -29,10 +28,17 @@ import controller.Controller;
  */
 public class SelectMultiContactWindow extends JPanel implements ActionListener, View {
 	
+
+	public static final int DEFAULT_LOCATION_X = 600;
+	public static final int DEFAULT_LOCATION_Y = 200;
+	public static final int DEFAULT_WIDTH = 300;
+	public static final int DEFAULT_HEIGHT = 400;
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -1468670957626069617L;
+	
 	private JButton startButton = new JButton("START");
 	private JFrame cadre = new javax.swing.JFrame("Sélectionner le groupe d'amis : ");
 	
@@ -81,10 +87,10 @@ public class SelectMultiContactWindow extends JPanel implements ActionListener, 
 		scrollPane.getViewport().setView(panneauPrincipal);
 		
 		cadre.setContentPane(panneauPrincipal);
-		cadre.setLocation(600, 200);
+		cadre.setLocation(DEFAULT_LOCATION_X, DEFAULT_LOCATION_Y);
 		cadre.pack();
 		cadre.setResizable(false);
-		cadre.setMaximumSize(new Dimension(300, 400));
+		cadre.setMaximumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
 		cadre.setVisible(true);
 		cadre.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 	}
@@ -96,7 +102,7 @@ public class SelectMultiContactWindow extends JPanel implements ActionListener, 
 		
 		if (e.getSource() == startButton) {
 			
-			//Je parcour toute mes checbox pour savoir si elles sont cochées
+			//Je parcours toute mes checbox pour savoir si elles sont cochées
 			for(JCheckBox box3 : listCheckBoxLog) {
 				if (box3.isSelected()) {
 					listLogWithContact.add(box3.getText());
@@ -116,7 +122,7 @@ public class SelectMultiContactWindow extends JPanel implements ActionListener, 
 					ChatPanel p = mapListChat.get(loginsWithMultiDiscuss);
 					p.getFrame().toFront();
 					loginsWithMultiDiscuss.clear();
-				}else {
+				} else {
 					if(controller.getClient().isServerUp()) {
 						Vector<String> copy = new Vector<String>(loginsWithMultiDiscuss);
 						loginsWithMultiDiscuss.clear();
@@ -127,13 +133,13 @@ public class SelectMultiContactWindow extends JPanel implements ActionListener, 
 						} catch (IOException e1) {
 							e1.printStackTrace();
 						}
-					} else{
+					} else {
 						for(String log : loginsWithMultiDiscuss) {
 							if(controller.getClient().getClientIps().containsKey(log)) {
 								allClient = true;
 							} else {
 								allClient = false;
-								JOptionPane.showMessageDialog(null, "Server is down; user all IP can't be retrieved", "Error", JOptionPane.INFORMATION_MESSAGE);
+								JOptionPane.showMessageDialog(null, "Server is down; user IPs can't all be retrieved", "Error", JOptionPane.INFORMATION_MESSAGE);
 								break;
 							}
 						}
@@ -151,9 +157,8 @@ public class SelectMultiContactWindow extends JPanel implements ActionListener, 
 					}						
 				}
 			} else {
-				JOptionPane.showMessageDialog(null, "You must to 2 or more", "Not possible", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "You must select at least 2 users", "Action impossible", JOptionPane.INFORMATION_MESSAGE);
 			}
-			
 			
 			cadre.setVisible(false);
 		}

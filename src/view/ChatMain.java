@@ -15,7 +15,14 @@ public class ChatMain {
 	 * ContactListWindow shared by everyone.
 	 */
 	public static ContactListWindow clw;
+	/**
+	 * LoginWindow shared by everyone.
+	 */
 	public static LoginWindow lw;
+	/**
+	 * LoginController shared by everyone.
+	 */
+	public static LoginController lc;
 	
 	/**
 	 * Takes no arguments.
@@ -26,15 +33,7 @@ public class ChatMain {
 	{
 		clw = new ContactListWindow();
 		lw = new LoginWindow();
-		LoginController lc = new LoginController(lw);
+		lc = new LoginController(lw);
 		lw.lancerAffichage();
 	}
-	
-	public static void demarre() throws IOException {
-		clw = new ContactListWindow();
-		lw = new LoginWindow();
-		LoginController lc = new LoginController(lw);
-		lw.lancerAffichage();
-	}
-
 }

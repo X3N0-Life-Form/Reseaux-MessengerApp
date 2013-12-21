@@ -11,9 +11,7 @@ import java.util.Collections;
 import java.util.Vector;
 
 import view.ChatPanel;
-
 import client.Client;
-
 import common.CommonConstants;
 import common.Message;
 import common.MessageInfoStrings;
@@ -29,6 +27,8 @@ import common.logging.EventType;
  */
 public class UDPHandlerClientListening extends UDPHandlerClient {
 	
+
+
 	/**
 	 * Constructs a UDPHandlerClientListening object for the specified {@link Client}.
 	 * @param client
@@ -50,23 +50,21 @@ public class UDPHandlerClientListening extends UDPHandlerClient {
 				Message message = getMessage(p);
 				switch (message.getType()) {
 				case MSG_DISCUSS_CLIENT_SEVERAL:
-					System.out.println("J'ai reçus un message");
 					@SuppressWarnings("unchecked")
-					Vector<String> listLoginOtherClient = new Vector<String>((Vector<String>) message.getObject("list login other client"));
-					System.out.println("dont la liste des logins est la suivante: "+listLoginOtherClient);
+					Vector<String> listLoginOtherClient = new Vector<String>((Vector<String>) message.getObject(MessageInfoStrings.LIST_LOGIN_OTHER_CLIENT));
 					listLoginOtherClient.remove(client.getLogin());
-					listLoginOtherClient.add(message.getInfo("login client origin"));
+					listLoginOtherClient.add(message.getInfo(MessageInfoStrings.LOGIN_CLIENT_ORIGIN));
 					Collections.sort(listLoginOtherClient);
 					if(client.getContactListController().getClw().getMapListChat().containsKey(listLoginOtherClient)) {
 						ChatPanel p1 = client.getContactListController().getClw().getMapListChat().get(listLoginOtherClient);
-						p1.addText(message.getInfo("msg"), Integer.parseInt(message.getInfo(MessageInfoStrings.MESSAGE_ID)), message.getInfo("login client origin"));
+						p1.addText(message.getInfo(MessageInfoStrings.MSG), Integer.parseInt(message.getInfo(MessageInfoStrings.MESSAGE_ID)), message.getInfo(MessageInfoStrings.LOGIN_CLIENT_ORIGIN));
 						p1.getFrame().toFront();
 					}else {
 						ChatPanel p2 = new ChatPanel(listLoginOtherClient, client.getContactListController().getClw().getMapListChat(), client.getContactListController());
 						client.getContactListController().getClw().getMapListChat().put(listLoginOtherClient, p2);
 						try {
 							p2.lancerAffichage();
-							p2.addText(message.getInfo("msg"), Integer.parseInt(message.getInfo(MessageInfoStrings.MESSAGE_ID)), message.getInfo("login client origin"));
+							p2.addText(message.getInfo(MessageInfoStrings.MSG), Integer.parseInt(message.getInfo(MessageInfoStrings.MESSAGE_ID)), message.getInfo(MessageInfoStrings.LOGIN_CLIENT_ORIGIN));
 							p2.getFrame().toFront();
 						} catch (IOException e1) {
 							e1.printStackTrace();
@@ -74,16 +72,16 @@ public class UDPHandlerClientListening extends UDPHandlerClient {
 					}
 					break;
 				case MSG_DISCUSS_CLIENT:
-					if (client.getContactListController().getClw().getDiscMap().containsKey(message.getInfo("login client origin"))) {
-						ChatPanel p1 = client.getContactListController().getClw().getDiscMap().get(message.getInfo("login client origin"));
-						p1.addText(message.getInfo("msg"), Integer.parseInt(message.getInfo(MessageInfoStrings.MESSAGE_ID)), message.getInfo("login client origin"));
+					if (client.getContactListController().getClw().getDiscMap().containsKey(message.getInfo(MessageInfoStrings.LOGIN_CLIENT_ORIGIN))) {
+						ChatPanel p1 = client.getContactListController().getClw().getDiscMap().get(message.getInfo(MessageInfoStrings.LOGIN_CLIENT_ORIGIN));
+						p1.addText(message.getInfo(MessageInfoStrings.MSG), Integer.parseInt(message.getInfo(MessageInfoStrings.MESSAGE_ID)), message.getInfo(MessageInfoStrings.LOGIN_CLIENT_ORIGIN));
 						p1.getFrame().toFront();
 					} else {
-						ChatPanel p2 = new ChatPanel(message.getInfo("login client origin"), client.getContactListController().getClw().getDiscMap(), client.getContactListController());
-						client.getContactListController().getClw().getDiscMap().put(message.getInfo("login client origin"),p2);
+						ChatPanel p2 = new ChatPanel(message.getInfo(MessageInfoStrings.LOGIN_CLIENT_ORIGIN), client.getContactListController().getClw().getDiscMap(), client.getContactListController());
+						client.getContactListController().getClw().getDiscMap().put(message.getInfo(MessageInfoStrings.LOGIN_CLIENT_ORIGIN),p2);
 						try {
 							p2.lancerAffichage();
-							p2.addText(message.getInfo("msg"), Integer.parseInt(message.getInfo(MessageInfoStrings.MESSAGE_ID)), message.getInfo("login client origin"));
+							p2.addText(message.getInfo(MessageInfoStrings.MSG), Integer.parseInt(message.getInfo(MessageInfoStrings.MESSAGE_ID)), message.getInfo(MessageInfoStrings.LOGIN_CLIENT_ORIGIN));
 							p2.getFrame().toFront();
 						} catch (IOException e1) {
 							e1.printStackTrace();
@@ -93,7 +91,7 @@ public class UDPHandlerClientListening extends UDPHandlerClient {
 					break;
 					
 				case MISSING_MSG:
-					ChatPanel cp = client.getContactListController().getClw().getDiscMap().get(message.getInfo("login client origin"));
+					ChatPanel cp = client.getContactListController().getClw().getDiscMap().get(message.getInfo(MessageInfoStrings.LOGIN_CLIENT_ORIGIN));
 					int lostMsg = Integer.parseInt(message.getInfo(MessageInfoStrings.MESSAGE_ID));
 					cp.displayMissingMessage(lostMsg);
 					break;

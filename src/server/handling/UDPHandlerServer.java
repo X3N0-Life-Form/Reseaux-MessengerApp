@@ -5,13 +5,12 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.Date;
 
 import server.Server;
 import server.ServerMessageManager;
+
 import common.CommonConstants;
 import common.MasterClass;
 import common.Message;
@@ -33,6 +32,7 @@ public class UDPHandlerServer extends UDPHandler {
 	private Server serveur;
 	private DatagramSocket socket;
 	private ServerMessageManager messageManager;
+	@SuppressWarnings("unused")
 	private Log log;
 	
 	/**

@@ -24,8 +24,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-import common.Message;
-
 import client.Client;
 import controller.ContactListController;
 import controller.Controller;
@@ -38,10 +36,16 @@ import controller.Controller;
  */
 public class ContactListWindow extends JPanel implements ActionListener, MouseListener, View {
 	
+	public static final int DEFAULT_WIDTH = 300;
+	public static final int DEFAULT_HEIGHT = 400;
+	public static final int DEFAULT_LOCATION_X = 600;
+	public static final int DEFAULT_LOCATION_Y = 200;
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1654591401132479730L;
+	
 	private JButton disconnectButton = new JButton("Disconnect");
 	private JButton multiChatButton = new JButton("Multi-Chat");
 	private JScrollPane scrollPane = new JScrollPane();
@@ -73,11 +77,23 @@ public class ContactListWindow extends JPanel implements ActionListener, MouseLi
 		cadre.validate();
 	}
 	
+	/**
+	 * Refreshes the list of connected clients (alternate method).
+	 * @param clientLogins
+	 */
+	public void refresh(List<String> clientLogins) {
+		logins.clear();
+		logins = clientLogins;
+		loginList.removeAll();
+		loginList.setListData(clientLogins.toArray());
+		cadre.validate();
+	}
+	
 	@Override
 	public void lancerAffichage() throws IOException
 	{
 		String login = controller.getClient().getLogin();
-		cadre = new javax.swing.JFrame(login + " - Liste des amis connectés : ");
+		cadre = new javax.swing.JFrame(login + " - List of connected friends: ");
 		disconnectButton.addActionListener(this);
 		multiChatButton.addActionListener(this);
 		loginList.setListData(logins.toArray());
@@ -107,10 +123,10 @@ public class ContactListWindow extends JPanel implements ActionListener, MouseLi
 		panneauListeContact.setBorder(new EmptyBorder(10,10,10,10));
 		
 		cadre.setContentPane(panneauPrincipal);
-		cadre.setLocation(600, 200);
+		cadre.setLocation(DEFAULT_LOCATION_X, DEFAULT_LOCATION_Y);
 		cadre.pack();
 		cadre.setResizable(false);
-		cadre.setSize(300, 400);
+		cadre.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		cadre.setVisible(true);
 		cadre.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		cadre.addWindowListener(new WindowAdapter() {
@@ -141,7 +157,7 @@ public class ContactListWindow extends JPanel implements ActionListener, MouseLi
 						e1.printStackTrace();
 					}
 			} else {
-				JOptionPane.showMessageDialog(null, "You must to 2 or more", "Not possible", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "There must be two or more connected users", "Action  impossible", JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
 	}
@@ -166,7 +182,6 @@ public class ContactListWindow extends JPanel implements ActionListener, MouseLi
 			mapListChat.get(listLogin).getFrame().dispose();
 		}
 		mapListChat.clear();
-		System.out.println("verif si la map est vide: "+discMap);
 		cadre.setVisible(false);
 		
 		controller.disconnect();
@@ -237,4 +252,6 @@ public class ContactListWindow extends JPanel implements ActionListener, MouseLi
 	public void fireErrorMessage(String message) {
 		JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.INFORMATION_MESSAGE);
 	}
+
+
 }

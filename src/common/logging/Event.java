@@ -49,6 +49,4 @@ public class Event {
 	public void setTime(Date time) {
 		this.time = time;
 	}
-	
-	
 }

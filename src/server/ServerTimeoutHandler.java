@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import common.CommonConstants;
-import common.logging.EventType;
 import common.logging.Log;
 
 /**
@@ -19,6 +18,7 @@ public class ServerTimeoutHandler extends Thread {
 	
 	private Map<String, Date> timeoutTable;
 	private Server serveur;
+	@SuppressWarnings("unused")
 	private Log log;
 	
 	/**

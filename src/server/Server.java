@@ -80,7 +80,7 @@ public class Server implements MasterClass {
 			} else {
 				System.out.println("Unrecognised argument: " + args[i]);
 			}
-			//TODO: add config file parsing
+			// config file parsing scrapped
 		}
 		
 		try {
@@ -188,9 +188,11 @@ public class Server implements MasterClass {
 		this.timeout = time;
 	}
 
+	/**
+	 * Sets the server's running status to false, killing every running thread.
+	 */
 	public void stop() {
 		running = false;
-		//TODO: stop everything
 	}
 
 	/**

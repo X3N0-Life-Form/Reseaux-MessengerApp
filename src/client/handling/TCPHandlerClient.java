@@ -94,10 +94,10 @@ public class TCPHandlerClient extends Thread implements HandlerClient {
 	public void run() {
 		try {
 			InetAddress inet = InetAddress.getByName(client.getServerIp());
-			boolean up = inet.isReachable(5000);
+			boolean up = inet.isReachable(CommonConstants.CLIENT_CONNECT_TIMEOUT);
 			try {
 				if (up) {
-					socket.connect(new InetSocketAddress(client.getServerIp(), client.getServerPort()), 5000);
+					socket.connect(new InetSocketAddress(client.getServerIp(), client.getServerPort()), CommonConstants.CLIENT_CONNECT_TIMEOUT);
 					handleConnect();
 					handleDialog();
 				} else {

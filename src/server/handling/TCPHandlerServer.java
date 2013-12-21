@@ -7,14 +7,13 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.Socket;
 
-import server.ServerMessageManager;
 import server.Server;
+import server.ServerMessageManager;
 
 import common.MasterClass;
 import common.Message;
 import common.handling.Handler;
 import common.handling.HandlingException;
-import common.logging.EventType;
 import common.logging.Log;
 
 /**
@@ -27,6 +26,7 @@ public class TCPHandlerServer extends Thread implements Handler {
 	
 	private Socket socket;
 	private Server serveur;
+	@SuppressWarnings("unused")
 	private Log log;
 	private ServerMessageManager messageManager;
 	

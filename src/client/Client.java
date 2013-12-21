@@ -55,8 +55,6 @@ public class Client implements MasterClass {
 	private Map<String, String> clientPorts;
 	private List<String> clientLogins;
 	
-	private ClientTimeoutHandler timeoutHandler;
-	
 	private TCPHandlerClient tcpHandlerClient;
 	private UDPClient udpClient;	
 	
@@ -96,12 +94,17 @@ public class Client implements MasterClass {
 		clientIps = new HashMap<String, InetAddress>();
 		clientPorts = new HashMap<String, String>();
 		setClientLogins(new ArrayList<String>());
-		timeoutHandler = new ClientTimeoutHandler(this);
 		running = false;
 		timeout = DEFAULT_TIMEOUT_TIME;
 		log = new Log();
 	}
 
+	/**
+	 * Constructs a bare-bone client object (for testing purpose only)
+	 * @param login
+	 * @param serverIp
+	 * @param port
+	 */
 	public Client(String login, String serverIp, int port) {
 		super();
 		this.login=login;
@@ -195,10 +198,6 @@ public class Client implements MasterClass {
 	
 	public boolean isRunning() {
 		return running;
-	}
-
-	public ClientTimeoutHandler getTimeoutHandler() {
-		return timeoutHandler;
 	}
 	
 	public long getTimeoutTime() {
@@ -377,10 +376,8 @@ public class Client implements MasterClass {
 					DatagramPacket p = new DatagramPacket(buf, buf.length, targetAddress, targetPort);
 					targetSocket.connect(targetAddress, targetPort);
 					targetSocket.send(p);
-					System.out.println("Sending disco message to " + key + "(" + targetAddress + 
+					System.out.println("Sending disconnect message to " + key + " (" + targetAddress + 
 							" : " + targetPort + ")");
-					
-					
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -412,7 +409,7 @@ public class Client implements MasterClass {
 		for (Vector<String> currentPanelList : chatPanelMap.keySet()) {
 			for (String login : currentPanelList) {
 				if (!clientIps.containsKey(login)) {
-					Message msg = new Message(MessageType.REQUEST_IP); //TODO: extract method
+					Message msg = new Message(MessageType.REQUEST_IP);
 					msg.addInfo(MessageInfoStrings.LOGIN, login);
 					msg.addInfo(MessageInfoStrings.PORT, getUDPMainListeningPort() + "");
 					try {
@@ -435,7 +432,7 @@ public class Client implements MasterClass {
 		Map<String, ChatPanel> chatPanelMapSingle = contactListController.getClw().getDiscMap();
 		for (String login : chatPanelMapSingle.keySet()) {
 			if (!clientIps.containsKey(login)) {
-				Message msg = new Message(MessageType.REQUEST_IP); //TODO: extract method
+				Message msg = new Message(MessageType.REQUEST_IP);
 				msg.addInfo(MessageInfoStrings.LOGIN, login);
 				msg.addInfo(MessageInfoStrings.PORT, getUDPMainListeningPort() + "");
 				try {
@@ -455,6 +452,9 @@ public class Client implements MasterClass {
 		
 	}
 	
+	/**
+	 * Verify if a client has reconnected.
+	 */
 	public void reconnectedClients() {
 		/////////////////
 		// final stuff //
@@ -466,7 +466,6 @@ public class Client implements MasterClass {
 				System.out.println("######### reconnected - " + key);
 				wereDisconnectedSingle.get(key).displayReconnectedMessage(key);
 				clearSingle = true;
-				//break;
 			} else {
 				System.out.println("######### still out - " + key);
 			}
@@ -480,7 +479,6 @@ public class Client implements MasterClass {
 				System.out.println("######### reconnected - " + key);
 				wereDisconnectedMulti.get(key).displayReconnectedMessage(key);
 				clearMulti = true;
-				//break;
 			} else {
 				System.out.println("######### still out - " + key);
 			}
@@ -528,7 +526,4 @@ public class Client implements MasterClass {
 	public void setServerTimeoutDate(Date serverTimeoutDate) {
 		this.serverTimeoutDate = serverTimeoutDate;
 	}
-
-	
-	
 }

@@ -26,6 +26,7 @@ import javax.swing.border.LineBorder;
 
 import client.handling.UDPHandlerClientDiscuss;
 import common.Message;
+import common.MessageInfoStrings;
 import common.MessageType;
 import common.handling.HandlingException;
 import controller.ContactListController;
@@ -38,9 +39,14 @@ import controller.Controller;
  */
 public class ChatPanel extends JPanel implements ActionListener, KeyListener, View {	
 
+	public static final int FRAME_HEIGHT = 500;
+	public static final int FRAME_WIDTH = 520;
+	public static final int DEFAULT_LOCATION_X = 400;
+	public static final int DEFAULT_LOCATION_Y = 200;
+
 	private static final long serialVersionUID = 1L;
+
 	
-	private static final int FRAME_WIDTH = 520;
 	private String otherLogin;
 	private Vector<String> otherLoginMultiDiscuss;
 	private JEditorPane textArea = new JEditorPane();
@@ -85,8 +91,8 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener, Vi
 		for(String login : loginWithMultiDiscuss) {
 			if (!(clientIps.containsKey(login))) {
 				Message msg = new Message(MessageType.REQUEST_IP);
-				msg.addInfo("login", login);
-				msg.addInfo("port", controller.getClient().getUDPMainListeningPort() + "");
+				msg.addInfo(MessageInfoStrings.LOGIN, login);
+				msg.addInfo(MessageInfoStrings.PORT, controller.getClient().getUDPMainListeningPort() + "");
 				try {
 					controller.getClient().getUdpClient().getSend().getMessageManager().handleMessage(msg, controller.getClient().getUdpClient().getSend().getSocket());
 				} catch (SocketException e) {
@@ -124,8 +130,8 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener, Vi
 		
 		if (!(clientIps.containsKey(login))) {
 			Message msg = new Message(MessageType.REQUEST_IP);
-			msg.addInfo("login", otherLogin);
-			msg.addInfo("port", controller.getClient().getUDPMainListeningPort() + "");
+			msg.addInfo(MessageInfoStrings.LOGIN, otherLogin);
+			msg.addInfo(MessageInfoStrings.PORT, controller.getClient().getUDPMainListeningPort() + "");
 			try {
 				controller.getClient().getUdpClient().getSend().getMessageManager().handleMessage(msg, controller.getClient().getUdpClient().getSend().getSocket());
 			} catch (SocketException e) {
@@ -154,7 +160,7 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener, Vi
 		
 		text.addKeyListener(this);
 		
-		scrollPaneTop.setPreferredSize(new Dimension(FRAME_WIDTH,400));
+		scrollPaneTop.setPreferredSize(new Dimension(FRAME_WIDTH, 400));
 		scrollPaneBottom.setPreferredSize(new Dimension(FRAME_WIDTH, 100));
 		
 		JPanel panneauChat = new JPanel();
@@ -162,8 +168,8 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener, Vi
 		panneauChat.add(scrollPaneTop, BorderLayout.NORTH);
 		panneauChat.add(scrollPaneBottom, BorderLayout.CENTER);
 		cadre.setContentPane(panneauChat);
-		cadre.setLocation(400, 200);
-		cadre.setSize(FRAME_WIDTH, 500);
+		cadre.setLocation(DEFAULT_LOCATION_X, DEFAULT_LOCATION_Y);
+		cadre.setSize(FRAME_WIDTH, FRAME_HEIGHT);
 		cadre.setVisible(true);
 		cadre.setResizable(false);
 		cadre.addWindowListener(new WindowAdapter() {
@@ -201,7 +207,7 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener, Vi
 							+ "\n";
 		textArea.setText(textMessage);
 		textArea.setCaretPosition(textArea.getText().length());
-		lastMsgIdReceived = msgId;
+		setLastMsgIdReceived(msgId);
 	}
 
 	@Override
@@ -211,7 +217,6 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener, Vi
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyChar() == '\n') {
 			if (discussMultip == true) {
-				//if (UDPHCD.run(text.getText().trim(), otherLoginMultiDiscuss, this, msgCount)) {
 				UDPHCD.run(text.getText().trim(), otherLoginMultiDiscuss, this, msgCount);
 					System.out.println("chat panel: j'envoi le message aux autres clients !!!!!!");
 					String textMessage = textArea.getText() 
@@ -224,7 +229,6 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener, Vi
 					textArea.setText(textMessage);
 					text.setText("");
 					textArea.setCaretPosition(textArea.getText().length());
-				//} else { text.setText(""); }
 			} else {
 				if(UDPHCD.run(text.getText().trim(), otherLogin, this, msgCount)) {
 					myMessages.put(msgCount, text.getText().trim());
@@ -315,6 +319,14 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener, Vi
 		
 		textArea.setText(textMessage);
 		textArea.setCaretPosition(textArea.getText().length());
+	}
+
+	public int getLastMsgIdReceived() {
+		return lastMsgIdReceived;
+	}
+
+	public void setLastMsgIdReceived(int lastMsgIdReceived) {
+		this.lastMsgIdReceived = lastMsgIdReceived;
 	}
 
 }

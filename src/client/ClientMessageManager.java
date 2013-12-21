@@ -6,7 +6,6 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -68,9 +67,9 @@ public class ClientMessageManager implements MessageManager {
 			
 		case CONNECT:
 			log.log(EventType.SEND_TCP, "Sending connect request");
-			Message connectMsg = new Message(MessageType.CONNECT);//Note: copied from handleDialog()
-			connectMsg.addInfo(MessageInfoStrings.LOGIN,client.getLogin());//TODO handleDialog() redundant
-			connectMsg.addInfo(MessageInfoStrings.PASSWORD,client.getPass());// call messageManager instead
+			Message connectMsg = new Message(MessageType.CONNECT);
+			connectMsg.addInfo(MessageInfoStrings.LOGIN,client.getLogin());
+			connectMsg.addInfo(MessageInfoStrings.PASSWORD,client.getPass());
 			handler.sendMessage(connectMsg, socket);
 			break;
 			
@@ -97,13 +96,14 @@ public class ClientMessageManager implements MessageManager {
 			break;
 			
 		case DISCONNECT_CLIENT:
-			System.out.println("received disconnect client msg");
 			String toRemove = message.getInfo(MessageInfoStrings.LOGIN);
+			System.out.println("Received disconnect client msg " + toRemove);
 			client.getClientLogins().remove(toRemove);
 			client.getClientIps().remove(toRemove);
 			client.getClientPorts().remove(toRemove);
 			client.updateChatPanels(); // tell user that this client is now disconnected
 			client.getContactListController().refresh();
+			//client.getContactListController().refreshDisconnected();
 			break;
 			
 		case CLIENT_LIST:
@@ -121,21 +121,11 @@ public class ClientMessageManager implements MessageManager {
 			}
 			break;
 			
-		case CLIENT_PORT_LIST://TODO:not used anymore, remove it
-			@SuppressWarnings("unchecked")
-			Map<String, String> temp2 = new HashMap<String, String>((Map<String, String>) message.getObject("clientPorts"));
-			client.setClientPorts(temp2);
-			clientPorts=temp2;
-			System.out.println("liste de amis connectés avec leur ports: "+temp2);
-			break;
-			
 		case MSG_DISCUSS_CLIENT:
-			System.out.println("envoi du message au client");
 			handler.sendMessage(message, socket);
 			break;
 			
 		case MSG_DISCUSS_CLIENT_SEVERAL:
-			System.out.println("envoi du message aux autres clients");
 			handler.sendMessage(message, socket);
 			break;
 			
@@ -149,7 +139,6 @@ public class ClientMessageManager implements MessageManager {
 			String targetLogin = message.getInfo(MessageInfoStrings.LOGIN);
 			clientIps.put(targetLogin, targetIP);
 			clientPorts.put(targetLogin, targetPort);
-			System.out.println("les info de l'autre client sont:"+targetLogin+ "  " + targetIP+ "  " +targetPort);
 			break;
 			
 		case ERROR:

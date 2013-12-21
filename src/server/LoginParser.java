@@ -35,7 +35,7 @@ public class LoginParser {
 	public void parse() throws JDOMException, IOException {
 		SAXBuilder sax = new SAXBuilder();
 		doc = sax.build(file);
-		//TODO: verify that the document is valid
+		//Note: we assume that the document is valid
 	}
 	
 	public boolean hasParsed() {

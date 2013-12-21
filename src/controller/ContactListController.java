@@ -34,6 +34,13 @@ public class ContactListController extends Controller {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Refresh when receiving a DISCONNECT_CLIENT message (actually just an alternate refresh method).
+	 */
+	public void refreshDisconnected() {
+		clw.refresh(client.getClientLogins());
+	}
 
 	public ContactListWindow getClw() {
 		return clw;
@@ -65,5 +72,4 @@ public class ContactListController extends Controller {
 	public void disconnect() {
 		client.disconnect();
 	}
-
 }
