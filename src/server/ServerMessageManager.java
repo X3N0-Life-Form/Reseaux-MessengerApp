@@ -10,9 +10,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-
-
-
+import server.handling.TCPHandlerServer;
+import server.handling.UDPHandlerServer;
 import common.ErrorTypes;
 import common.Message;
 import common.MessageInfoStrings;
@@ -27,10 +26,9 @@ import common.logging.Log;
  * This class determines the server's behavior upon receiving a Message from a client 
  * and prepares an appropriate answer.
  * <br />Note that the actual reception and response are delegated to the Handler objects.
+ * <br />See {@link TCPHandlerServer} and {@link UDPHandlerServer}
  * @author etudiant
  * @see Handler
- * @see UDPHandlerServer
- * @see TCPHandlerServer
  */
 public class ServerMessageManager implements MessageManager {
 	

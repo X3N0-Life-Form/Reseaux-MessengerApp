@@ -47,7 +47,7 @@ public class ServerTimeoutHandler extends Thread {
 	/**
 	 * Synchronized method adding a client to the timeout table,
 	 * with its time stamp set to the current time.
-	 * @param ip - Client's IP address.
+	 * @param login - Client's login.
 	 */
 	public synchronized void addClient(String login) {
 		timeoutTable.put(login, new Date());
