@@ -3,11 +3,11 @@
   associations="true" dependencies="false" nesting-relationships="true">  
   <class id="1" language="java" name="client.Client" project="Reseaux-MessengerApp" 
     file="/Reseaux-MessengerApp/src/client/Client.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="184" y="235"/>    
+    <position height="-1" width="-1" x="152" y="-207"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+      <operations public="false" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
   <class id="2" language="java" name="client.ClientMessageManager" project="Reseaux-MessengerApp" 
@@ -19,52 +19,43 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="3" language="java" name="client.ClientTimeoutHandler" project="Reseaux-MessengerApp" 
-    file="/Reseaux-MessengerApp/src/client/ClientTimeoutHandler.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="793" y="248"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="4" language="java" name="client.handling.UDPClient" project="Reseaux-MessengerApp" 
+  <class id="3" language="java" name="client.handling.UDPClient" project="Reseaux-MessengerApp" 
     file="/Reseaux-MessengerApp/src/client/handling/UDPClient.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="674" y="596"/>    
+    <position height="-1" width="-1" x="160" y="478"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="5" language="java" name="client.handling.UDPHandlerClientDiscuss" project="Reseaux-MessengerApp" 
+  <class id="4" language="java" name="client.handling.UDPHandlerClientDiscuss" project="Reseaux-MessengerApp" 
     file="/Reseaux-MessengerApp/src/client/handling/UDPHandlerClientDiscuss.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="151" width="260" x="1000" y="317"/>    
+    <position height="-1" width="-1" x="728" y="282"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="6" language="java" name="client.handling.UDPHandlerClientListening" project="Reseaux-MessengerApp" 
+  <class id="5" language="java" name="client.handling.UDPHandlerClientListening" project="Reseaux-MessengerApp" 
     file="/Reseaux-MessengerApp/src/client/handling/UDPHandlerClientListening.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="115" width="248" x="1148" y="583"/>    
+    <position height="-1" width="-1" x="716" y="492"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="7" language="java" name="client.handling.UDPHandlerClientSending" project="Reseaux-MessengerApp" 
+  <class id="6" language="java" name="client.handling.UDPHandlerClientSending" project="Reseaux-MessengerApp" 
     file="/Reseaux-MessengerApp/src/client/handling/UDPHandlerClientSending.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="115" width="248" x="1150" y="805"/>    
+    <position height="-1" width="-1" x="716" y="672"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="8" language="java" name="client.handling.TCPHandlerClient" project="Reseaux-MessengerApp" 
+  <class id="7" language="java" name="client.handling.TCPHandlerClient" project="Reseaux-MessengerApp" 
     file="/Reseaux-MessengerApp/src/client/handling/TCPHandlerClient.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="784" y="-392"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -73,94 +64,88 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <association id="9">    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="10" name="listeningHandler"/>      
-      <multiplicity id="11" minimum="0" maximum="1"/>    
+  <association id="8">    
+    <bendpoint x="84" y="201"/>    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="9" name="client"/>      
+      <multiplicity id="10" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
+    <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="12">    
+  <association id="11">    
+    <bendpoint x="231" y="209"/>    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="13" name="timeoutHandler"/>      
-      <multiplicity id="14" minimum="0" maximum="1"/>    
+      <attribute id="12" name="udpClient">        
+        <position height="17" width="53" x="219" y="299"/>      
+      </attribute>      
+      <multiplicity id="13" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="3" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="15">    
+  <association id="14">    
     <bendpoint x="456" y="-256"/>    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="16" name="tcpHandlerClient"/>      
-      <multiplicity id="17" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="8" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="18">    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="19" name="client"/>      
-      <multiplicity id="20" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="21">    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="22" name="sendingHandler"/>      
-      <multiplicity id="23" minimum="0" maximum="1"/>    
+      <attribute id="15" name="tcpHandlerClient"/>      
+      <multiplicity id="16" minimum="0" maximum="1">        
+        <position height="15" width="23" x="591" y="-303"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="7" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="24">    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="25" name="discussHandler"/>      
-      <multiplicity id="26" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="27">    
-    <bendpoint x="436" y="-402"/>    
-    <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="28" name="client"/>      
-      <multiplicity id="29" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="30">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="31" name="udpClient"/>      
-      <multiplicity id="32" minimum="0" maximum="1"/>    
+  <association id="17">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="18" name="discussHandler"/>      
+      <multiplicity id="19" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="33">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="34" name="client"/>      
-      <multiplicity id="35" minimum="0" maximum="1"/>    
+  <association id="20">    
+    <bendpoint x="436" y="-402"/>    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="21" name="client">        
+        <position height="17" width="32" x="325" y="-304"/>      
+      </attribute>      
+      <multiplicity id="22" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="36">    
-    <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="37" name="messageManager"/>      
-      <multiplicity id="38" minimum="0" maximum="1"/>    
+  <association id="23">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="24" name="listeningHandler"/>      
+      <multiplicity id="25" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="26">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="27" name="messageManager"/>      
+      <multiplicity id="28" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="39">    
+  <association id="29">    
     <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="40" name="client"/>      
-      <multiplicity id="41" minimum="0" maximum="1"/>    
+      <attribute id="30" name="client"/>      
+      <multiplicity id="31" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="32">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="33" name="sendingHandler">        
+        <position height="17" width="83" x="488" y="575"/>      
+      </attribute>      
+      <multiplicity id="34" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
