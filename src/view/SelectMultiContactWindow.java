@@ -11,7 +11,9 @@ import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -33,15 +35,16 @@ public class SelectMultiContactWindow extends JPanel implements ActionListener, 
 	private static final long serialVersionUID = -1468670957626069617L;
 	private JButton startButton = new JButton("START");
 	private JFrame cadre = new javax.swing.JFrame("Sélectionner le groupe d'amis : ");
-	private Vector<JRadioButton> listRadioLog = new Vector<JRadioButton>();
-	private Vector<JRadioButton> listRadioLogWithContact = new Vector<JRadioButton>();
+	
+	private Vector<JCheckBox> listCheckBoxLog = new Vector<JCheckBox>();
+	
 	private JScrollPane scrollPane = new JScrollPane();
 	
 	private Map<Vector<String>, ChatPanel>  mapListChat;
 	
 	
-	private List<String> listLogWithContact = new Vector<String>();
-	private Vector<String> loginsWithMultiDiscuss = new Vector<String>();	
+	private Vector<String> listLogWithContact;
+	private Vector<String> loginsWithMultiDiscuss ;	
 	private ContactListController controller;
 	
 	/**
@@ -52,21 +55,15 @@ public class SelectMultiContactWindow extends JPanel implements ActionListener, 
 	 */
 	public SelectMultiContactWindow(List<String> logins, ContactListController controller, Map<Vector<String>, ChatPanel>  mapListChat) {
 		this.mapListChat = mapListChat;
-		this.listLogWithContact = logins;
+		this.loginsWithMultiDiscuss = new Vector<String>();
+		this.listLogWithContact = new Vector<String>();
 		for(String log : logins) {
-			listRadioLog.add(new JRadioButton(log, false));
+			listCheckBoxLog.add(new JCheckBox(log, false));
+		}
+		for(JCheckBox box1 : listCheckBoxLog) {
+			box1.setSelected(false);
 		}
 		this.controller = controller;
-	}
-	
-	
-	public Map<Vector<String>, ChatPanel> getMapListChat() {
-		return mapListChat;
-	}
-
-
-	public void setMapListChat(Map<Vector<String>, ChatPanel> mapListChat) {
-		this.mapListChat = mapListChat;
 	}
 
 
@@ -74,10 +71,9 @@ public class SelectMultiContactWindow extends JPanel implements ActionListener, 
 	public void lancerAffichage() throws IOException
 	{
 		JPanel panneauPrincipal = new JPanel();
-		for(JRadioButton radio : listRadioLog) {
-			radio.addActionListener(this);
-			panneauPrincipal.add(radio);
-			listLogWithContact.clear();
+		for(JCheckBox box2 : listCheckBoxLog) {
+			box2.addActionListener(this);
+			panneauPrincipal.add(box2);
 		}
 		startButton.addActionListener(this);
 		panneauPrincipal.add(startButton, BorderLayout.SOUTH);
@@ -96,58 +92,86 @@ public class SelectMultiContactWindow extends JPanel implements ActionListener, 
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		for(JRadioButton button : listRadioLog) {
-			if(e.getSource() == button) {
-				if(listLogWithContact.contains(button.getText())) {
-					listLogWithContact.remove(button.getText());
-					listRadioLogWithContact.remove(button);
-				} else {
-					listLogWithContact.add(button.getText());
-					listRadioLogWithContact.add(button);
-				}
-			}
-		}		
+		boolean allClient = false;
 		
 		if (e.getSource() == startButton) {
 			
-			for(JRadioButton buttonWithContact : listRadioLogWithContact) {
-				buttonWithContact.setSelected(false);
+			//Je parcour toute mes checbox pour savoir si elles sont cochées
+			for(JCheckBox box3 : listCheckBoxLog) {
+				if (box3.isSelected()) {
+					listLogWithContact.add(box3.getText());
+					box3.setSelected(false);
+				}
 			}
-			listRadioLogWithContact.clear();
+			listCheckBoxLog.clear();
+			
 			for(String login : listLogWithContact) {
 				loginsWithMultiDiscuss.add(login);
 			}
 			listLogWithContact.clear();			
-			
 			Collections.sort(loginsWithMultiDiscuss);
-			if(mapListChat.containsKey(loginsWithMultiDiscuss)){
-				ChatPanel p = mapListChat.get(loginsWithMultiDiscuss);
-				p.getFrame().toFront();
-				loginsWithMultiDiscuss.clear();
-			}else {
-				Vector<String> copy = new Vector<String>(loginsWithMultiDiscuss);
-				loginsWithMultiDiscuss.clear();
-				ChatPanel p1 = new ChatPanel(copy, mapListChat, controller);
-				//mapListChat.put(loginsWithMultiDiscuss, p1);
-				
-				try {
-					p1.lancerAffichage();
-				} catch (IOException e1) {
-					e1.printStackTrace();
+			
+			if (loginsWithMultiDiscuss.size()>1){
+				if(mapListChat.containsKey(loginsWithMultiDiscuss)){
+					ChatPanel p = mapListChat.get(loginsWithMultiDiscuss);
+					p.getFrame().toFront();
+					loginsWithMultiDiscuss.clear();
+				}else {
+					if(controller.getClient().isServerUp()) {
+						Vector<String> copy = new Vector<String>(loginsWithMultiDiscuss);
+						loginsWithMultiDiscuss.clear();
+						ChatPanel p1 = new ChatPanel(copy, mapListChat, controller);
+						mapListChat.put(loginsWithMultiDiscuss, p1);
+						try {
+							p1.lancerAffichage();
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+					} else{
+						for(String log : loginsWithMultiDiscuss) {
+							if(controller.getClient().getClientIps().containsKey(log)) {
+								allClient = true;
+							} else {
+								allClient = false;
+								JOptionPane.showMessageDialog(null, "Server is down; user all IP can't be retrieved", "Error", JOptionPane.INFORMATION_MESSAGE);
+								break;
+							}
+						}
+						if(allClient == true) {
+							Vector<String> copy = new Vector<String>(loginsWithMultiDiscuss);
+							loginsWithMultiDiscuss.clear();
+							ChatPanel p1 = new ChatPanel(copy, mapListChat, controller);
+							mapListChat.put(loginsWithMultiDiscuss, p1);
+							try {
+								p1.lancerAffichage();
+							} catch (IOException e1) {
+								e1.printStackTrace();
+							}
+						}
+					}						
 				}
+			} else {
+				JOptionPane.showMessageDialog(null, "You must to 2 or more", "Not possible", JOptionPane.INFORMATION_MESSAGE);
 			}
+			
+			
 			cadre.setVisible(false);
 		}
 	}
 
-
-	@Override
 	public Controller getController() {
 		return controller;
 	}
 
-	@Override
 	public void setController(Controller controller) {
 		this.controller = (ContactListController) controller;
+	}
+	
+	public Map<Vector<String>, ChatPanel> getMapListChat() {
+		return mapListChat;
+	}
+
+	public void setMapListChat(Map<Vector<String>, ChatPanel> mapListChat) {
+		this.mapListChat = mapListChat;
 	}
 }
