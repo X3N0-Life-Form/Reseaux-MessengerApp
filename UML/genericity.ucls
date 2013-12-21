@@ -3,7 +3,7 @@
   associations="true" dependencies="false" nesting-relationships="true">  
   <interface id="1" language="java" name="common.MessageManager" project="Reseaux-MessengerApp" 
     file="/Reseaux-MessengerApp/src/common/MessageManager.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="862" y="264"/>    
+    <position height="-1" width="-1" x="672" y="74"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -12,7 +12,7 @@
   </interface>  
   <class id="2" language="java" name="client.ClientMessageManager" project="Reseaux-MessengerApp" 
     file="/Reseaux-MessengerApp/src/client/ClientMessageManager.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="348" y="314"/>    
+    <position height="-1" width="-1" x="279" y="296"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -21,7 +21,7 @@
   </class>  
   <class id="3" language="java" name="server.ServerMessageManager" project="Reseaux-MessengerApp" 
     file="/Reseaux-MessengerApp/src/server/ServerMessageManager.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1368" y="304"/>    
+    <position height="-1" width="-1" x="981" y="308"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -30,7 +30,7 @@
   </class>  
   <interface id="4" language="java" name="common.MasterClass" project="Reseaux-MessengerApp" 
     file="/Reseaux-MessengerApp/src/common/MasterClass.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="61" width="101" x="820" y="572"/>    
+    <position height="-1" width="-1" x="638" y="403"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -39,7 +39,7 @@
   </interface>  
   <class id="5" language="java" name="client.Client" project="Reseaux-MessengerApp" 
     file="/Reseaux-MessengerApp/src/client/Client.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="346" y="594"/>    
+    <position height="-1" width="-1" x="292" y="591"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="false" static="true"/>      
@@ -48,45 +48,45 @@
   </class>  
   <class id="6" language="java" name="server.Server" project="Reseaux-MessengerApp" 
     file="/Reseaux-MessengerApp/src/server/Server.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1422" y="606"/>    
+    <position height="-1" width="-1" x="1002" y="590"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="false" static="true"/>      
       <operations public="false" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <realization id="7">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="1"/>  
-  </realization>  
-  <realization id="8">    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="4"/>  
-  </realization>  
-  <realization id="9">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="1"/>  
-  </realization>  
-  <realization id="10">    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="4"/>  
-  </realization>  
-  <association id="11">    
+  <association id="7">    
     <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="12" name="server"/>      
-      <multiplicity id="13" minimum="0" maximum="1"/>    
+      <attribute id="8" name="server"/>      
+      <multiplicity id="9" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="6" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="14">    
+  <realization id="10">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="1"/>  
+  </realization>  
+  <realization id="11">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="4"/>  
+  </realization>  
+  <association id="12">    
     <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="15" name="client"/>      
-      <multiplicity id="16" minimum="0" maximum="1"/>    
+      <attribute id="13" name="client"/>      
+      <multiplicity id="14" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
+  <realization id="15">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="4"/>  
+  </realization>  
+  <realization id="16">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="1"/>  
+  </realization>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    

@@ -3,16 +3,16 @@
   associations="true" dependencies="false" nesting-relationships="true">  
   <class id="1" language="java" name="server.Server" project="Reseaux-MessengerApp" 
     file="/Reseaux-MessengerApp/src/server/Server.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="959" y="313"/>    
+    <position height="-1" width="-1" x="787" y="475"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+      <operations public="false" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
   <class id="2" language="java" name="server.LoginParser" project="Reseaux-MessengerApp" 
     file="/Reseaux-MessengerApp/src/server/LoginParser.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1486" y="660"/>    
+    <position height="-1" width="-1" x="790" y="774"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -21,7 +21,7 @@
   </class>  
   <class id="3" language="java" name="server.ServerMessageManager" project="Reseaux-MessengerApp" 
     file="/Reseaux-MessengerApp/src/server/ServerMessageManager.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="386" y="454"/>    
+    <position height="-1" width="-1" x="224" y="428"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -30,7 +30,7 @@
   </class>  
   <class id="4" language="java" name="server.ServerTimeoutHandler" project="Reseaux-MessengerApp" 
     file="/Reseaux-MessengerApp/src/server/ServerTimeoutHandler.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1470" y="310"/>    
+    <position height="-1" width="-1" x="756" y="126"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -39,7 +39,7 @@
   </class>  
   <class id="5" language="java" name="server.handling.TCPHandlerServer" project="Reseaux-MessengerApp" 
     file="/Reseaux-MessengerApp/src/server/handling/TCPHandlerServer.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="338" y="754"/>    
+    <position height="-1" width="-1" x="214" y="748"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -48,7 +48,7 @@
   </class>  
   <class id="6" language="java" name="server.handling.UDPHandlerServer" project="Reseaux-MessengerApp" 
     file="/Reseaux-MessengerApp/src/server/handling/UDPHandlerServer.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="372" y="118"/>    
+    <position height="-1" width="-1" x="218" y="118"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -56,22 +56,24 @@
     </display>  
   </class>  
   <association id="7">    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="8" name="serveur"/>      
+    <bendpoint x="836" y="305"/>    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="8" name="timeoutHandler"/>      
       <multiplicity id="9" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
+    <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="10">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="11" name="udpHandler"/>      
+      <attribute id="11" name="loginParser"/>      
       <multiplicity id="12" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
+    <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="13">    
+    <bendpoint x="700" y="305"/>    
     <end type="SOURCE" refId="4" navigable="false">      
       <attribute id="14" name="serveur"/>      
       <multiplicity id="15" minimum="0" maximum="1"/>    
@@ -88,27 +90,39 @@
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="19">    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="20" name="serveur"/>      
-      <multiplicity id="21" minimum="0" maximum="1"/>    
+    <bendpoint x="563" y="286"/>    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="20" name="udpHandler">        
+        <position height="17" width="64" x="411" y="192"/>      
+      </attribute>      
+      <multiplicity id="21" minimum="0" maximum="1">        
+        <position height="15" width="23" x="394" y="214"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
+    <end type="TARGET" refId="6" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="22">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="23" name="server"/>      
-      <multiplicity id="24" minimum="0" maximum="1"/>    
+    <bendpoint x="505" y="331"/>    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="23" name="serveur">        
+        <position height="17" width="44" x="580" y="397"/>      
+      </attribute>      
+      <multiplicity id="24" minimum="0" maximum="1">        
+        <position height="15" width="23" x="636" y="383"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="25">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="26" name="loginParser"/>      
-      <multiplicity id="27" minimum="0" maximum="1"/>    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="26" name="serveur"/>      
+      <multiplicity id="27" minimum="0" maximum="1">        
+        <position height="15" width="23" x="652" y="546"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
+    <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="28">    
@@ -120,11 +134,11 @@
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="31">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="32" name="timeoutHandler"/>      
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="32" name="server"/>      
       <multiplicity id="33" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="4" navigable="true"/>    
+    <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 

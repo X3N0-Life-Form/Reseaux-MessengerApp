@@ -61,14 +61,14 @@ public class LoginWindow extends JPanel implements ActionListener, View {
 	 */
 	private static final long serialVersionUID = -6789010216375385228L;
 	
-	public JLabel logLabel = new JLabel("Log   : "); 
-	public JLabel passLabel = new JLabel("Pass : "); 
-	public JLabel ipServerLabel = new JLabel("Ip Server : "); 
-	public JButton connectButton = new JButton("CONNECT");
-	public JTextField logField = new JTextField(15);
-	public JPasswordField passField = new JPasswordField(15);
-	public JTextField ipServerField = new JTextField(15);
-	public JFrame cadre = new javax.swing.JFrame("Chat-Expert");
+	private JLabel logLabel = new JLabel("Log   : "); 
+	private JLabel passLabel = new JLabel("Pass : "); 
+	private JLabel ipServerLabel = new JLabel("Ip Server : "); 
+	private JButton connectButton = new JButton("CONNECT");
+	private JTextField logField = new JTextField(15);
+	private JPasswordField passField = new JPasswordField(15);
+	private JTextField ipServerField = new JTextField(15);
+	private JFrame cadre = new javax.swing.JFrame("Chat-Expert");
 	
 	private LoginController controller;
 	
