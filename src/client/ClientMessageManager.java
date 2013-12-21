@@ -98,12 +98,10 @@ public class ClientMessageManager implements MessageManager {
 		case DISCONNECT_CLIENT:
 			String toRemove = message.getInfo(MessageInfoStrings.LOGIN);
 			System.out.println("Received disconnect client msg " + toRemove);
-			client.getClientLogins().remove(toRemove);
 			client.getClientIps().remove(toRemove);
 			client.getClientPorts().remove(toRemove);
 			client.updateChatPanels(); // tell user that this client is now disconnected
-			client.getContactListController().refresh();
-			//client.getContactListController().refreshDisconnected();
+			client.getContactListController().refreshDisconnected(toRemove, client.getClientLogins());
 			break;
 			
 		case CLIENT_LIST:

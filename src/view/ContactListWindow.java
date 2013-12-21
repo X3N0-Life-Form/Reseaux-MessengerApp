@@ -81,9 +81,8 @@ public class ContactListWindow extends JPanel implements ActionListener, MouseLi
 	 * Refreshes the list of connected clients (alternate method).
 	 * @param clientLogins
 	 */
-	public void refresh(List<String> clientLogins) {
-		logins.clear();
-		logins = clientLogins;
+	public void refreshDisconnected(List<String> clientLogins, String toRemove) {
+		clientLogins.remove(toRemove);
 		loginList.removeAll();
 		loginList.setListData(clientLogins.toArray());
 		cadre.validate();

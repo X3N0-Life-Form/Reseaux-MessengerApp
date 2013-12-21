@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import view.ContactListWindow;
 import view.SelectMultiContactWindow;
@@ -36,10 +37,12 @@ public class ContactListController extends Controller {
 	}
 	
 	/**
-	 * Refresh when receiving a DISCONNECT_CLIENT message (actually just an alternate refresh method).
+	 * Refresh when receiving a DISCONNECT_CLIENT message.
+	 * @param toRemove 
+	 * @param loginList 
 	 */
-	public void refreshDisconnected() {
-		clw.refresh(client.getClientLogins());
+	public void refreshDisconnected(String toRemove, List<String> loginList) {
+		clw.refreshDisconnected(loginList, toRemove);
 	}
 
 	public ContactListWindow getClw() {
