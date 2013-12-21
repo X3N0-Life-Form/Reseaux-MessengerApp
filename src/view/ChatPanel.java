@@ -161,11 +161,6 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener, Vi
 		panneauChat.setLayout(new BorderLayout());
 		panneauChat.add(scrollPaneTop, BorderLayout.NORTH);
 		panneauChat.add(scrollPaneBottom, BorderLayout.CENTER);
-		/*//Color grey = new Color(48,48,48);
-		//panneauChat.setBackground(Color.black);
-		panneauChat.setBorder(new LineBorder(Color.BLACK, 5));
-		
-		//cadre.getContentPane().setBackground(grey);*/
 		cadre.setContentPane(panneauChat);
 		cadre.setLocation(400, 200);
 		cadre.setSize(FRAME_WIDTH, 500);

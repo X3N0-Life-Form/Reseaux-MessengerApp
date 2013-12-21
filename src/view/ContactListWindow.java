@@ -97,7 +97,6 @@ public class ContactListWindow extends JPanel implements ActionListener, MouseLi
 		
 		JPanel panneauAction = new JPanel();
 		panneauAction.setLayout(new BorderLayout());
-		//panneauAction.add(disconnectButton, BorderLayout.WEST);
 		panneauAction.add(multiChatButton);
 		panneauAction.setBorder(new EmptyBorder(0,30,10,30));
 		
@@ -134,11 +133,15 @@ public class ContactListWindow extends JPanel implements ActionListener, MouseLi
 		{
 			disconnect();
 		} else if (e.getSource() == multiChatButton) {
-			SelectMultiContactWindow smlw = new SelectMultiContactWindow(logins, controller, mapListChat);
-			try {
-				smlw.lancerAffichage();
-			} catch (IOException e1) {
-				e1.printStackTrace();
+			if(logins.size()>1) {
+				SelectMultiContactWindow smlw = new SelectMultiContactWindow(logins, controller, mapListChat);
+				try {
+					smlw.lancerAffichage();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+			} else {
+				JOptionPane.showMessageDialog(null, "You must to 2 or more", "Not possible", JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
 	}
@@ -167,16 +170,6 @@ public class ContactListWindow extends JPanel implements ActionListener, MouseLi
 		cadre.setVisible(false);
 		
 		controller.disconnect();
-		/*
-		try {
-			ChatMain.demarre();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}*/
-	}
-	
-	public void fireErrorMessage(String message) {
-		JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	@Override
@@ -193,7 +186,17 @@ public class ContactListWindow extends JPanel implements ActionListener, MouseLi
 						e1.printStackTrace();
 					}
 				} else {
-					fireErrorMessage("Server is down; user IP can't be retrieved");
+					if(controller.getClient().getClientIps().containsKey(login)) {
+						ChatPanel p1 = new ChatPanel(login, discMap, controller);
+						discMap.put(login, p1);
+						try {
+							p1.lancerAffichage();
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+					} else {
+						fireErrorMessage("Server is down; user IP can't be retrieved");
+					}
 				}
 			} else {
 				ChatPanel p = discMap.get(login);
@@ -231,4 +234,7 @@ public class ContactListWindow extends JPanel implements ActionListener, MouseLi
 		this.discMap = discMap;
 	}
 
+	public void fireErrorMessage(String message) {
+		JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.INFORMATION_MESSAGE);
+	}
 }
