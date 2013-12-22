@@ -176,7 +176,7 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener, Vi
 			public void windowClosing(WindowEvent e) {
 				if(discussMultip){
 					discMapMultiDiscuss.remove(otherLoginMultiDiscuss);
-				}else {	
+				} else {	
 					discMap.remove(otherLogin);
 				}
 			}
@@ -194,10 +194,10 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener, Vi
 	 * @param loginOriginMsg
 	 */
 	public void addText(String msg, int msgId, String loginOriginMsg) {
-		/*if (msgId - lastMsgIdReceived != 0 && msgId != 0) {
+		if (msgId - lastMsgIdReceived != 0 && msgId != 0) {
 			int lostMsg = msgId - lastMsgIdReceived;
 			UDPHCD.run(MessageType.MISSING_MSG, lostMsg, otherLogin);
-		}*/
+		}
 		String textMessage = textArea.getText() 
 							+ "\n"
 							+ loginOriginMsg + ":  "
@@ -218,7 +218,6 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener, Vi
 		if (e.getKeyChar() == '\n') {
 			if (discussMultip == true) {
 				UDPHCD.run(text.getText().trim(), otherLoginMultiDiscuss, this, msgCount);
-					System.out.println("chat panel: j'envoi le message aux autres clients !!!!!!");
 					String textMessage = textArea.getText() 
 							+ "\n" 
 							+ controller.getClient().getLogin() + ":  " 

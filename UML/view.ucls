@@ -3,7 +3,7 @@
   associations="true" dependencies="false" nesting-relationships="true">  
   <class id="1" language="java" name="view.SelectMultiContactWindow" project="Reseaux-MessengerApp" 
     file="/Reseaux-MessengerApp/src/view/SelectMultiContactWindow.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="300" y="352"/>    
+    <position height="-1" width="-1" x="270" y="210"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="false" static="true"/>      
@@ -12,7 +12,7 @@
   </class>  
   <class id="2" language="java" name="view.LoginWindow.LoginWindowKeyListener" project="Reseaux-MessengerApp" 
     file="/Reseaux-MessengerApp/src/view/LoginWindow.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="879" y="-195"/>    
+    <position height="-1" width="-1" x="560" y="-163"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -21,7 +21,7 @@
   </class>  
   <class id="3" language="java" name="view.ChatMain" project="Reseaux-MessengerApp" 
     file="/Reseaux-MessengerApp/src/view/ChatMain.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="889" y="52"/>    
+    <position height="-1" width="-1" x="549" y="28"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -30,7 +30,7 @@
   </class>  
   <class id="4" language="java" name="view.ContactListWindow" project="Reseaux-MessengerApp" 
     file="/Reseaux-MessengerApp/src/view/ContactListWindow.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="709" y="372"/>    
+    <position height="-1" width="-1" x="521" y="186"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="false" static="true"/>      
@@ -39,7 +39,7 @@
   </class>  
   <class id="5" language="java" name="view.ChatPanel" project="Reseaux-MessengerApp" 
     file="/Reseaux-MessengerApp/src/view/ChatPanel.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="82" y="729"/>    
+    <position height="-1" width="-1" x="47" y="380"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="false" static="true"/>      
@@ -57,57 +57,64 @@
   </interface>  
   <class id="7" language="java" name="view.LoginWindow" project="Reseaux-MessengerApp" 
     file="/Reseaux-MessengerApp/src/view/LoginWindow.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="505" y="-39"/>    
+    <position height="-1" width="-1" x="291" y="-42"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="false" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <association id="8">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="9" name="clw"/>      
-      <multiplicity id="10" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="4" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <nesting id="11">    
+  <nesting id="8">    
     <end type="SOURCE" refId="7"/>    
     <end type="TARGET" refId="2"/>  
   </nesting>  
-  <association id="12">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="13" name="lw"/>      
-      <multiplicity id="14" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="7" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="15">    
-    <bendpoint x="60" y="803"/>    
-    <bendpoint x="73" y="831"/>    
-    <bendpoint x="142" y="837"/>    
+  <realization id="9">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="6"/>  
+  </realization>  
+  <association id="10">    
+    <bendpoint x="4" y="492"/>    
+    <bendpoint x="78" y="483"/>    
     <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="16" name="discMapMultiDiscuss"/>      
-      <multiplicity id="17" minimum="0" maximum="2147483647"/>    
+      <attribute id="11" name="discMapMultiDiscuss">        
+        <position height="17" width="105" x="34" y="490"/>      
+      </attribute>      
+      <multiplicity id="12" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <realization id="18">    
-    <bendpoint x="406" y="-16"/>    
-    <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="6"/>  
-  </realization>  
-  <realization id="19">    
+  <realization id="13">    
     <end type="SOURCE" refId="1"/>    
     <end type="TARGET" refId="6"/>  
   </realization>  
-  <association id="20">    
-    <bendpoint x="442" y="621"/>    
+  <association id="14">    
+    <bendpoint x="367" y="454"/>    
     <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="21" name="discMap"/>      
+      <attribute id="15" name="discMap">        
+        <position height="17" width="47" x="220" y="406"/>      
+      </attribute>      
+      <multiplicity id="16" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="17">    
+    <bendpoint x="300" y="408"/>    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="18" name="mapListChat">        
+        <position height="17" width="68" x="181" y="377"/>      
+      </attribute>      
+      <multiplicity id="19" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="20">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="21" name="mapListChat">        
+        <position height="17" width="68" x="163" y="294"/>      
+      </attribute>      
       <multiplicity id="22" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="5" navigable="true"/>    
@@ -122,27 +129,31 @@
     <end type="TARGET" refId="6"/>  
   </realization>  
   <association id="25">    
-    <bendpoint x="265" y="816"/>    
-    <bendpoint x="263" y="764"/>    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="26" name="discMap"/>      
-      <multiplicity id="27" minimum="0" maximum="2147483647"/>    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="26" name="clw"/>      
+      <multiplicity id="27" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
+    <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="28">    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="29" name="mapListChat"/>      
-      <multiplicity id="30" minimum="0" maximum="2147483647"/>    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="29" name="lw"/>      
+      <multiplicity id="30" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
+    <end type="TARGET" refId="7" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="31">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="32" name="mapListChat"/>      
-      <multiplicity id="33" minimum="0" maximum="2147483647"/>    
+    <bendpoint x="182" y="499"/>    
+    <bendpoint x="203" y="470"/>    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="32" name="discMap">        
+        <position height="17" width="47" x="169" y="435"/>      
+      </attribute>      
+      <multiplicity id="33" minimum="0" maximum="2147483647">        
+        <position height="15" width="21" x="137" y="443"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
